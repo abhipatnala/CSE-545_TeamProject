@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'secure_hospital_system',
-    'patient_portal.apps.PatientPortalConfig',
+    'patient_portal',
 ]
 
 MIDDLEWARE = [
@@ -85,8 +85,12 @@ WSGI_APPLICATION = 'secure_hospital_system.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'CSE545_Group1',
+        'USER': 'postgres',
+        'PASSWORD': 'asu',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
