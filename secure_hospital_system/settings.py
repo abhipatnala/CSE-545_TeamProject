@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'secure_hospital_system',
     'patient_portal',
+    'django_tables2',
+    'django_filters',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +151,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 django_on_heroku.settings(locals())
 
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap.html"

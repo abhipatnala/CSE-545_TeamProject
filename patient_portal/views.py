@@ -21,9 +21,12 @@ def medical_records(request, patient_id):
 
     template = loader.get_template('patient_portal/medical_records.html')
     context = {
-        'diagnosesList': diagnosesJson,
-        'labTestsList': labTestsJson,
-        'prescriptionList': prescriptionsJson,
+        'diagnosesJson': diagnosesJson,
+        'diagnosesList':diagnosesList,
+        'labTestsJson': labTestsJson,
+        'labTestsList': labTestsList,
+        'prescriptionJson': prescriptionsJson,
+        'prescriptionList': prescriptionsList,
     }
     return HttpResponse(template.render(context, request))
     #return render(request, 'patient_portal/medical_records.html', {})
@@ -35,7 +38,7 @@ def diagnoses(request, patient_id):
     diagnosesJson = serializers.serialize("json", diagnosesList)
     if(diagnosesListCount > 0):
         return HttpResponse(diagnosesJson)
-        #return HttpResponse(type(diagnosesList))
+        return HttpResponse(diagnosesList)
         #return HttpResponse("Hello %s, this is the diagnoses section of the Patient Portal. There are %d diagnoses available for you. The first diagnosis is provided by Doctor %s" % (patient_id, diagnosesListCount, diagnosesList[0].doctor_id_id))
     else:
         return HttpResponse("There are no diagnoses currently for you...")
