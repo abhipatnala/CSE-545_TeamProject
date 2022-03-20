@@ -16,7 +16,6 @@ import os
 import django_on_heroku
 
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -45,8 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'secure_hospital_system',
     'django_mfa',
-    'axes'
+    'axes',
+    'django_tables2',
+    'bootstrap3',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
