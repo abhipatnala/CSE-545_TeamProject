@@ -1,0 +1,32 @@
+{% extends 'patient_portal/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>Medical Records</h1>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#diagnoses">Diagnoses</a></li>
+    <li><a data-toggle="tab" href="#labtestreports">Lab Tests Reports</a></li>
+    <li><a data-toggle="tab" href="#prescriptions">Prescriptions</a></li>
+    <li><a data-toggle="tab" href="#paymentsandtransactions">Payments & Transactions</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="diagnoses" class="tab-pane fade in active">
+      <h3>Diagnoses</h3>
+      <pre>{{ diagnosesList }}</pre>
+    </div>
+    <div id="labtestreports" class="tab-pane fade">
+      <h3>Lab Test Reports</h3>
+      <pre>{{ labTestsList }}</pre>
+    </div>
+    <div id="prescriptions" class="tab-pane fade">
+      <h3>Prescriptions</h3>
+      <pre>{{ prescriptionList }}</pre>
+    </div>
+    <div id="paymentsandtransactions" class="tab-pane fade">
+      <h3>Payments & Transactions</h3>
+      <p></p>
+    </div>
+  </div>
+</div>
+{% endblock %}
