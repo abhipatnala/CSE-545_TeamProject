@@ -2,7 +2,7 @@ from django.template import loader
 from django.core import serializers
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Records
+from .models import Patient, Records
 # Create your views here.
 
 def index(request):
@@ -10,6 +10,9 @@ def index(request):
 
 
 def medical_records(request, patient_id):
+
+    patientDetails = Patient.objects.filter(patient_id=patient_id)
+
     diagnosesList = Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id')
     diagnosesJson = serializers.serialize("json", diagnosesList)
 
@@ -21,6 +24,7 @@ def medical_records(request, patient_id):
 
     template = loader.get_template('patient_portal/medical_records.html')
     context = {
+        'patientDetails': patientDetails,
         'diagnosesJson': diagnosesJson,
         'diagnosesList':diagnosesList,
         'labTestsJson': labTestsJson,
@@ -37,7 +41,7 @@ def diagnoses(request, patient_id):
     diagnosesListCount = len(diagnosesList)
     diagnosesJson = serializers.serialize("json", diagnosesList)
     if(diagnosesListCount > 0):
-        return HttpResponse(diagnosesJson)
+        #return HttpResponse(diagnosesJson)
         return HttpResponse(diagnosesList)
         #return HttpResponse("Hello %s, this is the diagnoses section of the Patient Portal. There are %d diagnoses available for you. The first diagnosis is provided by Doctor %s" % (patient_id, diagnosesListCount, diagnosesList[0].doctor_id_id))
     else:

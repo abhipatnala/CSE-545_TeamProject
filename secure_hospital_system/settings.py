@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'secure_hospital_system',
-    'patient_portal',
     'django_tables2',
     'django_filters',
     'django_mfa',
