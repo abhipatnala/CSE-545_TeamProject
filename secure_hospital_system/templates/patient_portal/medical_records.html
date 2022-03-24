@@ -13,16 +13,17 @@
 
   <div class="tab-content">
     <div id="diagnoses" class="tab-pane fade in active">
-      {% render_table diagnosesList %}
+      <h3>Diagnosis</h3>
+      {% render_table diagnosesTable %}
     </div>
     <div id="labtestreports" class="tab-pane fade">
       <h3>Lab Test Reports</h3>
-      {% render_table labTestsList %}
+      {% render_table labTestReportsTable %}
     </div>
     <div id="prescriptions" class="tab-pane fade">
       <h3>Prescriptions</h3>
-      {% render_table prescriptionList %}
-    </div>
+      {% render_table prescriptionsTable %}
+    </div>  
     <div id="paymentsandtransactions" class="tab-pane fade">
       <h3>Payments & Transactions</h3>
       <p></p>

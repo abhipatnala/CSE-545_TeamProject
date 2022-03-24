@@ -1,40 +1,60 @@
+from multiprocessing import context
+from re import template
+from urllib import request
+from xml.dom.minidom import Document
 from django.template import loader
 from django.core import serializers
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Patient, Records
+from .tables import RecordsTable
+from django.views import generic
+from django.views.decorators.csrf import csrf_exempt
+
 # Create your views here.
 
 def index(request):
     return HttpResponse("Hello, world. You've visited the Medical Records page in the Patient portal.")
 
+@csrf_exempt
+def medical_records(request):
 
-def medical_records(request, patient_id):
+    patient_id = ''
+    if request.method == 'POST':
+        patient_id = request.POST['patient_id']
+    elif request.method == 'GET':
+        patient_id = request.GET['patient_id']
+    #patientDetails = Patient.objects.filter(patient_id=patient_id)
 
-    patientDetails = Patient.objects.filter(patient_id=patient_id)
 
-    diagnosesList = Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id')
-    diagnosesJson = serializers.serialize("json", diagnosesList)
-
-    labTestsList = Records.objects.filter(patient_id=patient_id).filter(document_type='L').order_by('records_id')
-    labTestsJson = serializers.serialize("json", labTestsList)
-
-    prescriptionsList = Records.objects.filter(patient_id=patient_id).filter(document_type='P').order_by('records_id')
-    prescriptionsJson = serializers.serialize("json", prescriptionsList)
+    diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id'))
+    labTestReportsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='L').order_by('records_id'))
+    prescriptionsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='P').order_by('records_id'))
 
     template = loader.get_template('patient_portal/medical_records.html')
     context = {
-        'patientDetails': patientDetails,
-        'diagnosesJson': diagnosesJson,
-        'diagnosesList':diagnosesList,
-        'labTestsJson': labTestsJson,
-        'labTestsList': labTestsList,
-        'prescriptionJson': prescriptionsJson,
-        'prescriptionList': prescriptionsList,
+        'diagnosesTable' : diagnosesTable,
+        'labTestReportsTable' : labTestReportsTable,
+        'prescriptionsTable' : prescriptionsTable,
     }
     return HttpResponse(template.render(context, request))
     #return render(request, 'patient_portal/medical_records.html', {})
 
+@csrf_exempt
+def view_record(request):
+    #patient_id = request.POST['patient_id']
+    record_id = request.POST['record_id']
+    record = Records.objects.filter(records_id=record_id).values('records_id', 'document', 'document_type')
+    #recordJSON = serializers.serialize("json", record)
+    recordString = record[0]['document']
+    
+    template = loader.get_template('patient_portal/record.html')
+    context = {
+        'record_id' : record_id,
+        'document_type' : record[0]['document_type'],
+        'document' : recordString,
+    }
+    return HttpResponse(template.render(context, request))
 
 def diagnoses(request, patient_id):
     diagnosesList = Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id')

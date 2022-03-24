@@ -24,7 +24,9 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     url(r'^settings/', include('django_mfa.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('<int:patient_id>/medical_records', views.medical_records, name='medical_records'),
+    #path('medical_records/', views.MedicalRecordsListView.as_view(), name='MedicalRecordsListView'),
+    path('patient_portal/medical_records', views.medical_records, name='medical_records'),
+    path('patient_portal/view_record', views.view_record, name='view_record'),
     path('<int:patient_id>/diagnoses', views.diagnoses, name='diagnoses'),
     path('<int:patient_id>/lab_tests', views.lab_tests, name='lab_tests'),
     path('<int:patient_id>/prescriptions', views.prescriptions, name='lab_tests')
