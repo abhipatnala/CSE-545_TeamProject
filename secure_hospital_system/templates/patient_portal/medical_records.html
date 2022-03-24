@@ -4,6 +4,7 @@
 
 <div class="container">
   <h1>Medical Records</h1>
+  <p>Patient Name: {{patient_name}}</p>
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#diagnoses">Diagnoses</a></li>
     <li><a data-toggle="tab" href="#labtestreports">Lab Tests Reports</a></li>
@@ -26,6 +27,7 @@
     </div>  
     <div id="paymentsandtransactions" class="tab-pane fade">
       <h3>Payments & Transactions</h3>
+      {% render_table paymentsList %}
       <p></p>
     </div>
   </div>

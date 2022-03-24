@@ -6,9 +6,8 @@ from django.template import loader
 from django.core import serializers
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Patient, Records
-from .tables import RecordsTable
-from django.views import generic
+from .models import Patient, Records, payments
+from .tables import PatientDetails, RecordsTable
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
@@ -24,18 +23,23 @@ def medical_records(request):
         patient_id = request.POST['patient_id']
     elif request.method == 'GET':
         patient_id = request.GET['patient_id']
-    #patientDetails = Patient.objects.filter(patient_id=patient_id)
+    patientDetails = PatientDetails(Patient.objects.filter(patient_id=patient_id)).as_values()
 
 
     diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id'))
     labTestReportsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='L').order_by('records_id'))
     prescriptionsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='P').order_by('records_id'))
 
+    paymentsList = payments.objects.filter(patient_id=patient_id).order_by('patient_id')
+    paymentsJson = serializers.serialize("json", paymentsList)
+
     template = loader.get_template('patient_portal/medical_records.html')
     context = {
+        'patient_name' : patientDetails[0]['Patient_Name'],
         'diagnosesTable' : diagnosesTable,
         'labTestReportsTable' : labTestReportsTable,
         'prescriptionsTable' : prescriptionsTable,
+        'paymentsList': paymentsList,
     }
     return HttpResponse(template.render(context, request))
     #return render(request, 'patient_portal/medical_records.html', {})
@@ -88,3 +92,16 @@ def prescriptions(request, patient_id):
     else:
         return HttpResponse(prescriptionsJson)
         #return HttpResponse("There are no prescriptions currently for you...")
+
+def transaction(request, patient_id):
+    paymentsList = payments.objects.filter(patient_id=patient_id).order_by('patient_id')
+    paymentsListCount = len(paymentsList)
+    paymentsJson = serializers.serialize("json", paymentsList)
+    #return HttpResponse("%d"%(paymentsListCount))
+    #return HttpResponse("Hello %s, this is the diagnosis section of the Patient Portal. There are %d diagnosis available for you. The Diagnosis is provided by Doctor" % (patient_id, paymentsListCount))
+    if(paymentsListCount > 0):
+        return HttpResponse(paymentsJson)
+        #return HttpResponse(type(diagnosesList))
+        #return HttpResponse("Hello %s, this is the diagnoses section of the Patient Portal. There are %d diagnoses available for you. The first diagnosis is provided by Doctor %s" % (patient_id, diagnosesListCount, diagnosesList[0].doctor_id_id))
+    else:
+        return HttpResponse("There are no payments currently for you...")

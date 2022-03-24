@@ -1,7 +1,7 @@
 from operator import mod
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from django.conf import settings
 
 class User(models.Model):
     user_id = models.BigAutoField(primary_key=True)
@@ -47,3 +47,22 @@ class Records(models.Model):
     created_date = models.DateTimeField(null=True)
     last_modified_date = models.DateTimeField(null=True)
     document_type = models.CharField(max_length=1, choices=DocumentTypes.choices)
+
+class Doctor_availability_booked(models.Model):
+     booking_id = models.IntegerField(primary_key=True)
+     patient_id = models.IntegerField()
+     doctor_id = models.IntegerField()
+     appointment_date = models.DateField()
+     appointment_start_time = models.TimeField()
+     appointment_end_time = models.TimeField()
+     booking_request_timestamp = models.DateTimeField(auto_now_add=True)
+     user_id_approver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=0)
+     status = models.CharField(max_length=30, default='Pending')
+
+class payments(models.Model):
+     patient_id = models.BigAutoField(primary_key=True)
+     admit_fee = models.IntegerField()
+     discharge_fee = models.IntegerField()
+     supplies_fee = models.IntegerField()
+     consultation_fee = models.IntegerField()
+     overall_payment = models.IntegerField()
