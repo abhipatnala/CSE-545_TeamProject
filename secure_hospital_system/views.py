@@ -7,7 +7,7 @@ from django.core import serializers
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Patient, Records
-from .tables import RecordsTable
+from .tables import PatientDetails, RecordsTable
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 
@@ -24,7 +24,7 @@ def medical_records(request):
         patient_id = request.POST['patient_id']
     elif request.method == 'GET':
         patient_id = request.GET['patient_id']
-    #patientDetails = Patient.objects.filter(patient_id=patient_id)
+    patientDetails = PatientDetails(Patient.objects.filter(patient_id=patient_id)).as_values()
 
 
     diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id'))
@@ -33,6 +33,7 @@ def medical_records(request):
 
     template = loader.get_template('patient_portal/medical_records.html')
     context = {
+        'patient_name' : patientDetails[0]['Patient_Name'],
         'diagnosesTable' : diagnosesTable,
         'labTestReportsTable' : labTestReportsTable,
         'prescriptionsTable' : prescriptionsTable,
