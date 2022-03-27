@@ -49,9 +49,9 @@ class Records(models.Model):
     document_type = models.CharField(max_length=1, choices=DocumentTypes.choices)
 
 class Doctor_availability_booked(models.Model):
-     booking_id = models.IntegerField(primary_key=True)
-     patient_id = models.IntegerField()
-     doctor_id = models.IntegerField()
+     booking_id = models.BigAutoField(primary_key=True)
+     patient_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
+     doctor_id = models.ForeignKey(Doctor, on_delete=models.CASCADE)
      appointment_date = models.DateField()
      appointment_start_time = models.TimeField()
      appointment_end_time = models.TimeField()
@@ -59,8 +59,10 @@ class Doctor_availability_booked(models.Model):
      user_id_approver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=0)
      status = models.CharField(max_length=30, default='Pending')
 
+
 class payments(models.Model):
-     patient_id = models.BigAutoField(primary_key=True)
+     payemts_id = models.BigAutoField(primary_key=True)
+     patient_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
      admit_fee = models.IntegerField()
      discharge_fee = models.IntegerField()
      supplies_fee = models.IntegerField()

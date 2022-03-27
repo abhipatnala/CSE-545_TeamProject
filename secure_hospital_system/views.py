@@ -6,8 +6,8 @@ from django.template import loader
 from django.core import serializers
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Patient, Records, payments
-from .tables import PatientDetails, RecordsTable
+from .models import Doctor_availability_booked, Patient, Records, payments
+from .tables import DoctorView, PatientDetails, RecordsTable
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
@@ -23,7 +23,7 @@ def medical_records(request):
         patient_id = request.POST['patient_id']
     elif request.method == 'GET':
         patient_id = request.GET['patient_id']
-    patientDetails = PatientDetails(Patient.objects.filter(patient_id=patient_id)).as_values()
+    #patientDetails = PatientDetails(Patient.objects.filter(patient_id=patient_id)).as_values()
 
 
     diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id'))
@@ -35,7 +35,7 @@ def medical_records(request):
 
     template = loader.get_template('patient_portal/medical_records.html')
     context = {
-        'patient_name' : patientDetails[0]['Patient_Name'],
+        #'patient_name' : patientDetails[0]['Patient_Name'],
         'diagnosesTable' : diagnosesTable,
         'labTestReportsTable' : labTestReportsTable,
         'prescriptionsTable' : prescriptionsTable,
@@ -105,3 +105,15 @@ def transaction(request, patient_id):
         #return HttpResponse("Hello %s, this is the diagnoses section of the Patient Portal. There are %d diagnoses available for you. The first diagnosis is provided by Doctor %s" % (patient_id, diagnosesListCount, diagnosesList[0].doctor_id_id))
     else:
         return HttpResponse("There are no payments currently for you...")
+
+
+def doctorView(request):
+    doc_id=1
+    if request.method == "POST":
+        doc_id = request.POST['docid']
+    doctorsTable = DoctorView(Doctor_availability_booked.objects.filter(doctor_id=doc_id).filter(status='Approved').order_by('appointment_date'))
+    template = loader.get_template('doctor_worklist.html')
+    context = {
+        'doctorsTable' : doctorsTable,
+    }
+    return HttpResponse(template.render(context, request))

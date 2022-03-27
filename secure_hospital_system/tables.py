@@ -2,7 +2,7 @@ from dataclasses import fields
 from pyexpat import model
 from tabnanny import verbose
 import django_tables2 as tables
-from .models import Patient, Records
+from .models import Doctor_availability_booked, Patient, Records
 
 class RecordsTable(tables.Table):
     class Meta:
@@ -21,3 +21,10 @@ class PatientDetails(tables.Table):
     Patient_ID = tables.Column(accessor='patient_id')
     Patient_Name = tables.Column(accessor='patient.user.user_name', verbose_name='Patient Name')
     Patient_DOB = tables.Column(accessor='patient.patient_dob', verbose_name='PatientDob')
+
+class DoctorView(tables.Table):
+    class MetaView:
+        model = Doctor_availability_booked
+        fields = ['patient_name','doctor_name','appointment_date','appointment_start_time','appointment_end_time','status']
+    patient_Name = tables.Column(accessor='patient_id.user.user_name', verbose_name="patient name")
+    doctor_name = tables.Column(accessor='doctor_id.user.user_name', verbose_name="doctor name")
