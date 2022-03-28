@@ -112,7 +112,7 @@ def doctorView(request):
     if request.method == "POST":
         doc_id = request.POST['docid']
     doctorsTable = DoctorView(Doctor_availability_booked.objects.filter(doctor_id=doc_id).filter(status='Approved').order_by('appointment_date'))
-    template = loader.get_template('doctor_worklist.html')
+    template = loader.get_template('doctor_portal/worklist.html')
     context = {
         'doctorsTable' : doctorsTable,
     }
