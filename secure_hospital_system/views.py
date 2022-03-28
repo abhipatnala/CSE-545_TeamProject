@@ -6,7 +6,7 @@ from django.template import loader
 from django.core import serializers
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Doctor_availability_booked, Patient, Records, payments
+from .models import Doctor_availability_booked, Patient, Records, Payments
 from .tables import DoctorView, PatientDetails, RecordsTable
 from django.views.decorators.csrf import csrf_exempt
 
@@ -30,7 +30,7 @@ def medical_records(request):
     labTestReportsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='L').order_by('records_id'))
     prescriptionsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='P').order_by('records_id'))
 
-    paymentsList = payments.objects.filter(patient_id=patient_id).order_by('patient_id')
+    paymentsList = Payments.objects.filter(patient_id=patient_id).order_by('patient_id')
     paymentsJson = serializers.serialize("json", paymentsList)
 
     template = loader.get_template('patient_portal/medical_records.html')
@@ -94,7 +94,7 @@ def prescriptions(request, patient_id):
         #return HttpResponse("There are no prescriptions currently for you...")
 
 def transaction(request, patient_id):
-    paymentsList = payments.objects.filter(patient_id=patient_id).order_by('patient_id')
+    paymentsList = Payments.objects.filter(patient_id=patient_id).order_by('patient_id')
     paymentsListCount = len(paymentsList)
     paymentsJson = serializers.serialize("json", paymentsList)
     #return HttpResponse("%d"%(paymentsListCount))
@@ -117,3 +117,19 @@ def doctorView(request):
         'doctorsTable' : doctorsTable,
     }
     return HttpResponse(template.render(context, request))
+
+@csrf_exempt
+def view_appointment(request):
+    #patient_id = request.POST['patient_id']
+    appointment_id = request.POST['appointmentid']
+    #record = Records.objects.filter(records_id=record_id).values('records_id', 'document', 'document_type')
+    #recordJSON = serializers.serialize("json", record)
+    #recordString = record[0]['document']
+    
+    #template = loader.get_template('patient_portal/record.html')
+    #context = {
+    #    'record_id' : record_id,
+    #    'document_type' : record[0]['document_type'],
+    #    'document' : recordString,
+    #}
+    return HttpResponse("Appointment Details")

@@ -60,7 +60,7 @@ class Doctor_availability_booked(models.Model):
      status = models.CharField(max_length=30, default='Pending')
 
 
-class payments(models.Model):
+class Payments(models.Model):
      payemts_id = models.BigAutoField(primary_key=True)
      patient_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
      admit_fee = models.IntegerField()

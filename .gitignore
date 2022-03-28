@@ -1,2 +1,5 @@
+.idea
 db.sqlite3
 venv
+secure_hospital_system/migrations
+secure_hospital_system/__pycache__
