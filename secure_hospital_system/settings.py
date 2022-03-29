@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'secure_hospital_system',
+    'django_tables2',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +64,7 @@ ROOT_URLCONF = 'secure_hospital_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'secure_hospital_system/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,8 +85,12 @@ WSGI_APPLICATION = 'secure_hospital_system.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'CSE545_Group1',
+        'USER': 'postgres',
+        'PASSWORD': 'rinku12345',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 
@@ -127,7 +133,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
@@ -135,10 +141,22 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
 ]
 
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
+SECRET_KEY="1SVnU2FwIRetsvdkDn+y/2UpyhfsumGgPuQP6rlJo9Y="
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 django_on_heroku.settings(locals())
 
+#Email Settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'shsgrp1@gmail.com'
+EMAIL_HOST_PASSWORD = 'security12345'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
