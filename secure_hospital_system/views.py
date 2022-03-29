@@ -7,7 +7,7 @@ from django.core import serializers
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Doctor_availability_booked, Patient, Records, Payments
-from .tables import DoctorView, PatientDetails, RecordsTable
+from .tables import Appointments, DoctorView, PatientDetails, RecordsTable
 from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
@@ -25,7 +25,7 @@ def medical_records(request):
         patient_id = request.GET['patient_id']
     #patientDetails = PatientDetails(Patient.objects.filter(patient_id=patient_id)).as_values()
 
-
+    appointmentsTable = Appointments(Doctor_availability_booked.objects.filter(patient_id=patient_id).order_by('appointment_date'))
     diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id'))
     labTestReportsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='L').order_by('records_id'))
     prescriptionsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='P').order_by('records_id'))
@@ -36,6 +36,7 @@ def medical_records(request):
     template = loader.get_template('patient_portal/medical_records.html')
     context = {
         #'patient_name' : patientDetails[0]['Patient_Name'],
+        'appointmentsTable' : appointmentsTable,
         'diagnosesTable' : diagnosesTable,
         'labTestReportsTable' : labTestReportsTable,
         'prescriptionsTable' : prescriptionsTable,
@@ -48,6 +49,7 @@ def medical_records(request):
 def view_record(request):
     #patient_id = request.POST['patient_id']
     record_id = request.POST['record_id']
+    user  = request.user
     record = Records.objects.filter(records_id=record_id).values('records_id', 'document', 'document_type')
     #recordJSON = serializers.serialize("json", record)
     recordString = record[0]['document']
@@ -57,6 +59,7 @@ def view_record(request):
         'record_id' : record_id,
         'document_type' : record[0]['document_type'],
         'document' : recordString,
+        'editAccess' : True,
     }
     return HttpResponse(template.render(context, request))
 
@@ -132,4 +135,9 @@ def view_appointment(request):
     #    'document_type' : record[0]['document_type'],
     #    'document' : recordString,
     #}
-    return HttpResponse("Appointment Details")
+    return HttpResponse("Appointment Details of  ")
+
+
+@csrf_exempt
+def edit_record(request):
+    return HttpResponse("Editing")

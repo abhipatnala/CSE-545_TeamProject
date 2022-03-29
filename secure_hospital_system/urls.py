@@ -26,6 +26,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     #path('medical_records/', views.MedicalRecordsListView.as_view(), name='MedicalRecordsListView'),
     path('patient_portal/medical_records', views.medical_records, name='medical_records'),
+    path('patient_portal/view_appointment', views.view_appointment, name='view_appointment'),
     path('patient_portal/view_record', views.view_record, name='view_record'),
     path('<int:patient_id>/diagnoses', views.diagnoses, name='diagnoses'),
     path('<int:patient_id>/lab_tests', views.lab_tests, name='lab_tests'),
@@ -33,4 +34,5 @@ urlpatterns = [
     path('<int:patient_id>/payments', views.transaction, name='transaction'),
     path('doctor_portal/worklist', views.doctorView,name='doctorView'),
     path('doctor_portal/view_appointment', views.view_appointment, name='view_appointment'),
+    path('patient_portal/edit_record', views.edit_record, name='edit_record'),
 ]

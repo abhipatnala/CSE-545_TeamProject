@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load django_tables2 %}
 
+
 {% block content %}
-    {% render_table doctorsTable %}
+    <div class="container">
+        <h1>Doctor's Worklist</h1>
+        {% render_table doctorsTable %}
+    </div>
 {% endblock content %}

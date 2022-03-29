@@ -6,14 +6,19 @@
   <h1>Medical Records</h1>
   <p>Patient Name: {{patient_name}}</p>
   <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#diagnoses">Diagnoses</a></li>
+    <li class="active"><a data-toggle="tab" href="#appointments">Appointments</a></li>
+    <li><a data-toggle="tab" href="#diagnoses">Diagnoses</a></li>
     <li><a data-toggle="tab" href="#labtestreports">Lab Tests Reports</a></li>
     <li><a data-toggle="tab" href="#prescriptions">Prescriptions</a></li>
     <li><a data-toggle="tab" href="#paymentsandtransactions">Payments & Transactions</a></li>
   </ul>
 
   <div class="tab-content">
-    <div id="diagnoses" class="tab-pane fade in active">
+    <div id="appointments" class="tab-pane fade in active">
+      <h3>Appointments</h3>
+      {% render_table appointmentsTable %}
+    </div>
+    <div id="diagnoses" class="tab-pane fade fade">
       <h3>Diagnosis</h3>
       {% render_table diagnosesTable %}
     </div>

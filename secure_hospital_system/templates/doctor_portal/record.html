@@ -3,6 +3,7 @@
 
 <div class="container" style="margin-left:25%; margin-right:25%; margin-top:5%; background-color: powderblue; width: 40%; height: 250px;">
     <!-- {{ record_id }}<br>{{ document }} -->
+    {{ user }}
     <h1><br>
         {% if document_type == 'D' %}
             Diagnosis 
@@ -13,10 +14,12 @@
         {% endif %}
     </h1><br>
     <p>{{ document }}</p>
-    {% if editAccess %}
-    <a href="{% url 'edit_record' %}" class="btn btn-info btn-lg" style="position: inherit; right: 5%; bottom: 5%;" hidden>
+    <a href="{% url 'edit_record' %}" class="btn btn-info btn-lg" style="position: inherit; right: 5%; bottom: 5%;">
         <span class="glyphicon glyphicon-edit"></span> Edit
       </a>
-    {% endif %}
+
 </div>
 {% endblock %}
+
+
+

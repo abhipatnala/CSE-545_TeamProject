@@ -43,7 +43,7 @@ class Records(models.Model):
         LabReport = 'L', _('LabReport')
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    document = models.JSONField(null=True)
+    document = models.TextField(max_length=1000, null=True)
     created_date = models.DateTimeField(null=True)
     last_modified_date = models.DateTimeField(null=True)
     document_type = models.CharField(max_length=1, choices=DocumentTypes.choices)
