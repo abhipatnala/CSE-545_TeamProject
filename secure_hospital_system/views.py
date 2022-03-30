@@ -29,7 +29,6 @@ def medical_records(request):
     diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id'))
     labTestReportsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='L').order_by('records_id'))
     prescriptionsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='P').order_by('records_id'))
-
     paymentsList = Payments.objects.filter(patient_id=patient_id).order_by('patient_id')
     paymentsJson = serializers.serialize("json", paymentsList)
 
@@ -39,7 +38,7 @@ def medical_records(request):
         'diagnosesTable' : diagnosesTable,
         'labTestReportsTable' : labTestReportsTable,
         'prescriptionsTable' : prescriptionsTable,
-        'paymentsList': paymentsList,
+        'paymentsList' : paymentsList,
     }
     return HttpResponse(template.render(context, request))
     #return render(request, 'patient_portal/medical_records.html', {})
@@ -106,6 +105,28 @@ def transaction(request, patient_id):
     else:
         return HttpResponse("There are no payments currently for you...")
 
+def doc_portal(request):
+    patient_id = 1
+    patient_address=12
+    if request.method == 'POST':
+        patient_id = request.POST['patient_id']
+    #if request.method == 'POST':
+        #patient_address=request.POST['address']
+    patient_address = Patient.objects.filter(patient_id=patient_id).order_by('patient_id').values('address')
+    patient_address = patient_address[0]['address']
+    patient_zipcode = Patient.objects.filter(patient_id=patient_id).order_by('patient_id').values('zipcode')
+    patient_zipcode = patient_zipcode[0]['zipcode']
+    patient_DOB = Patient.objects.filter(patient_id=patient_id).order_by('patient_id').values('patient_dob')
+    patient_DOB = patient_DOB[0]['patient_dob']
+    patientTable = Patient.objects.filter(patient_id=patient_id).order_by('patient_id')
+    patientJson = serializers.serialize("json", patientTable)
+    template = loader.get_template('doctor_portal/doctors_use.html')
+    context={
+        'patient_address': patient_address,
+        'patient_zipcode': patient_zipcode,
+        'patient_DOB': patient_DOB,
+    }
+    return HttpResponse(template.render(context,request))
 
 def doctorView(request):
     doc_id=1
