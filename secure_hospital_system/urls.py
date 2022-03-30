@@ -33,6 +33,7 @@ urlpatterns = [
     path('<int:patient_id>/prescriptions', views.prescriptions, name='lab_tests'),
     path('<int:patient_id>/payments', views.transaction, name='transaction'),
     path('doctor_portal/worklist', views.doctorView,name='doctorView'),
-    path('doctor_portal/view_appointment', views.view_appointment, name='view_appointment'),
+    path('doctor_portal/view_appointment_doctor', views.view_appointment_doctor, name='view_appointment_doctor'),
     path('patient_portal/edit_record', views.edit_record, name='edit_record'),
+    path('patient_portal/save_record', views.save_record, name='save_record'),
 ]

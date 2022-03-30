@@ -9,6 +9,10 @@ from django.http import HttpResponse
 from .models import Doctor_availability_booked, Patient, Records, Payments
 from .tables import Appointments, DoctorView, PatientDetails, RecordsTable
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+
+
+
 
 # Create your views here.
 
@@ -49,7 +53,7 @@ def medical_records(request):
 def view_record(request):
     #patient_id = request.POST['patient_id']
     record_id = request.POST['record_id']
-    user  = request.user
+    #user  = request.user
     record = Records.objects.filter(records_id=record_id).values('records_id', 'document', 'document_type')
     #recordJSON = serializers.serialize("json", record)
     recordString = record[0]['document']
@@ -140,4 +144,42 @@ def view_appointment(request):
 
 @csrf_exempt
 def edit_record(request):
-    return HttpResponse("Editing")
+    record_id = request.POST['record_id']
+    document = request.POST['document']
+    document_type = request.POST['document_type']
+    context = {
+        'record_id' : record_id,
+        'document' : document,
+        'document_type' : document_type,
+    }
+    template = loader.get_template('patient_portal/editRecords.html')
+    return HttpResponse(template.render(context, request))
+
+
+@csrf_exempt
+def save_record(request):
+    record_id = request.POST['record_id']
+    document = request.POST['editeddocument']
+    Records.objects.filter(records_id=record_id).update(document=document)
+    return medical_records(request)
+
+@csrf_exempt
+def view_appointment_doctor(request):
+    patient_id = request.POST['patient_id']
+    appointment_id = request.POST['appointment_id']
+    patient_address = Patient.objects.filter(patient_id=patient_id).order_by('patient_id').values('address')
+    patient_address = patient_address[0]['address']
+    patient_zipcode = Patient.objects.filter(patient_id=patient_id).order_by('patient_id').values('zipcode')
+    patient_zipcode = patient_zipcode[0]['zipcode']
+    patient_DOB = Patient.objects.filter(patient_id=patient_id).order_by('patient_id').values('patient_dob')
+    patient_DOB = patient_DOB[0]['patient_dob']
+    patientTable = Patient.objects.filter(patient_id=patient_id).order_by('patient_id')
+    patientJson = serializers.serialize("json", patientTable)
+    template = loader.get_template('doctor_portal/appointment_view_doctor.html')
+    context={
+        'patient_id' : patient_id,
+        'patient_address': patient_address,
+        'patient_zipcode': patient_zipcode,
+        'patient_DOB': patient_DOB,
+    }
+    return HttpResponse(template.render(context,request))

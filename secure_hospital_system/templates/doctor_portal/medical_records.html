@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% block content %}
+
+<div class="container">
+  <h1>Medical Records</h1>
+  <p>Patient Name: {{patient_name}}</p>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#appointments">Appointments</a></li>
+    <li><a data-toggle="tab" href="#diagnoses">Diagnoses</a></li>
+    <li><a data-toggle="tab" href="#labtestreports">Lab Tests Reports</a></li>
+    <li><a data-toggle="tab" href="#prescriptions">Prescriptions</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="appointments" class="tab-pane fade in active">
+      <h3>Appointments</h3>
+      {% render_table appointmentsTable %}
+    </div>
+    <div id="diagnoses" class="tab-pane fade fade">
+      <h3>Diagnosis</h3>
+      {% render_table diagnosesTable %}
+    </div>
+    <div id="labtestreports" class="tab-pane fade">
+      <h3>Lab Test Reports</h3>
+      {% render_table labTestReportsTable %}
+    </div>
+    <div id="prescriptions" class="tab-pane fade">
+      <h3>Prescriptions</h3>
+      {% render_table prescriptionsTable %}
+    </div>
+  </div>
+</div>
+{% endblock %}

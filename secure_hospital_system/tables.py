@@ -26,7 +26,7 @@ class RecordsTable(tables.Table):
     Records_id = tables.Column(accessor='records_id')
     Doctor_Name = tables.Column(accessor='doctor.user.user_name', verbose_name="Doctor Name")
     Patient_Name = tables.Column(accessor='patient.user.user_name', verbose_name="Patient Name")
-    ViewDiagnosis = tables.TemplateColumn(template_name='patient_portal/viewRecords.html', verbose_name="Document")
+    ViewDiagnosis = tables.TemplateColumn(template_name='patient_portal/viewRecords.html', verbose_name="Document", extra_context={'record_id': Records_id})
     Last_Modified = tables.Column(accessor='last_modified_date')
 
 
