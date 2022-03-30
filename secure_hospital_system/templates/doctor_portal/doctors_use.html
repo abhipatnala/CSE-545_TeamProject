@@ -58,7 +58,7 @@
             <!-- Modal Header -->
             <div class="modal-header" id="modal-header">
                 <h4 class="modal-title" id="modal-title">
-                  Create a Diagnosis
+                    Create Diagnoses
                 </h4>
                 <button type="button" class="close"
                         data-dismiss="modal">
@@ -77,8 +77,58 @@
         </div>
     </div>
 </div>
-<button class="button button2">Create Lab Tests</button>
-<button class="button button1">Create Prescription</button>
+<button data-toggle="modal" class="button button2" data-target="#labtests-modal">Create Lab Tests</button>
+<div class="modal fade" id="labtests-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header" id="modal-header">
+                <h4 class="modal-title" id="modal-title">
+                    Create Lab Tests
+                </h4>
+                <button type="button" class="close"
+                        data-dismiss="modal">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- form here -->
+                <form action="create_Labtests" method="post">
+                    <!--<label for="pwd">Diagnosis</label>-->
+                    <input type="text" id="labtests_string" placeholder="Enter the Lab Tests" required><br><br>
+                    <button class="btn btn-info" href="#" ><span class="glyphicon glyphicon-save"></span>Save</button>
+                    <input type="hidden" name="patient_id" value="{{1}}">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<button data-toggle="modal" class="button button3" data-target="#prescriptions-modal">Create Prescriptions</button>
+<div class="modal fade" id="prescriptions-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header" id="modal-header">
+                <h4 class="modal-title" id="modal-title">
+                    Create Prescriptions
+                </h4>
+                <button type="button" class="close"
+                        data-dismiss="modal">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- form here -->
+                <form action="create_prescriptions" method="post">
+                    <!--<label for="pwd">Diagnosis</label>-->
+                    <input type="text" id="prescription_string" placeholder="Enter Prescriptions" required><br><br>
+                    <button class="btn btn-info" href="#" ><span class="glyphicon glyphicon-save"></span>Save</button>
+                    <input type="hidden" name="patient_id" value="{{1}}">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <button class="button button1">View Patient History</button>
 </body>
 </html>
