@@ -1,13 +1,65 @@
-<!-- templates/registration/login.html -->
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+ <title>Real Heroes Login</title>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+ <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<style>
+    .logo {
+        font-size: 100px;
+    }
+    body{padding-top:200px;}
+    #a
+{
+position:absolute;
+top:2px;
+left:20%;
+}
+</style>
+</head>
+<body>
+    <center>
+    <div class="container-fluid">
+        <img id="a"  class="img-responsive" src="{%static 'pics/hlogo.jpg' %}" alt="" title="" height: 100> 
+       </div>
+     </center>
+     {% if form.errors %}
+     <p>Your username and password didn't match. Please try again.</p>
+     {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Please sign in</h3>
+                     </div>
+                     <div class="panel-body">
+                       <form method="post" action="{% url 'login' %}" accept-charset="UTF-8" role="form">
+                         {% csrf_token %}
+                         <fieldset>
+                           <table>
+                             <tr>
+                               <td> {{ form.username.label_tag }}</td>
+                               <td> {{ form.username }} </td>
+                             </tr>
+                             <tr>
+                               <td> {{ form.password.label_tag }} </td>
+                               <td> {{ form.password }}</td>
+                             </tr>
+                           </table>
+                           <input  class="btn btn-lg btn-success btn-block" type="submit" value="login">
+                           <input type="hidden" name="next" value="{{ next }}" />
+                        </fieldset>
+                          </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
 
-{% block title %}Login{% endblock %}
-
-{% block content %}
-<h2>Log In</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
-</form>
-{% endblock %}
+    </body>
+</html>

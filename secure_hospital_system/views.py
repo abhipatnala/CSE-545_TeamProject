@@ -1,4 +1,4 @@
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.mail import send_mail
@@ -10,30 +10,27 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 from xml.dom.minidom import Document
 from django.db.models import Subquery
-import random   
+import random
 import string
 from dateutil import parser
 from datetime import date
 from .filters import *
 from django.contrib.messages import constants as messages
 from django.shortcuts import redirect
-@csrf_exempt
-
-def getRoleBasedMenus(user_id):
-    user = SHSUser.objects.filter(id = user_id)
-    role = user[0].role_id
-    role_name =''
-    if role!=NULL:
-        role_name = role.role_name
-    menuList = Menu_Mapping.objects.filter(role_id = role.role_id)
-    context = {
-        'role_name' : role_name,
-        'menuList' : menuList,
-    }
-    return context
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from .helpers import getRoleBasedMenus
 
 def home(request):
-    return render(request, 'HOME.html') 
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            return redirect(to=reverse('admin:index'))
+        else:
+            context = getRoleBasedMenus(request.user.id)
+            return render(request, "Portal.html", context)
+            # return redirect(portal(request))
+    else:
+        return render(request, 'home.html') 
 
 def aboutUs(request):
     return render(request, 'ABOUT_US.html') 
@@ -72,9 +69,6 @@ def sendContactUsEmail(request):
     )
 	return render(request,'sentmail.html')
 
-def login(request):
-    return render(request, 'login.html') 
-
 def bookAppointment(request):
 	doctorid =1
 	if request.method == 'POST':
@@ -89,10 +83,7 @@ def appointmentRequests(request):
     return render(request, 'appointmentRequests.html') 
 
 def appointments(request):
-    user_id = 1
-    if request.method == 'POST':
-        user_id = request.POST['user_id']
-    context1 = getRoleBasedMenus(user_id)
+    context1 = getRoleBasedMenus(request.user.id)
     patient_id =1
     #patient_id = Patient.objects.filter(patient_user = user_id)
     upcomingAppointments = Doctor_availability_booked.objects.filter(patient_id=patient_id)
@@ -109,17 +100,6 @@ def appointments(request):
 	}
     context.update(context1)
     return HttpResponse(template.render(context, request))
-
-def portal(request):
-    user_id = 1
-    if request.method == 'POST':
-        user_id = request.POST['user_id']
-    context = getRoleBasedMenus(user_id)
-    template = loader.get_template('Portal.html')
-    return HttpResponse(template.render(context, request))
-    #return render(request, 'Portal.html') 
-
-
 
 
 def appointmentsRetrieval(request):
@@ -444,13 +424,9 @@ def patientsViewWithFilter(request):
 
 
 def medical_records(request):
-    patient_id = 1
-    user_id = 1
-    if request.method == 'POST':
-        patient_id = request.POST['patient_id']
-        user_id = request.POST['user_id']
+    patient_id = request.POST['patient_id']
 
-    context1 = getRoleBasedMenus(user_id)
+    context1 = getRoleBasedMenus(patient_id)
 
     patientDetails = PatientDetails(Patient.objects.filter(patient_id=patient_id)).as_values()
     diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id'))
@@ -540,6 +516,6 @@ def insuranceLoginRecords(request):
 	return render(request, 'insuranceApproverGrid.html', {'filter': filter, 'insuranceRequests': insuranceRequests})
 
 def view_patient(request):
-	context = getRoleBasedMenus(1)
-	template = loader.get_template('view_patient.html')
+	context = getRoleBasedMenus(request.user.id)
+	template = loader.get_template('viewPatient.html')
 	return HttpResponse(template.render(context, request))
