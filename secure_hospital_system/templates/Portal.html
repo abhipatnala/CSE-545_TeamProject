@@ -106,7 +106,25 @@ h2{color:#0b56a8;}
   margin: 0 13px 0 0;
   font-size: 19px;
 }
+.divPatientInfo {
+  padding-top: 10px;
+  padding-right: 50px;
+  padding-bottom: 15px;
+  padding-left: 25px;
+  margin-left: 150px;
+  margin-bottom: 10px;
+  border-right: 100px
+}
 
+.divGuardianInfo {
+  padding-top: 10px;
+  padding-right: 50px;
+  padding-bottom: 15px;
+  padding-left: 25px;
+  margin-left: 150px;
+  margin-bottom: 10px;
+  border-right: 100px
+}
   </style>
   </head>
   <body>
@@ -156,9 +174,10 @@ h2{color:#0b56a8;}
 	</nav>
 <br>
 </div>
- <h4 class="text-capitalize text-center" ><b><i>
+ <h4 class="text-capitalize text-center"><b><i>
  Welcome to the {{role_name}} Portal!</i><b>
 </h4>
+<br>
 {% block content %}
 {% endblock  %}  
 <script type="text/javascript">
