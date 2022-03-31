@@ -29,6 +29,7 @@
     <div id="paymentsandtransactions" class="tab-pane fade">
       <h3>Payments & Transactions</h3>
       <form action = '/generateBills' method="get">
+        <input type="hidden" name="patient_id" value='{{patient_id}}'>
         <button class="btn btn-primary" type="submit">Generate Bills</button>
     </form>
       {% render_table paymentsList %}
