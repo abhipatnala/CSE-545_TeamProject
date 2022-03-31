@@ -15,7 +15,7 @@ import os
 
 import django_on_heroku
 
-
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'secure_hospital_system',
     'django_tables2',
+    'django_filters',
+    'bootstrap3'
 ]
 
 MIDDLEWARE = [
@@ -160,3 +162,11 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
 DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
+
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-secondary',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+}
