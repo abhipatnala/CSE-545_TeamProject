@@ -57,6 +57,7 @@
       <form action="/newBillGenerated" class="row g-3" method = "post" enctype="multipart/form-data>
       <div class="container mt-5_1" id="div2">
         <h1 align=center>Bill Information</h1>
+          <input type="hidden" name="patient_id" value='{{patient_id}}'>
           <div class="col-md-6">
             <label for="admitFee" class="form-label">Admit Fee</label>
             <input name="admitFee" type="text" class="form-control" id="admitFee" required>
