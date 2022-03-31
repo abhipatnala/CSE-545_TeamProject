@@ -1,5 +1,5 @@
 
-<form action="mail" method="get">
-    <button type="submit" href="{% url 'appointmentconf' %}" formaction="mail">Approve</button>
-    <button type="submit" href="{% url 'appointmentconf'%}" formaction="mail">Deny</button>
-  </form>
+<form action="mail" method="post">
+  <button type="submit" href="{% url 'appointmentconf'%}" formaction="appointmentApprovedMail">Approve</button>
+  <button type="submit" href="{% url 'appointmentconf'%}" formaction="appointmentDeniedMail">Deny</button>
+</form>

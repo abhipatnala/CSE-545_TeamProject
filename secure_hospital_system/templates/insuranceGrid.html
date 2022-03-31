@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load django_tables2 %}
+{% load bootstrap3 %}
+{% if filter %}
+    <form action="insuranceLoginRecords" method="get" class="form form-inline">
+        {% bootstrap_form filter.form layout='inline' %}
+        {% bootstrap_button 'filter' %}
+    </form>
+{% endif %}
+{% render_table table 'django_tables2/bootstrap.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col">
+        <div class="card card-body">
+        <form method="get">
+               {{filter.form}}
+               <button class="btn btn-primary" type="submit">Search</button>
+               <table class="table table-sm">
+                <tr>
+                    <th>Claim Status</th>
+                    <th>Claim Raised Date</th>
+                    <th>Patient Name</th>
+                    <th>Payment Amount</th>
+                </tr>
+                {% for insuranceRequest in insuranceRequests %}
+                <tr>
+                    <td>{{insuranceRequest.claim_status}}</td>
+                    <td>{{insuranceRequest.claim_raised_date}}</td>
+                    <td>{{insuranceRequest.patient_id.phone_number}}</td>
+                    <td>{{insuranceRequest.payment_id.admit_fee}}</td>
+                </tr>
+                {% endfor %}
+                </table>
+        </form>
+        </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,16 +5,178 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" type = "text/css" href="{%static 'css/styles.css' %}" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    .logo {
+      font-size: 100px;
+  }
+   .navbar {
+    margin-bottom: 0;
+    background-color: #31b2cf;
+    z-index: 9999;
+    border: 0;
+    font-size: 19px !important;
+    line-height: 1.42857143 !important;
+    letter-spacing: 2px;
+    border-radius: 0;
+    font-family:Centaur;
+}
+.dropdown-menu 
+{
+    border-color:white !important;
+    background-color: #31B2CF;
+ }
+.navbar li a, .navbar .navbar-brand {
+    color: #fff !important;
+}
+
+.navbar-nav li a:hover{
+  color: black !important;
+    background-color: #d6d6c2 !important;
+ }
+ .navbar-nav li.active a {
+    color: white !important;
+    background-color: #b30000 !important;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+    color: #3333ff !important;
+}
+.navbar.navbar-default {
+     position:fixed; top:50; left:0; z-index:1030;
+   }
+ .blogShort{ border-bottom:1px solid #ddd;}
+.add{background: #333; padding: 10%; height: 300px;}
+
+.nav-sidebar { 
+    width: 100%;
+    padding: 50px 0; 
+    border-right: 1px solid #ddd;
+}
+.nav-sidebar a {
+    color: #333;
+    -webkit-transition: all 0.08s linear;
+    -moz-transition: all 0.08s linear;
+    -o-transition: all 0.08s linear;
+    transition: all 0.08s linear;
+}
+.nav-sidebar .active a { 
+    cursor: default;
+    background-color: #31b2cf; 
+    color: black; 
+}
+.nav-sidebar .active a:hover {
+    background-color: #31b2cf;   
+}
+.nav-sidebar .text-overflow a,
+.nav-sidebar .text-overflow .media-body {
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis; 
+}
+  #wrap{
+background-image: -ms-linear-gradient(top, #FFFFFF 0%, #D3D8E8 100%);
+/* Mozilla Firefox */ 
+background-image: -moz-linear-gradient(top, #FFFFFF 0%, #D3D8E8 100%);
+/* Opera */ 
+background-image: -o-linear-gradient(top, #FFFFFF 0%, #D3D8E8 100%);
+/* Webkit (Safari/Chrome 10) */ 
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #D3D8E8));
+/* Webkit (Chrome 11+) */ 
+background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #D3D8E8 100%);
+/* W3C Markup, IE10 Release Preview */ 
+background-image: linear-gradient(to bottom, #FFFFFF 0%, #D3D8E8 100%);
+background-repeat: no-repeat;
+background-attachment: fixed;
+}
+legend{
+	color:#141823;
+	font-size:25px;
+	font-weight:bold;
+}
+.signup-btn {
+  background: #79bc64;
+  background-image: -webkit-linear-gradient(top, #79bc64, #578843);
+  background-image: -moz-linear-gradient(top, #79bc64, #578843);
+  background-image: -ms-linear-gradient(top, #79bc64, #578843);
+  background-image: -o-linear-gradient(top, #79bc64, #578843);
+  background-image: linear-gradient(to bottom, #79bc64, #578843);
+  -webkit-border-radius: 4;
+  -moz-border-radius: 4;
+  border-radius: 4px;
+  text-shadow: 0px 1px 0px #898a88;
+  -webkit-box-shadow: 0px 0px 0px #a4e388;
+  -moz-box-shadow: 0px 0px 0px #a4e388;
+  box-shadow: 0px 0px 0px #a4e388;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  border: solid #3b6e22  1px;
+  text-decoration: none;
+}
+
+.signup-btn:hover {
+  background: #79bc64;
+  background-image: -webkit-linear-gradient(top, #79bc64, #5e7056);
+  background-image: -moz-linear-gradient(top, #79bc64, #5e7056);
+  background-image: -ms-linear-gradient(top, #79bc64, #5e7056);
+  background-image: -o-linear-gradient(top, #79bc64, #5e7056);
+  background-image: linear-gradient(to bottom, #79bc64, #5e7056);
+  text-decoration: none;
+}
+.navbar-default .navbar-brand{
+		color:#fff;
+		font-size:30px;
+		font-weight:bold;
+	}
+.form .form-control { margin-bottom: 10px; }
+@media (min-width:768px) {
+	#home{
+		margin-top:50px;
+	}
+	#home .slogan{
+		color: #0e385f;
+		line-height: 29px;
+		font-weight:bold;
+	}
+}
+ #AvailableSlots{
+      height: 60px;
+      border: none;
+      overflow: hidden;
+    }
+    #AvailableSlots::-moz-focus-inner {
+      border: 0;
+    }
+    #AvailableSlots:focus {
+      outline: none;
+    }
+    #AvailableSlots option{
+      width: 80px;
+      font-size: 1.2em;
+      padding: 10px 0;
+      text-align: center;
+      margin-right: 20px;
+      display: inline-block;
+      cursor: pointer;
+      border:rgb(20, 103, 136) solid 1px;
+      border-radius: 5px;
+      color: rgb(20, 103, 136);
+    }
+h4
+{
+color:#E60000; }
+
+  </style>
   </head>
   <body>
-    <div class="container-fluid">
-      <img id="a"  class="img-responsive" src="{%static 'pics/hlogo.jpg' %}" alt="" title="" width="400" > 
-     </div>
-<br>
-<br>
+  <div class="container-fluid">
+ <img class="img-responsive" src="pics/hlogo.jpg" alt="" title="" width="400" > 
+</div>
 <nav class="navbar navbar-inverse ">
   <div class="container-fluid">
   <div class="navbar-header">
@@ -27,15 +188,16 @@
 	  </div>
 	   <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-<li ><a href="home">Home</a></li>
-    <li ><a href="aboutUs">About Us</a></li>
-<li ><a href="findDoc">Find A Doctor</a></li>
-	  <li><a href="contactUs">Contact Us</a></li>
+<li ><a href="HOME.html">Home</a></li>
+    <li ><a href="ABOUT_US.html">About Us</a></li>
+	<li ><a href="EVENTS.html">Events</a></li>   
+<li><a href="BIBLIOGRAPHY.html">Find A Doctor</a></li>
+	  <li><a href="CONTACT_US.html">Contact Us</a></li>
 	  </ul>
     <ul class="nav navbar-nav navbar-right">
-	<li class='active'><a href="bookAppointment"> Book An Appointment
+	<li  class='active' ><a href="login.html"> Book An Appointment
 	</a></li>
-      <li><a href="login" font-size= 20px><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      <li><a href="login.html" font-size= 20px><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
     </ul>
 	
 	</div>
@@ -43,7 +205,7 @@
 <div class="container" id="wrap">
 	  <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form action="r" method="post" accept-charset="utf-8" class="form" role="form">  
+            <form action="/onSubmitOfNewPatientsAppointmentDetails/" method="post" accept-charset="utf-8" class="form" role="form" enctype="multipart/form-data">  
 			<br> 
 			<legend><u>Book An Appointment With Us!</u></legend>
 			<br>
@@ -71,11 +233,11 @@
 					<div class="row">
                         <div class="col-xs-6 col-md-6">
 						<label for="emailInfo" class="form-label">E-mail</label>
-                            <input type="email"  class="form-control input-lg" id="emailInfo" required>
+                            <input type="email"  class="form-control input-lg" id="emailInfo" name = "emailInfo" required>
                                   </div>
                         <div class="col-xs-6 col-md-6">
 						    <label for="phoneNumber" class="form-label">Phone Number</label>
-            <input type="text" class="form-control input-lg" id="phoneNumber" >                        </div>
+            <input type="text" class="form-control input-lg" id="phoneNumber" name = "phoneNumber" >                        </div>
                     </div>
 	<label for="DOB" class="form-label">Date of Birth</label>
 	 <input type="date" id ="DOB" name="Age" value="" class="form-control input-lg" placeholder="Your DOB"  />
@@ -203,19 +365,19 @@
 		 <div class="row">
                         <div class="col-xs-6 col-md-6">
 						 <label for="firstname" class="form-label">First Name</label>
-                            <input type="text" name="ecfirstname" value="" class="form-control input-lg"/>                        </div>
+                            <input type="text" name="ecFirstname" value="" class="form-control input-lg"/>                        </div>
                         <div class="col-xs-6 col-md-6">
 						<label for="lastname" class="form-label">Last Name</label>
-                            <input type="text" name="lastname" value="" class="form-control input-lg"/>                        </div>
+                            <input type="text" name="ecLastname" value="" class="form-control input-lg"/>                        </div>
                     </div>
 					<div class="row">
                         <div class="col-xs-6 col-md-6">
 						<label for="emailInfo" class="form-label">E-mail</label>
-                            <input type="email"  class="form-control input-lg" id="emailInfo" required>
+                            <input type="email"  class="form-control input-lg" id="eccEmailInfo" name = "ecEmailInfo" required>
                                   </div>
                         <div class="col-xs-6 col-md-6">
 						    <label for="phoneNumber" class="form-label">Phone Number</label>
-            <input type="text" class="form-control input-lg" id="phoneNumber" >                        </div>
+            <input type="text" class="form-control input-lg" id="ecPhoneNumber" name ="ecPhoneNumber" >                        </div>
                     </div>
                     <br>
           <h4>Medical History</h4>
@@ -223,20 +385,20 @@
 		  <div class="row">
            
               <label for="allergies" class="form-label">Do you have any known Allergies?</label>
-              <textarea class="form-control" id="allergies" rows="3" ></textarea>
+              <textarea class="form-control" id="allergies" name = "allergies" rows="3" ></textarea>
          
 		 
             
               <label for="medications" class="form-label">Are you on any Medication? Please provide the details below.</label>
-              <textarea class="form-control" id="medications" rows="3" ></textarea>
+              <textarea class="form-control" id="medications" name = "medications" rows="3" ></textarea>
             
             
               <label for="medicalConditions" class="form-label">Do you have any pre existing medical conditions? If yes please provide the details.</label>
-              <textarea class="form-control" id="medicalConditions" rows="3" ></textarea>
+              <textarea class="form-control" id="medicalConditions" name="medicalConditions" rows="3" ></textarea>
 
            
               <label for="medicalInfo" class="form-label">Any other medical information we need to know about, please provide details below.</label>
-              <textarea class="form-control" id="medicalInfo" rows="3" ></textarea>
+              <textarea class="form-control" id="medicalInfo" name="medicalInfo" rows="3" ></textarea>
            
             &nbsp;
             &nbsp;
@@ -245,11 +407,11 @@
 			<h4 align=leftwards>Appointment Details</h4>
              <div class="row"
                 <label for="purposeOfvisit" class="form-label">What is the purpose of your visit? If applicable, the type of doctor you are requesting </label>
-                <textarea class="form-control" id="purposeOfvisit" rows="3" ></textarea>
+                <textarea class="form-control" id="purposeOfvisit" name = "purposeOfvisit" rows="3" ></textarea>
               
               
                 <label for="DocPref" class="form-label">Do you have a doctor preference?</label>
-                <select id="DocPref" class="form-control">
+                <select id="DocPref" name = "DocPref" class="form-control">
 				  <option>No</option>
                   <option>Yes</option>
                   
@@ -257,7 +419,7 @@
 			  
 			  
                 <label for="Doc" class="form-label">Do you have a doctor preference?</label>
-                <select id="Doc" class="form-control">
+                <select id="Doc" name = "Doc" class="form-control">
 				  <option>Dr A</option>
                   <option>Dr B</option>
                   
@@ -265,7 +427,7 @@
               
               
                 <label for="appointmentDate" class="form-label">Appointment Date (Blurred Based on Availability)</label>
-                <input type="date" class="form-control" id="appointmentDate" required>
+                <input type="date" name = "appointmentDate" class="form-control" id="appointmentDate" required>
              
               
                 <label for="AvailableSlots" class="form-label">Available Slots</label>
@@ -280,13 +442,10 @@
               &nbsp;
             </div>
         
-                    <br >
+                    <br />
               <span class="help-block">By clicking submit, you agree to our Terms and that you have read our Data Use Policy, including our Cookie Use.</span>
-                    <button name = "bookAptSubmit" class="btn btn-lg btn btn-outline-success btn-block signup-btn" type="submit">
+                    <button class="btn btn-lg btn-primary btn-block signup-btn" type="submit">
                         Submit</button>
-                        <br >
-                        <br >
-                        <br >
             </form>          
           
 </div>            
