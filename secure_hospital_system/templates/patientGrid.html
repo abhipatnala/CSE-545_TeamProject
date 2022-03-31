@@ -34,7 +34,12 @@
                 });
             });
             $('table tbody tr').click(function () {
-                window.location = "/medical_records/";
+                 var currentRow=$(this).closest("tr"); 
+         
+                var patient_id=currentRow.find("td:eq(0)").text();
+                
+                
+                window.location = "/medical_records/"+patient_id;
                 //on table row click event, pass back to django
             });
         });
