@@ -213,3 +213,4 @@ def transaction(request, patient_id):
         #return HttpResponse("Hello %s, this is the diagnoses section of the Patient Portal. There are %d diagnoses available for you. The first diagnosis is provided by Doctor %s" % (patient_id, diagnosesListCount, diagnosesList[0].doctor_id_id))
     else:
         return HttpResponse("There are no payments currently for you...")
+
