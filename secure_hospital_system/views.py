@@ -172,34 +172,36 @@ def newAppointmentBooking(request):
 
 def getPatientDetails(request):
 	if request.method == 'POST':
-		#patient_id= request.POST['patient_id']
+		patient_id= request.POST['patient_id']
 		#user_id = request.POST['user_id]
-		patient_id= 1
+		#patient_id= 13 
 
 		patientDetails = Patient.objects.filter(patient_id=patient_id)
 		return patientDetails
 
-@csrf_exempt		
+@csrf_exempt
 def newBillGenerated(request):
 	if request.method == 'POST':
-		#patient_id= request.POST['patient_id']
-		patient_id= 13
-		overall_payment= request.POST['overallPayment']
+		patient_id= request.POST['patient_id']
+		#patient_id= 13
+		#overall_payment= request.POST['overallPayment']
 		consultation_fee = request.POST['consultationFee']
 		supplies_fee = request.POST['suppliesFee']
 		admit_fee = request.POST['admitFee']
 		discharge_fee = request.POST['dischargeFee']
+
+		overall_payment = int(consultation_fee)+int(supplies_fee)+int(admit_fee)+int(discharge_fee)
 
 		payments = Payments(admit_fee=admit_fee, patient_id=(getPatientDetails(request))[0], discharge_fee = discharge_fee,
 			supplies_fee=supplies_fee, consultation_fee=consultation_fee, overall_payment = overall_payment, payment_generated_date = date.today(),
 			payment_status = 'PENDING', payment_update_date = date.today())
 		payments.save()
 	#return render(request,"medical_records.html")	
-	response = redirect('/medical_records/')
+	response = redirect('/medical_records/'+patient_id)
 	return response
 
 def generateBills(request):
-    return render(request, 'generateBills.html')
+	return render(request, 'generateBills.html',{'patient_id':request.GET['patient_id']}) 
 
 def getUserDetails(userId):
 	user = User.objects.filter(id=userId)
@@ -403,7 +405,8 @@ def patientsViewWithFilter(request):
 		# get the patients and then filter the patients
 		#patientDetails =                                                                                                                                           patientDetails.filter()
 	elif roleName == "labStaff":
-		recordsTable = (Records.objects.exclude(LabReport__isnull=True))
+		#recordsTable = (Records.objects.exclude(LabReport__isnull=True))
+		recordsTable = (Records.objects.filter(document_type="L"))
 		patientDetails = Patient.objects.filter(patient_id__in=Subquery(recordsTable.values('patient')))
 	else:
 		patientDetails = (Patient.objects.all())
@@ -423,29 +426,36 @@ def patientsViewWithFilter(request):
 	#return render(request, 'blog/filtertable2.html', {'filter': filter})
 
 
-def medical_records(request):
-    patient_id = request.POST['patient_id']
+@csrf_exempt
+def medical_records(request, patient_id):
 
-    context1 = getRoleBasedMenus(patient_id)
+	#patient_id = 13
+	#body = request.body
+	print('patient_id'+patient_id )
+	# if request.method == 'POST':
+	#     patient_id = request.POST['patient_id']
+	# elif request.method == 'GET':
+	#     patient_id = request.GET['patient_id']
+	patientDetails = PatientDetails(Patient.objects.filter(patient_id=patient_id)).as_values()
 
-    patientDetails = PatientDetails(Patient.objects.filter(patient_id=patient_id)).as_values()
-    diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id'))
-    labTestReportsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='L').order_by('records_id'))
-    prescriptionsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='P').order_by('records_id'))
-    paymentsList = Payments.objects.filter(patient_id=patient_id).order_by('patient_id')
-    paymentsJson = serializers.serialize("json", paymentsList)
+	diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id'))
+	labTestReportsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='L').order_by('records_id'))
+	prescriptionsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='P').order_by('records_id'))
 
-    template = loader.get_template('medical_records.html')
-    context = {
-        'patient_name' : patientDetails,
-        'diagnosesTable' : diagnosesTable,
-        'labTestReportsTable' : labTestReportsTable,
-        'prescriptionsTable' : prescriptionsTable,
-        'paymentsList': paymentsList,
-    }
-    context.update(context1)
-    return HttpResponse(template.render(context, request))
-    #return render(request, 'patient_portal/medical_records.html', {})
+	paymentsList = Payments.objects.filter(patient_id=patient_id).order_by('patient_id')
+	paymentsJson = serializers.serialize("json", paymentsList)
+
+	template = loader.get_template('medical_records.html')
+	context = {
+		'patient_name' : patientDetails,
+		'patient_id':patient_id,
+		'diagnosesTable' : diagnosesTable,
+		'labTestReportsTable' : labTestReportsTable,
+		'prescriptionsTable' : prescriptionsTable,
+		'paymentsList': paymentsList,
+	}
+	return HttpResponse(template.render(context, request))
+	#return render(request, 'patient_portal/medical_records.html', {})
 
 @csrf_exempt
 def view_record(request):
