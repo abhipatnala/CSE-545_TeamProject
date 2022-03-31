@@ -46,7 +46,7 @@ class Patient(models.Model):
     emergency_contact_firstname = models.CharField(max_length=25, default=None, blank=True, null=True)
     emergency_contact_lastname = models.CharField(max_length=25,  default=None, blank=True, null=True)
     emergency_contact_phone_number = models.CharField(max_length=10, default=None, blank=True, null=True)
-    emergency_contact_email = models.CharField(max_length=50, default=None, blank=True, null=True)
+    emergency_contact_email = models.EmailField()
     allergies = models.CharField(max_length=150, default=None, blank=True, null=True)
     medicationFollowed = models.CharField(max_length=150, default=None, blank=True, null=True)
     preExistingMedicalConditions = models.CharField(max_length=150, default=None, blank=True, null=True)
