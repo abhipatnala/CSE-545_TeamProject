@@ -1,0 +1,90 @@
+{% extends 'Portal.html' %}
+{% block content %}
+<div class="container">
+    <div class="PatientDetails">
+        <h2>PATIENT DETAILS</h2>
+        <p>Patient Name : {{patient_name}}</p>
+        <p>Patient Address : {{patient_address}}</p>
+        <p>Patient Zipcode : {{patient_zipcode}}</p>
+        <p>Patient DOB : {{patient_DOB}}</p>
+        <p>Patient BloodGroup : {{patient_blood}}</p>
+    </div>
+        <!--<button onclick="CloneForm('formNameHere');" class="button button1">Create Diagnoses </button>-->
+    <button class="btn btn-info" data-toggle="modal" data-target="#diagnosis-modal">Create Diagnoses</button>
+    <button class="btn btn-info" data-toggle="modal" data-target="#labtest-modal">Create Lab Tests</button>
+    <button class="btn btn-info" data-toggle="modal" data-target="#prescription-modal">Create Prescription</button>
+    <a class="btn btn-info" type="submit" href="{% url 'medical_records' %}">View Patient History</a>
+    <div class="modal fade" id="diagnosis-modal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header" id="modal-header">
+                    <h4 class="modal-title" id="modal-title">
+                    Create a Diagnosis
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" style="margin-right: 15%; margin-top: -2%;">×</button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- form here -->
+                    <form action="create_diagnosis" method="post">
+                        <!--<label for="pwd">Diagnosis</label>-->
+                        <textarea id="diagnosis_string" name="diagnosis_string" rows="4" cols="50" placeholder="Enter the Diagnosis" required></textarea><br><br>
+                        <button class="btn btn-info" href="{% url 'create_diagnosis' %}" ><span class="glyphicon glyphicon-save"></span> Save </button>
+                        <input type="hidden" name="patient_id" value="{{ patient_id }}">
+                        <input type="hidden" name="user_id" value="{{ 1 }}">
+                        <input type="hidden" name="appointment_id" value="{{ appointment_id }}">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="labtest-modal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header" id="modal-header">
+                    <h4 class="modal-title" id="modal-title">
+                    Recommend a Lab Test
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" style="margin-right: 15%; margin-top: -2%;">×</button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- form here -->
+                    <form action="recommend_labtest" method="post">
+                        <!--<label for="pwd">Diagnosis</label>-->
+                        <textarea id="labtest_recommendation" name="labtest_recommendation" rows="4" cols="50" placeholder="Enter the Recommendation for a Lab test" required></textarea><br><br>
+                        <button class="btn btn-info" href="{% url 'recommend_labtest' %}" ><span class="glyphicon glyphicon-pencil"></span> Submit </button>
+                        <input type="hidden" name="patient_id" value="{{ patient_id }}">
+                        <input type="hidden" name="user_id" value="{{ 1 }}">
+                        <input type="hidden" name="appointment_id" value="{{ appointment_id }}">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="prescription-modal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header" id="modal-header">
+                    <h4 class="modal-title" id="modal-title">
+                    Create a Prescription
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" style="margin-right: 15%; margin-top: -2%;">×</button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- form here -->
+                    <form action="create_prescription" method="post">
+                        <!--<label for="pwd">Diagnosis</label>-->
+                        <textarea id="prescription_string" name="prescription_string" rows="4" cols="50" placeholder="Enter the Prescription" required></textarea><br><br>
+                        <button class="btn btn-info" href="{% url 'create_prescription' %}" ><span class="glyphicon glyphicon-save"></span> Save </button>
+                        <input type="hidden" name="patient_id" value="{{ patient_id }}">
+                        <input type="hidden" name="user_id" value="{{ 1 }}">
+                        <input type="hidden" name="appointment_id" value="{{ appointment_id }}">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

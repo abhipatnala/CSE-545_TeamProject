@@ -411,15 +411,15 @@ color:#E60000; }
               
               
                 <label for="DocPref" class="form-label">Do you have a doctor preference?</label>
-                <select id="DocPref" name = "DocPref" class="form-control">
+                <select id="DocPref" name = "DocPref" class="form-control" onclick="checkDoctorPreference()">
 				  <option>No</option>
                   <option>Yes</option>
                   
               </select> 
 			  
 			  
-                <label for="Doc" class="form-label">Do you have a doctor preference?</label>
-                <select id="Doc" name = "Doc" class="form-control">
+                <label for="Doc" class="form-label">Select your preferred doctor</label>
+                <select id="Doc" name = "Doc" class="form-control" disabled>
 				  <option>Dr A</option>
                   <option>Dr B</option>
                   
@@ -432,11 +432,10 @@ color:#E60000; }
               
                 <label for="AvailableSlots" class="form-label">Available Slots</label>
                 <select id="AvailableSlots" class="form-control" name="AvailableSlots" multiple>
-                  <option>8-9 AM</option>
-                  <option>9-10 AM</option>
-                  <option>1-2 PM</option>
-                  <option>4-5 PM</option>
-              </select> 
+                  {% for slot in slots %}
+                      <option value="{{ slot }}">{{ slot }}</option>
+                  {% endfor %}
+                </select> 
               
               &nbsp;
               &nbsp;
@@ -451,6 +450,24 @@ color:#E60000; }
 </div>            
 </div>
 </div>
-
+<script>
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1; 
+  var yyyy = today.getFullYear();
+  if (dd < 10) {dd = '0' + dd;}
+  if (mm < 10) {mm = '0' + mm;}  
+  today = yyyy + '-' + mm + '-' + dd;
+  document.getElementById('appointmentDate').setAttribute('min',today);
+  document.getElementById('DOB').setAttribute('max',today);
+  function checkDoctorPreference() {
+      if(document.getElementById("DocPref").value != 'No') {
+          document.getElementById("Doc").disabled = false;
+      }
+      else {
+          document.getElementById("Doc").disabled = true;
+      }
+  }
+</script>
 </body>
 </html>

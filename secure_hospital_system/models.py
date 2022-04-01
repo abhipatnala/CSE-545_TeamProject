@@ -8,6 +8,13 @@ APPOINTMENT_STATUS = (
     ('denied','denied')
 )
 
+LAB_TEST_REQUEST_STATUS = (
+    ('Approved', 'Approved'),
+    ('Pending', 'Pending'),
+    ('Denied','Denied'),
+    ('Completed','Completed')
+)
+
 PAYMENT_STATUS = (
     ('unpaid', 'unpaid'),
     ('paid','paid')
@@ -46,7 +53,7 @@ class Patient(models.Model):
     emergency_contact_firstname = models.CharField(max_length=25, default=None, blank=True, null=True)
     emergency_contact_lastname = models.CharField(max_length=25,  default=None, blank=True, null=True)
     emergency_contact_phone_number = models.CharField(max_length=10, default=None, blank=True, null=True)
-    emergency_contact_email = models.EmailField()
+    emergency_contact_email = models.CharField(max_length=50, default=None, blank=True, null=True)
     allergies = models.CharField(max_length=150, default=None, blank=True, null=True)
     medicationFollowed = models.CharField(max_length=150, default=None, blank=True, null=True)
     preExistingMedicalConditions = models.CharField(max_length=150, default=None, blank=True, null=True)
@@ -128,3 +135,13 @@ class Menu_Mapping(models.Model):
     menu_id = models.ForeignKey(Menu, on_delete=models.CASCADE)
     role_id = models.ForeignKey(Roles, on_delete=models.CASCADE)
     is_default = models.BooleanField()
+
+class Lab_Test(models.Model):
+    lab_test_id = models.BigAutoField(primary_key=True)
+    record = models.ForeignKey(Records, on_delete=models.CASCADE, null=True)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    recommended_test = models.TextField(max_length=200)
+    recommended_date = models.DateField()
+    action_taken_date = models.DateField(null=True)
+    status = models.CharField(max_length=200, choices=LAB_TEST_REQUEST_STATUS, default='Pending')
