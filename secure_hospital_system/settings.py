@@ -100,9 +100,9 @@ WSGI_APPLICATION = 'secure_hospital_system.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'CSE545_Group1',
+        'NAME': 'CSE545_Group1_Backup',
         'USER': 'postgres',
-        'PASSWORD': 'asu',
+        'PASSWORD': 'rinku12345',
         'HOST': 'localhost',
         'PORT': '5432'
     }
