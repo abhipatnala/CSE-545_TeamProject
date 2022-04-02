@@ -483,11 +483,11 @@ def view_record(request):
 	context.update(context1)
 	return HttpResponse(template.render(context, request))
 
-def insuranceLoginRecords(request):
-	insuranceRequests = Claim_Request.objects.all()
-	filter = ClaimRequestViewFilter(request.GET, queryset=insuranceRequests)
-	insuranceRequests = filter.qs
-	return render(request, 'insuranceApproverGrid.html', {'filter': filter, 'insuranceRequests': insuranceRequests})
+#def insuranceLoginRecords(request):
+#	insuranceRequests = Claim_Request.objects.all()
+#	filter = ClaimRequestViewFilter(request.GET, queryset=insuranceRequests)
+#	insuranceRequests = filter.qs
+#	return render(request, 'insuranceApproverGrid.html', {'filter': filter, 'insuranceRequests': insuranceRequests})
 
 def view_patient(request):
 	context = getRoleBasedMenus(request.user.id)
@@ -626,3 +626,49 @@ def create_labtest_report(request):
 	labTestRecord = Records.objects.get(records_id=labTestReportRecord.records_id)
 	Lab_Test.objects.filter(lab_test_id=lab_test_id).update(record=labTestRecord,status='Completed')
 	return labstaff_worklist(request)
+
+@csrf_exempt
+def insuranceApprovedMail(request):
+	#how to fetch the claim_id
+    record = Claim_Request.objects.get(claim_id=1)
+    record.claim_status = "approved"
+    record.save()
+    print(record.patient_id.user_id.user.email)
+    print(record.claim_status)
+    #print(record.appointment_date)
+    #print(record.doctor_id.user_id.user.first_name)
+    subject = 'Appointment Confirmation'
+    body ="Dear ,\n"+"\nYour insurance has been confirmed! \n\nThank you,\nSHS Healthcare"
+    patient_email = record.patient_id.user_id.user.email
+    send_mail(
+		subject,
+        body,
+        'shsgrp1@gmail.com',
+        [patient_email],
+        fail_silently=False
+    )
+    return render(request, 'sentmail.html')
+    
+class InsuranceLoginRecords(tables.SingleTableView):
+	table_class = ClaimRequestTable
+	queryset = insuranceRequests = Claim_Request.objects.filter(claim_status='pending')
+	#filter = ClaimRequestViewFilter(request.GET, queryset=insuranceRequests)
+	#insuranceRequests = filter.qs
+	template_name = "simple_list.html"
+
+@csrf_exempt
+def insuranceDeniedMail(request):
+    record = Claim_Request.objects.get(claim_id=1)
+    record.claim_status = "denied"
+    record.save()
+    subject ='Appointment Denied'
+    body = "Your insurance claim has been denied due to doctor unavailability. We apologize for the inconvenience.\n\nThank you,\nSHS Healthcare"
+    patient_email = record.patient_id.user_id.user.email
+    send_mail(
+		subject,
+        body,
+        'shsgrp1@gmail.com',
+        [patient_email],
+        fail_silently=False
+    )
+    return render(request, 'sentmail.html')
