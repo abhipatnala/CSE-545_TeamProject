@@ -213,7 +213,7 @@ def newBillGenerated(request):
 
 		payments = Payments(admit_fee=admit_fee, patient_id=(getPatientDetails(request))[0], discharge_fee = discharge_fee,
 			supplies_fee=supplies_fee, consultation_fee=consultation_fee, overall_payment = overall_payment, payment_generated_date = date.today(),
-			payment_status = 'PENDING', payment_update_date = date.today())
+			payment_status = 'pending', payment_update_date = date.today())
 		payments.save()
 	#return render(request,"medical_records.html")	
 	response = redirect('/medical_records/'+patient_id)
@@ -323,9 +323,8 @@ def onSubmitOfNewPatientsAppointmentDetails(request):
 
         return render(request,"test.html")
 
-@csrf_exempt
-def appointmentApprovedMail(request):
-	record = Doctor_availability_booked.objects.get(booking_id=1)
+def appointmentApprovedMail(request,booking_id):
+	record = Doctor_availability_booked.objects.get(booking_id=booking_id)
 	record.status = "approved"
 	record.save()
 	print(record.patient_id.user_id.user.email)
@@ -344,9 +343,8 @@ def appointmentApprovedMail(request):
 	)
 	return render(request, 'sentmail.html')
 	
-@csrf_exempt
-def appointmentDeniedMail(request):
-	record = Doctor_availability_booked.objects.get(booking_id=1)
+def appointmentDeniedMail(request,booking_id):
+	record = Doctor_availability_booked.objects.get(booking_id=booking_id)
 	record.status ="denied"
 	record.save()
 	subject ='Appointment Denied'
@@ -627,10 +625,9 @@ def create_labtest_report(request):
 	Lab_Test.objects.filter(lab_test_id=lab_test_id).update(record=labTestRecord,status='Completed')
 	return labstaff_worklist(request)
 
-@csrf_exempt
-def insuranceApprovedMail(request):
+def insuranceApprovedMail(request,claim_id):
 	#how to fetch the claim_id
-    record = Claim_Request.objects.get(claim_id=1)
+    record = Claim_Request.objects.get(claim_id=claim_id)
     record.claim_status = "approved"
     record.save()
     print(record.patient_id.user_id.user.email)
@@ -656,9 +653,8 @@ class InsuranceLoginRecords(tables.SingleTableView):
 	#insuranceRequests = filter.qs
 	template_name = "simple_list.html"
 
-@csrf_exempt
-def insuranceDeniedMail(request):
-    record = Claim_Request.objects.get(claim_id=1)
+def insuranceDeniedMail(request,claim_id):
+    record = Claim_Request.objects.get(claim_id=claim_id)
     record.claim_status = "denied"
     record.save()
     subject ='Appointment Denied'
@@ -715,7 +711,7 @@ def fileClaim(request):
     payment_ID = request.POST['payment_id']
     if Claim_Request.objects.filter(payment_id = payment_ID).count() == 0:
 
-        Claim_Request.objects.create(patient_id_id = patient_id, payment_id_id = payment_ID, claim_status = 'Pending', claim_raised_date = claim_raised_date)
+        Claim_Request.objects.create(patient_id_id = patient_id, payment_id_id = payment_ID, claim_status = 'pending', claim_raised_date = claim_raised_date)
 
     return payment_records(request)
 

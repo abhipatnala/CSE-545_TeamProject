@@ -1,5 +1,3 @@
 
-<form action="mail" method="post">
-  <button type="submit" href="{% url 'appointmentconf'%}" formaction="appointmentApprovedMail">Approve</button>
-  <button type="submit" href="{% url 'appointmentconf'%}" formaction="appointmentDeniedMail">Deny</button>
-</form>
+<a class="btn btn-info btn-sm" href="{% url 'appointmentApprovedMail' record.booking_id %}">Approve</a>
+<a class="btn btn-info btn-sm" href="{% url 'appointmentDeniedMail' record.booking_id %}">Deny</a>
