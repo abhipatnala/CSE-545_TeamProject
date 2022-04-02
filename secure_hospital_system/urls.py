@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from django.conf.urls import url
 from django.views.generic.base import TemplateView
@@ -22,7 +23,8 @@ from secure_hospital_system.views import TableView
 from secure_hospital_system.views import InsuranceLoginRecords
 
 urlpatterns = [
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
+    path('accounts/logout/', include('django.contrib.auth.urls')),
     url(r'^settings/', include('django_mfa.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('admin/', admin.site.urls, name='admin'),
@@ -39,6 +41,7 @@ urlpatterns = [
     path('insuranceconf', InsuranceLoginRecords.as_view(),name ='insuranceconf'),
     # path('portal',views.portal,name='portal'),
     #path('medical_records/', views.medical_records, name='medical_records'),
+    path('medicalRecords', views.medicalRecords, name='medicalRecords'),
     path('patientsViewWithFilter',views.patientsViewWithFilter,name='patientsViewWithFilter'),
     path('appointments', views.appointments,name ='appointments'),
     path('onSubmitOfNewPatientsAppointmentDetails/',views.onSubmitOfNewPatientsAppointmentDetails, name = 'onSubmitOfNewPatientsAppointmentDetails'),
@@ -48,7 +51,6 @@ urlpatterns = [
     path('generateBills',views.generateBills,name='generateBills'),
     path('newBillGenerated',views.newBillGenerated,name='newBillGenerated'),
     path("patient", views.view_patient, name='view_patient'),
-    path('medical_records', views.medical_records, name='medical_records'),
     path('view_record', views.view_record, name='view_record'),
     path('edit_record', views.edit_record, name='edit_record'),
     path('save_record', views.save_record, name='save_record'),

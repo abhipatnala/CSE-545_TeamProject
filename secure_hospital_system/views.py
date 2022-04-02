@@ -1,5 +1,5 @@
 # from asyncio.windows_events import NULL
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.mail import send_mail
@@ -20,19 +20,21 @@ from django.contrib.messages import constants as messages
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .helpers import getRoleBasedMenus
+from .helpers import *
 from datetime import datetime
 
 def home(request):
-	if request.user.is_authenticated:
-		if request.user.is_superuser:
-			return redirect(to=reverse('admin:index'))
-		else:
-			context = getRoleBasedMenus(request.user.id)
-			return render(request, "Portal.html", context)
-			# return redirect(portal(request))
-	else:
-		return render(request, 'home.html') 
+    if request.user.is_authenticated:
+        if not twofaEnabled(request.user):
+            return redirect('/settings/security')
+        if request.user.is_superuser:
+            return redirect(to=reverse('admin:index'))
+        else:
+            context = getRoleBasedMenus(request.user.id)
+            return render(request, "Portal.html", context)
+        # return redirect(portal(request))
+    else:
+        return render(request, 'home.html') 
 
 def aboutUs(request):
 	return render(request, 'ABOUT_US.html') 
@@ -76,7 +78,7 @@ def bookAppointment(request):
 	if request.method == 'POST':
 		doctorid = request.POST['docid']
 	slots = ["8-9", "9-10", "10-11", "11-12"]
-	if doctorid != NULL:
+	if doctorid != None:
 		doctors = Doctor.objects.filter(doctor_id = doctorid)
 	else:
 		doctors = Doctor.objects.all()
@@ -433,37 +435,34 @@ def patientsViewWithFilter(request):
 
 
 @csrf_exempt
-def medical_records(request):
+def medicalRecords(request):
+    patient_id = ''
+    user_id = request.user.id
+    if request.method == 'POST':
+        patient_id = request.POST['patient_id']
+    elif request.method == 'GET':
+        patient_id='1'
 
-	patient_id = ''
-	user_id = ''
-	if request.method == 'POST':
-		patient_id = request.POST['patient_id']
-		user_id = request.POST['user_id']
-	elif request.method == 'GET':
-		user_id='1'
-		patient_id='1'
+    context1 = getRoleBasedMenus(user_id)
 
-	#context1 = getRoleBasedMenus(user_id)
+    patientDetails = PatientDetails(Patient.objects.filter(patient_id=patient_id)).as_values()
+    appointmentsTable = Appointments(Doctor_availability_booked.objects.filter(patient_id=patient_id).order_by('appointment_date'))
+    diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id'))
+    labTestReportsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='L').order_by('records_id'))
+    prescriptionsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='P').order_by('records_id'))
+    paymentsList = Payments.objects.filter(patient_id=patient_id).order_by('patient_id')
 
-	patientDetails = PatientDetails(Patient.objects.filter(patient_id=patient_id)).as_values()
-	appointmentsTable = Appointments(Doctor_availability_booked.objects.filter(patient_id=patient_id).order_by('appointment_date'))
-	diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='D').order_by('records_id'))
-	labTestReportsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='L').order_by('records_id'))
-	prescriptionsTable = RecordsTable(Records.objects.filter(patient_id=patient_id).filter(document_type='P').order_by('records_id'))
-	paymentsList = Payments.objects.filter(patient_id=patient_id).order_by('patient_id')
-	
-	template = loader.get_template('medical_records.html')
-	context = {
-		'patient_name' : patientDetails,
-		'appointmentsTable' : appointmentsTable,
-		'diagnosesTable' : diagnosesTable,
-		'labTestReportsTable' : labTestReportsTable,
-		'prescriptionsTable' : prescriptionsTable,
-		'paymentsList': paymentsList,
-	}
-	#context.update(context1)
-	return HttpResponse(template.render(context, request))
+    template = loader.get_template('medical_records.html')
+    context = {
+        'patient_name' : patientDetails,
+        'appointmentsTable' : appointmentsTable,
+        'diagnosesTable' : diagnosesTable,
+        'labTestReportsTable' : labTestReportsTable,
+        'prescriptionsTable' : prescriptionsTable,
+        'paymentsList': paymentsList,
+    }
+    context.update(context1)
+    return HttpResponse(template.render(context, request))
 
 @csrf_exempt
 def view_record(request):

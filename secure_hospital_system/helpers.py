@@ -8,10 +8,12 @@ def getRoleBasedMenus(user_id):
     if role is not None:
         role_name = role.role_name
     menuList = Menu_Mapping.objects.filter(role_id = role.role_id)
-    # import ipdb; ipdb.set_trace()
     context = {
         'role_name' : role_name,
         'menuList' : menuList,
     }
     return context
 
+
+def twofaEnabled(user):
+    return hasattr(user, 'userotp')
