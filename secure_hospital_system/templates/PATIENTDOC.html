@@ -1,7 +1,9 @@
+{% load static %}
+{% extends 'Portal.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>ABOUT_US</title>
+  <title>DOCTORS</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -24,7 +26,7 @@
 }
 .dropdown-menu 
 {
-    border-color:white !important;
+    border-color:white; 
     background-color: #31B2CF;
  }
 .navbar li a, .navbar .navbar-brand {
@@ -47,7 +49,7 @@
 .navbar.navbar-default {
      position:fixed; top:50; left:0; z-index:1030;
    }
- .blogShort{ border-bottom:1px solid #ddd;}
+   .blogShort{ border-bottom:1px solid #ddd;}
 .add{background: #333; padding: 10%; height: 300px;}
 
 .nav-sidebar { 
@@ -104,6 +106,153 @@ h2{color:#0b56a8;}
   line-height: 23px;
   margin: 0 13px 0 0;
   font-size: 19px;
+}
+/* Icon set - http://ionicons.com */
+@import url(http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,500);
+figure.snip1237 {
+  font-family: 'Raleway', Arial, sans-serif;
+  position: relative;
+  float: left;
+  overflow: hidden;
+  margin: 20px 20px; 
+  min-width: 250px;
+  max-width: 250px;
+  width: 100%;
+  background: #1a1a1a;
+  color: #ffffff;
+  text-align: left;
+ 
+ box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+  -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+
+}
+
+figure.snip1237 * {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+figure.snip1237 .image {
+    height: 250px; 
+    overflow: hidden;
+    position: relative; 
+}
+
+
+figure.snip1237 h3 {
+  margin: 0 0 3px;
+  font-weight: 900;
+  font-size:15px;
+}
+figure.snip1237 p {
+  margin: 0;
+}
+
+/* ----------------------------------------------------WHITESPACE START */
+
+figure.snip1237 figcaption {
+  /* padding order: top right bottom left */
+  padding: 5px 20px 15px 20px;
+  background-color: #ffffff;
+  color: #000000;
+  position: relative;
+  font-size: 0.9em;
+}
+
+figure.snip1237 figcaption p {
+  margin-bottom: 15px;
+}
+
+figure.snip1237 figcaption:before {
+  position: absolute;
+  content: '';
+  z-index: 2;
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background-image: -webkit-linear-gradient(top, transparent 0%, #ffffff 100%);
+  background-image: linear-gradient(to bottom, transparent 0%, #ffffff 100%);
+}
+
+
+
+/* ----------------------------------------------------WHITESPACE END */
+
+
+/* ----------------------------------------------------READ MORE START */
+
+figure.snip1237 .read-more {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  border: 2px solid #20638f;
+  padding: 0.4em 0.6em;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  background-color: #20638f;
+}
+
+figure.snip1237 .read-more:hover {
+  background-color: #ba2f00;
+  color: #ffffff;
+}
+/* ----------------------------------------------------READ MORE END */
+
+
+
+/* ----------------------------------------------------HOVER START */
+
+figure.snip1237:hover:before,
+figure.snip1237.hover:before {
+  -webkit-transition-delay: 0s;
+  transition-delay: 0s;
+  -webkit-transform: skew(-45deg) translateX(-50%);
+  transform: skew(-45deg) translateX(-50%);
+}
+figure.snip1237:hover:after,
+figure.snip1237.hover:after {
+  -webkit-transition-delay: 0.1s;
+  transition-delay: 0.1s;
+  -webkit-transform: skew(-45deg) translateX(-75%);
+  transform: skew(-45deg) translateX(-75%);
+}
+
+/* ----------------------------------------------------HOVER END */
+
+
+/* Image Resizer */
+figure.snip1237:hover img,
+figure.snip1237.hover img {
+  -webkit-transform: scale(25);
+  transform: scale(1.25);
+}
+/* Demo purposes only */
+body {
+  background-color: #ffffff;
+}
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,900,800,700,600);
+body{font-family: 'Raleway', sans-serif;}
+  h2 {
+  border-bottom: 10px solid red;
+  font-family: 'Raleway', sans-serif;
+  font-size: 65px;
+  font-weight: 900;
+  margin: 0 auto;
+  padding: 20px 0 3px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 40.2%;
 }
 img {
   height: 200px !important;
@@ -188,47 +337,46 @@ img {
 {
 margin:-100px 10px auto 300px;
  }
-
-  </style>
+ #lg
+{
+  height: 100px;
+top:2px;
+left:2px;
+width: 400px;
+}
+ </style>
   </head>
   <body>
-   <div class="container-fluid">
- <img id="a"  class="img-responsive" src="pics/hlogo.jpg" alt="" title="" width="400" > 
- <h4><b><i>
-       Welcome to the Patient Portal!!!<b></i>
-</h4>
-</div>
-
-<nav class="navbar navbar-inverse ">
-  <div class="container-fluid">
-  <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>                        
-      </button>
-	  </div>
-	   <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-   
-    <li ><a href="">My Profile</a></li>
-	<li ><a href="">Appointments</a></li>
-	<li ><a href="MEDICALRECORDS.html">Medical Records</a></li>  
-	 <li><a href="">Insurance</a></li>
-<li class='active'><a href="PATIENTDOC.html">Find A Doctor</a></li>
-	  <li><a href="CONTACT_US.html">Contact Us</a></li>
-	  </ul>
-    <ul class="nav navbar-nav navbar-right">
-	<li><a href="login.html"> Book An Appointment
-	</a></li>
-      <li><a href="login.html" font-size= 20px><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-    </ul>
+    <div class="container-fluid">
+      <img id="lg"  class="img-responsive" src="{%static 'pics/hlogo.jpg' %}" alt="" title="" height: 100> 
+     </div>
+     <nav class="navbar navbar-inverse ">
+      <div class="container-fluid">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+          </button>
+        </div>
+         <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav">
+    <li ><a href="home">Home</a></li>
+        <li ><a href="aboutUs">About Us</a></li>
+    <li class='active'><a href="findDoc">Find A Doctor</a></li>
+        <li><a href="contactUs">Contact Us</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+      <li><a href="bookAppointment"> Book An Appointment
+      </a></li>
+          <li><a href="login" font-size= 20px><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+      
+      </div>
+      </nav>
 	
-	</div>
-	</nav>
-<br>
-<br>
 
+     
 </div>
 <div class="tab-pane text-style" id="tab2">
  <div class="container-fluid">
@@ -244,6 +392,8 @@ margin:-100px 10px auto 300px;
 	<br>
 	 <div id="a">
     <div class="row">
+     
+      {%for doc in docList%}
     	<div class="col-lg-3">
     				<div class="cuadro_intro_hover " style="background-color:#cccccc;">
 						<p style="text-align:center;">
@@ -252,54 +402,39 @@ margin:-100px 10px auto 300px;
 						<div class="caption">
 							<div class="blur"></div>
 							<div class="caption-text">
-								<h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Dr. A</h3>
-								<p>Cardiologist</p>
-								<a class=" btn btn-default" href="http://www.google.com" target="_blank"><span class="glyphicon glyphicon-plus"> Book an Appointment
+								<h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">{{doc.specialization}}</h3>
+								<p>{{doc.specialization}}</p>
+								<a class=" btn btn-default" href="bookAppointment" name ="docid" value = {{doc.doctor_id}} target="_blank"><span class="glyphicon glyphicon-plus"> Book an Appointment
 								</span></a>
 							</div>
 						</div>
 					</div>
-				
-	    </div>
-        <div class="col-lg-3">
-        			<div class="cuadro_intro_hover " style="background-color:#cccccc;">
-						<p style="text-align:center;">
-							<img src="pics/d.jpg" class="img-responsive" alt="">
-						</p>
-						<div class="caption">
-							<div class="blur"></div>
-							<div class="caption-text">
-								<h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">Dr. B</h3>
-								<p>Pediatrician</p>
-								<a class=" btn btn-default" href="http://www.google.com" target="_blank"><span class="glyphicon glyphicon-plus"> Book an Appointment
-								</span></a>
-							</div>
-						</div>
-					</div>
-				
-	    </div>
-        <div class="col-lg-3">
-        			<div class="cuadro_intro_hover" style="background-color:#cccccc;">
-						<p style="text-align:center;">
-							<img src="pics/d.jpg" class="img-responsive" alt="">
-						</p>
-						<div class="caption">
-							<div class="blur"></div>
-							<div class="caption-text">
-								<h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">DR. C</h3>
-								<p>Family physician</p>
-								<a class=" btn btn-default" href="http://www.google.com" target="_blank"><span class="glyphicon glyphicon-plus"> Book an Appointment
-								</span></a>
-							</div>
-						</div>
-					</div>
+				{%endfor%}
+	   
 				
 	    </div>
 	    </div>
     </div>
 </div>
 
+    <hr>
+</div>
+  </div>
+</div>
+</div>
+    </div>
     
 </div>
-	 </body>
-  </html>
+<script type="text/javascript">
+  (function(d, m){
+      var kommunicateSettings = 
+          {"appId":"fd42e99e86467e6860d2cba6dbae85a6","popupWidget":true,"automaticChatOpenOnNavigation":true};
+      var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+      s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+      var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+      window.kommunicate = m; m._globals = kommunicateSettings;
+  })(document, window.kommunicate || {});
+/* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+</script>
+	</body>
+	</html>
