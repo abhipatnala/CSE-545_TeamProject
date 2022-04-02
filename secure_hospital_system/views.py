@@ -27,6 +27,7 @@ from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login
+from .decorators import *
 
 
 def home(request):
@@ -487,6 +488,7 @@ def view_record(request):
 #	insuranceRequests = filter.qs
 #	return render(request, 'insuranceApproverGrid.html', {'filter': filter, 'insuranceRequests': insuranceRequests})
 
+@is_patient('home', {'message': "Oops, can't go there."})
 def view_patient(request):
 	context = getRoleBasedMenus(request.user.id)
 	template = loader.get_template('viewPatient.html')
