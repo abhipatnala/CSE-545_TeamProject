@@ -19,6 +19,7 @@ from django.conf.urls import url
 from django.views.generic.base import TemplateView
 from . import views
 from secure_hospital_system.views import TableView
+from secure_hospital_system.views import InsuranceLoginRecords
 
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
@@ -33,6 +34,9 @@ urlpatterns = [
     path('appointmentApprovedMail',views.appointmentApprovedMail, name ='appointmentApprovedMail'),
     path('appointmentDeniedMail',views.appointmentDeniedMail, name ='appointmentDeniedMail'),
     path('appointmentconf', TableView.as_view(),name ='appointmentconf'),
+    path('insuranceApprovedMail',views.insuranceApprovedMail, name ='insuranceApprovedMail'),
+    path('insuranceDeniedMail',views.insuranceDeniedMail, name ='insuranceDeniedMail'),
+    path('insuranceconf', InsuranceLoginRecords.as_view(),name ='insuranceconf'),
     # path('portal',views.portal,name='portal'),
     #path('medical_records/', views.medical_records, name='medical_records'),
     path('patientsViewWithFilter',views.patientsViewWithFilter,name='patientsViewWithFilter'),
@@ -40,7 +44,7 @@ urlpatterns = [
     path('onSubmitOfNewPatientsAppointmentDetails/',views.onSubmitOfNewPatientsAppointmentDetails, name = 'onSubmitOfNewPatientsAppointmentDetails'),
     path('onSubmitOfExistingPatientsAppointmentBooking/',views.onSubmitOfExistingPatientsAppointmentBooking, name = 'onSubmitOfExistingPatientsAppointmentBooking'),
     path('sendContactUsEmail',views.sendContactUsEmail,name='sendContactUsEmail'),
-    path('insuranceLoginRecords',views.insuranceLoginRecords,name='insuranceLoginRecords'),
+    #path('insuranceLoginRecords',views.insuranceLoginRecords,name='insuranceLoginRecords'),
     path('generateBills',views.generateBills,name='generateBills'),
     path('newBillGenerated',views.newBillGenerated,name='newBillGenerated'),
     path("patient", views.view_patient, name='view_patient'),

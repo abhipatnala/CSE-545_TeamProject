@@ -10,6 +10,12 @@ class SimpleTable(tables.Table):
         fields = ['patient_id','doctor_id','appointment_date','appointment_start_time','appointment_end_time','edit']
     edit = tables.TemplateColumn(template_name='btn.html'  )
 
+class ClaimRequestTable(tables.Table):
+    class Meta:
+        model = Claim_Request
+        fields = ['claim_status','claim_raised_date']
+    edit = tables.TemplateColumn(template_name='insuranceconf.html')
+    
 class Appointments(tables.Table):
     class Meta:
         model = Doctor_availability_booked
