@@ -22,6 +22,12 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .helpers import *
 from datetime import datetime
+from .tokens import account_activation_token
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth import login
+
 
 def home(request):
     if request.user.is_authenticated:
@@ -228,44 +234,6 @@ def getUserDetails(userId):
 def patients(request):
 	return render(request,'BookAppt.html')
 
-def saveAppointmentDetails(request, patient):
-	purposeOfVisit = request.POST['purposeOfvisit']
-	doctor_preference = request.POST['DocPref']
-	appointment_date_request = request.POST['appointmentDate']
-	opted_slot = request.POST['AvailableSlots']
-	print("appointment details")
-	appointmentStartNdEndTime = opted_slot.split("-")
-	appointmentEndTimeNdAMPM = appointmentStartNdEndTime[1].split(" ")
-	appointment_start_time = appointmentStartNdEndTime[0]+":00 "+(appointmentEndTimeNdAMPM)[1]
-	appointment_end_time = appointmentEndTimeNdAMPM[0]+":00 "+appointmentEndTimeNdAMPM[1]
-		#if opted_slot == "8-9 AM":
-		#	appointment_start_time = "8:00 AM"
-		#	appointment_end_time = "9:00 AM" 
-		#elif opted_slot == "9-10 AM":
-		#	appointment_start_time = "9:00 AM"
-		#	appointment_end_time = "10:00 AM"
-		#elif opted_slot == "1-2 PM":
-		#	appointment_start_time = "1:00 PM"
-		#	appointment_end_time = "2:00 PM"
-		#elif opted_slot == "4-5 PM":
-		#	appointment_start_time = "4:00 PM"
-		#	appointment_end_time = "5:00 PM"
-	print("appointment details abou to be saved")
-	doctor_preference = "Yes"
-	print("doctor_preference ",doctor_preference)
-	if doctor_preference == "Yes":
-		doctor_id = 1
-		doctorObj = Doctor.objects.filter(doctor_id=doctor_id)
-		print("doctorObj",doctorObj)
-		doctorAvailabilityBooked = Doctor_availability_booked(patient_id=patient, doctor_id=doctorObj[0], appointment_date = appointment_date_request,
-			appointment_start_time=appointment_start_time, appointment_end_time=appointment_end_time, booking_request_timestamp = date.today(),
-			status = 'PENDING')
-	else:
-		doctorAvailabilityBooked = Doctor_availability_booked(patient_id=patient, appointment_date = appointment_date_request,
-			appointment_start_time=appointment_start_time, appointment_end_time=appointment_end_time, booking_request_timestamp = date.today(),
-			status = 'PENDING') 
-	doctorAvailabilityBooked.save()
-
 def onSubmitOfExistingPatientsAppointmentBooking(request):
 	userId = request.POST("user_id")
 	patient = Patient.objects.filter(user_id = userId)
@@ -275,53 +243,81 @@ def onSubmitOfExistingPatientsAppointmentBooking(request):
 @csrf_exempt
 #@csrf_protect 
 def onSubmitOfNewPatientsAppointmentDetails(request):
-	if request.method == 'POST':
-		patientRoleObj = Roles.objects.filter(role_name="patient")
-		print("entered patientRoleObj ", patientRoleObj)
-		# patient and user details
-		first_name = request.POST.get('firstname')
-		print("firstName ",first_name)
-		last_name = request.POST.get('lastname')
-		blood_type = request.POST['blood group']
-		address = request.POST['Address']
-		city = request.POST['city']
-		state = request.POST['state']
-		zipCode = request.POST['zip']
-		email = request.POST['emailInfo']
-		phone_number = request.POST['phoneNumber']
-		loginDate = date.today()
-		print("user email ",email)
-		userInfo = User.objects.filter(email = email)
-		if userInfo:
-			# render login html
-			print("user existed ",userInfo)
-			return render(request,"error.html")
+    if request.method == 'POST':
+        patientRoleObj = Roles.objects.filter(role_name="patient")
+        print("entered patientRoleObj ", patientRoleObj)
+        # patient and user details
+        first_name = request.POST.get('firstname')
+        print("firstName ",first_name)
+        last_name = request.POST.get('lastname')
+        blood_type = request.POST['blood group']
+        address = request.POST['Address']
+        city = request.POST['city']
+        state = request.POST['state']
+        zipCode = request.POST['zip']
+        email = request.POST['emailInfo']
+        phone_number = request.POST['phoneNumber']
+        loginDate = date.today()
+        print("user email ",email)
+        userInfo = User.objects.filter(email = email)
+        if userInfo:
+            # render login html
+            print("user existed ",userInfo)
+            return render(request,"error.html")
 
-		print("user about to be saved")
-		user = User(password=(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=5))), last_login = loginDate, is_superuser = 0, username= email, first_name = first_name, last_name = last_name, email = email, is_staff = 0, is_active=0, date_joined = loginDate)
-		user.save()
-		print("user saved")
-		shsUser = SHSUser(user=user, role_id=patientRoleObj[0])
-		shsUser.save()
-		insuranceProviderObj = InsuranceProvider.objects.filter(provider_name = request.POST['insuranceprovider'])
-		#medical history
-		allergies = request.POST['allergies']
-		medicationFollowed = request.POST['medications']
-		preExistingMedicalConditions = request.POST['medicalConditions']
-		anyOtherMedicalDetails = request.POST['medicalInfo']
-		print("about to save patient details")
-		ecFirstName = request.POST['ecFirstname']
-		ecLastName = request.POST['ecLastname']
-		ecEmailInfo = request.POST['ecEmailInfo']
-		ecPhoneNumber = request.POST['ecPhoneNumber']
-		patient = Patient(update_user = shsUser, user_id = shsUser, patient_insurance_member_id = request.POST['insuranceid'], emergency_contact_firstname = ecFirstName, emergency_contact_lastname  = ecLastName, emergency_contact_phone_number = ecPhoneNumber, emergency_contact_email = ecEmailInfo, patient_insurance_provider_id=insuranceProviderObj[0], blood_type=blood_type, address = address, city = city, state= state, zipCode = zipCode, phone_number= phone_number, allergies=allergies,medicationFollowed=medicationFollowed, preExistingMedicalConditions=preExistingMedicalConditions, anyOtherMedicalDetails=anyOtherMedicalDetails)
-		patient.save()
-		print("patient details saved")
-		#Appointment Details
-		saveAppointmentDetails(request, patient)
+        print("user about to be saved")
+        user = User(password=(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=5))),
+                    last_login = loginDate,
+                    is_superuser = 0,
+                    username= email,
+                    first_name = first_name,
+                    last_name = last_name,
+                    email = email,
+                    is_staff = 0,
+                    is_active=0,
+                    date_joined = loginDate
+        )
+        user.save()
+        print("user saved")
+        shsUser = SHSUser(user=user, role_id=patientRoleObj[0])
+        shsUser.save()
+        insuranceProviderObj = InsuranceProvider.objects.filter(provider_name = request.POST['insuranceprovider'])
+        #medical history
+        allergies = request.POST['allergies']
+        medicationFollowed = request.POST['medications']
+        preExistingMedicalConditions = request.POST['medicalConditions']
+        anyOtherMedicalDetails = request.POST['medicalInfo']
+        print("about to save patient details")
+        ecFirstName = request.POST['ecFirstname']
+        ecLastName = request.POST['ecLastname']
+        ecEmailInfo = request.POST['ecEmailInfo']
+        ecPhoneNumber = request.POST['ecPhoneNumber']
+        patient = Patient(
+            update_user = shsUser,
+            user_id = shsUser,
+            patient_insurance_member_id = request.POST['insuranceid'],
+            emergency_contact_firstname = ecFirstName,
+            emergency_contact_lastname  = ecLastName,
+            emergency_contact_phone_number = ecPhoneNumber,
+            emergency_contact_email = ecEmailInfo,
+            patient_insurance_provider_id=insuranceProviderObj[0],
+            blood_type=blood_type,
+            address = address,
+            city = city,
+            state= state,
+            zipCode = zipCode,
+            phone_number= phone_number,
+            allergies=allergies,
+            medicationFollowed=medicationFollowed,
+            preExistingMedicalConditions=preExistingMedicalConditions,
+            anyOtherMedicalDetails=anyOtherMedicalDetails
+        )
+        patient.save()
+        saveAppointmentDetails(request, patient)
+        current_site = get_current_site(request)
+        sendActivationEmail(user, current_site, email)
 
-		print("appointment details already saved")
-	return render(request,"test.html")
+        return render(request,"test.html")
 
 @csrf_exempt
 def appointmentApprovedMail(request):
@@ -686,7 +682,6 @@ def payment_records(request):
     
     template = loader.get_template('insurancePortal.html')
     context = {
-
         'paymentsTable' : paymentsTable,
         'claimsTable' : claimsTable,
         'patient_id' : patient_id,
@@ -711,11 +706,28 @@ def saveInsurInfo(request):
 @csrf_exempt
 def fileClaim(request):
     #patient_id = request.user.patient_id
-    patient_id = '10' 
+    patient_id = '10'
     claim_raised_date = datetime.now()
     payment_ID = request.POST['payment_id']
     if Claim_Request.objects.filter(payment_id = payment_ID).count() == 0:
-        
+
         Claim_Request.objects.create(patient_id_id = patient_id, payment_id_id = payment_ID, claim_status = 'Pending', claim_raised_date = claim_raised_date)
-        
-    return payment_records(request) 
+
+    return payment_records(request)
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(id=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        shs_user = SHSUser.objects.select_related().filter(user = user.id)
+        shs_user.email_confirmed = True
+        user.save()
+        return redirect('password_reset')
+    else:
+        return render(request, 'account_activation_invalid.html')

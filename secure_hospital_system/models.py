@@ -29,6 +29,7 @@ class Roles(models.Model):
 class SHSUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role_id = models.ForeignKey(Roles, on_delete=models.CASCADE)
+    email_confirmed = models.BooleanField(default=False)
 
 #Insurance Providers
 class InsuranceProvider(models.Model):
