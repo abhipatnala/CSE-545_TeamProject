@@ -64,6 +64,10 @@ def contactUs(request):
 	# return render(request, 'CONTACT_US.html', {'form': form})
 	return render(request, 'CONTACT_US.html')
 
+def patientContactUs(request):
+    context = getRoleBasedMenus(request.user.id)
+    return render(request, "patientContactUs.html", context)
+
 def sendContactUsEmail(request):
 	if request.method == 'POST':
 		name = request.POST.get('cname')

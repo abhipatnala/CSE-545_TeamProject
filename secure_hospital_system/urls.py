@@ -33,6 +33,7 @@ urlpatterns = [
     path('aboutUs',views.aboutUs, name ='aboutUs'),
     path('findDoc',views.findDoc, name ='findDoc'),
     path('contactUs',views.contactUs, name ='contactUs'),
+    path('patientContactUs',views.patientContactUs, name ='patientContactUs'),
     path('bookAppointment',views.bookAppointment, name ='bookAppointment'),
     path('appointmentApprovedMail',views.appointmentApprovedMail, name ='appointmentApprovedMail'),
     path('appointmentDeniedMail',views.appointmentDeniedMail, name ='appointmentDeniedMail'),

@@ -1,0 +1,20 @@
+[
+    {
+        "model": "secure_hospital_system.Shift_Timings",
+        "pk": 1,
+        "fields":{
+            "start_time":"8:00:00",
+            "end_time":"12:00:00",
+            "shift_type":"Morning"
+        }
+    },
+    {
+        "model": "secure_hospital_system.Shift_Timings",
+        "pk": 2,
+        "fields":{
+            "start_time":"13:00:00",
+            "end_time":"17:00:00",
+            "shift_type":"Evening"
+        }
+    }
+]
