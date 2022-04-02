@@ -1,0 +1,50 @@
+[
+    {
+        "model": "secure_hospital_system.Menu",
+        "pk": 1,
+        "fields":{
+            "menu_name":"My Profile",
+            "menu_url":"patient"
+        }
+    },
+    {
+        "model": "secure_hospital_system.Menu",
+        "pk": 2,
+        "fields":{
+            "menu_name":"Appointments",
+            "menu_url":"appointments"
+        }
+    },
+    {
+        "model": "secure_hospital_system.Menu",
+        "pk": 3,
+        "fields":{
+            "menu_name":"Medical Records",
+            "menu_url":"medicalRecords"
+        }
+    },
+    {
+        "model": "secure_hospital_system.Menu",
+        "pk": 4,
+        "fields":{
+            "menu_name":"Insurance",
+            "menu_url":"insurance"
+        }
+    },
+    {
+        "model": "secure_hospital_system.Menu",
+        "pk": 5,
+        "fields":{
+            "menu_name":"Find A Doctor",
+            "menu_url":"findPatientDoc"
+        }
+    },
+    {
+        "model": "secure_hospital_system.Menu",
+        "pk": 6,
+        "fields":{
+            "menu_name": "Contact Us",
+            "menu_url":"patientContactUs"
+        }
+    }
+]

@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'secure_hospital_system',
     'django_tables2',
     'django_filters',
-    'bootstrap3'
+    'bootstrap3',
+    'django_seed'
 ]
 
 MIDDLEWARE = [
