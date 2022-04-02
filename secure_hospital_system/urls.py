@@ -25,6 +25,7 @@ from secure_hospital_system.views import InsuranceLoginRecords
 urlpatterns = [
     path('accounts/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
     path('accounts/logout/', include('django.contrib.auth.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
     url(r'^settings/', include('django_mfa.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('admin/', admin.site.urls, name='admin'),
@@ -66,5 +67,6 @@ urlpatterns = [
     path('doctorsworklist',views.doctor_worklist,name='doctor_worklist'),
     path('insurancePortal/', views.payment_records, name = "payment_records"),
     path('insurancePortal/saveInsurInfo', views.saveInsurInfo, name = 'saveInsurInfo'),
-    path('insurancePortal/fileClaim', views.fileClaim, name = 'fileClaim')
+    path('insurancePortal/fileClaim', views.fileClaim, name = 'fileClaim'),
+    path('activate/<slug:uidb64>/<slug:token>/', views.activate, name='activate')
 ]
