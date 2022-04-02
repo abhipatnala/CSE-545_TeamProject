@@ -1,6 +1,4 @@
 
-<form action="mail" method="post">
-    <button type="submit" href="{% url 'insuranceconf'%}" formaction="insuranceApprovedMail">Approve</button>
-    <button type="submit" href="{% url 'insuranceconf'%}" formaction="insuranceDeniedMail">Deny</button>
-</form>
+<a class="btn btn-info btn-sm" href="{% url 'insuranceApprovedMail' record.claim_id %}">Approve</a>
+<a class="btn btn-info btn-sm" href="{% url 'insuranceDeniedMail' record.claim_id %}">Deny</a>
 
