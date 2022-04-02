@@ -1,0 +1,44 @@
+[
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 1,
+            "role_id": 6
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 2,
+            "role_id": 6
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 3,
+            "role_id": 6
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 4,
+            "role_id": 6
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 5,
+            "role_id": 6
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 6,
+            "role_id": 6
+        }
+    }
+]

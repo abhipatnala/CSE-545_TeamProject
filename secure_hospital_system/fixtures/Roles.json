@@ -1,0 +1,44 @@
+[
+    {
+        "model":"secure_hospital_system.Roles",
+        "pk": 1,
+        "fields":{
+            "role_name":"admin"
+        }
+    },
+    {
+        "model":"secure_hospital_system.Roles",
+        "pk": 2,
+        "fields":{
+            "role_name":"doctor"
+        }
+    },
+    {
+        "model":"secure_hospital_system.Roles",
+        "pk": 3,
+        "fields":{
+            "role_name":"hospitalstaff"
+        }
+    },
+    {
+        "model":"secure_hospital_system.Roles",
+        "pk": 4,
+        "fields":{
+            "role_name":"insurancestaff"
+        }
+    },
+    {
+        "model":"secure_hospital_system.Roles",
+        "pk": 5,
+        "fields":{
+            "role_name":"labstaff"
+        }
+    },
+    {
+        "model":"secure_hospital_system.Roles",
+        "pk": 6,
+        "fields":{
+            "role_name":"patient"
+        }
+    }
+]

@@ -134,7 +134,6 @@ class Menu_Mapping(models.Model):
     menu_map_id = models.BigAutoField(primary_key=True)
     menu_id = models.ForeignKey(Menu, on_delete=models.CASCADE)
     role_id = models.ForeignKey(Roles, on_delete=models.CASCADE)
-    is_default = models.BooleanField()
 
 class Lab_Test(models.Model):
     lab_test_id = models.BigAutoField(primary_key=True)
