@@ -674,7 +674,6 @@ def insuranceDeniedMail(request):
     )
     return render(request, 'sentmail.html')
 
-
 class ClaimTableView(tables.SingleTableView):
     table_class = ClaimTable
     queryset = Claim_Request.objects.all()

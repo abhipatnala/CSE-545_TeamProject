@@ -15,7 +15,7 @@ class ClaimRequestTable(tables.Table):
         model = Claim_Request
         fields = ['claim_status','claim_raised_date']
     edit = tables.TemplateColumn(template_name='insuranceconf.html')
-    
+
 class Appointments(tables.Table):
     class Meta:
         model = Doctor_availability_booked
@@ -79,6 +79,7 @@ class LabStaffView(tables.Table):
     date = tables.Column(accessor='action_taken_date', verbose_name='Date')
     create_labtest_report = tables.TemplateColumn(template_name='create_labtest_report.html', verbose_name="Create Report")
     
+
 class ClaimTable(tables.Table):
     class Meta:model = Claim_Request
     attrs = {'class': 'claim_table table-sm'}
@@ -92,3 +93,4 @@ class PaymentTable(tables.Table):
     #fields = ['Insurance ID', 'Claim ID', 'Bill ID', 'Bill Amount', 'Bill Date', 'Claim Status', 'File_Claim']
     fields = ['Claim ID', 'insur_id', 'claim_raised_date', 'claim_status', 'file']
     file = tables.TemplateColumn(template_name='btn.html')  
+
