@@ -175,9 +175,11 @@ color:#E60000; }
   </style>
   </head>
   <body>
-  <div class="container-fluid">
- <img class="img-responsive" src="pics/hlogo.jpg" alt="" title="" width="400" > 
-</div>
+    <div class="container-fluid">
+      <img id="a"  class="img-responsive" src="{%static 'pics/hlogo.jpg' %}" alt="" title="" width="400" > 
+     </div>
+     <br>
+     <br>
 <nav class="navbar navbar-inverse ">
   <div class="container-fluid">
   <div class="navbar-header">
@@ -189,16 +191,15 @@ color:#E60000; }
 	  </div>
 	   <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-<li ><a href="HOME.html">Home</a></li>
-    <li ><a href="ABOUT_US.html">About Us</a></li>
-	<li ><a href="EVENTS.html">Events</a></li>   
-<li><a href="BIBLIOGRAPHY.html">Find A Doctor</a></li>
-	  <li><a href="CONTACT_US.html">Contact Us</a></li>
+<li ><a href="home">Home</a></li>
+    <li class='active'><a href="aboutUs">About Us</a></li>
+<li ><a href="findDoc">Find A Doctor</a></li>
+	  <li><a href="contactUs">Contact Us</a></li>
 	  </ul>
     <ul class="nav navbar-nav navbar-right">
-	<li  class='active' ><a href="login.html"> Book An Appointment
+	<li><a href="bookAppointment"> Book An Appointment
 	</a></li>
-      <li><a href="login.html" font-size= 20px><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      <li><a href="login" font-size= 20px><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
     </ul>
 	
 	</div>

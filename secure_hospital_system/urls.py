@@ -19,6 +19,7 @@ from django.conf.urls import url
 from django.views.generic.base import TemplateView
 from . import views
 from secure_hospital_system.views import TableView
+from secure_hospital_system.views import InsuranceLoginRecords
 
 urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
@@ -61,4 +62,7 @@ urlpatterns = [
     path('labstaff_worklist', views.labstaff_worklist, name='labstaff_worklist'),
     path('create_labtest_report', views.create_labtest_report, name='create_labtest_report'),
     path('doctorsworklist',views.doctor_worklist,name='doctor_worklist'),
+    path('insurancePortal/', views.payment_records, name = "payment_records"),
+    path('insurancePortal/saveInsurInfo', views.saveInsurInfo, name = 'saveInsurInfo'),
+    path('insurancePortal/fileClaim', views.fileClaim, name = 'fileClaim')
 ]
