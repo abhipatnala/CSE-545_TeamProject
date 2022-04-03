@@ -55,6 +55,7 @@
     <!-- Unnamed (Text Field) -->
     <div class="container mt-5">
       <form action="/newBillGenerated" class="row g-3" method = "post" enctype="multipart/form-data>
+        {% csrf_token %}
       <div class="container mt-5_1" id="div2">
         <h1 align=center>Bill Information</h1>
           <input type="hidden" name="patient_id" value='{{patient_id}}'>
