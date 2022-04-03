@@ -93,21 +93,29 @@ def sendContactUsEmail(request):
 		fail_silently=False
 	)
 	return render(request,'sentmail.html')
+def bookingAppointmentsForSelectedDocByExistingPatients(request,doctor_id):
+	return render(request,"ExistingPatientsAppointmentBooking.html",{'doctor_id':doctor_id})
+
+def bookingAppointmentsByExistingPatients(request):
+	doctor_id = 1
+	return render(request,"ExistingPatientsAppointmentBooking.html",{'doctor_id':doctor_id})
+
+def bookAppointmentForSelectedDoc(request, doctor_id):
+	#doctors = Doctor.objects.filter(doctor_id = doctor_id)
+	return render(request,"BOOKAPPT.html",{'doctor_id':doctor_id})
 
 def bookAppointment(request):
-	doctorid =1
-	if request.method == 'POST':
-		doctorid = request.POST['docid']
-	slots = ["8-9", "9-10", "10-11", "11-12"]
-	if doctorid != None:
-		doctors = Doctor.objects.filter(doctor_id = doctorid)
-	else:
-		doctors = Doctor.objects.all()
-	context = {
-		'doctors' : doctors,
-		'slots' : slots,
-	}
-	return render(request,"BOOKAPPT.html",context)
+	doctor_id =1 #General Physician is hard coded
+	#doctors = Doctor.objects.filter(doctor_id = doctorid)
+	#doctors = ''
+	#if request.method == 'POST':
+	#	print("inside POST bookAppointment")
+	#	doctorid = request.POST['docid']
+	#	if doctorid:
+	#		doctors = Doctor.objects.filter(doctor_id = doctorid)
+	#	else:
+	#		doctors = Doctor.objects.all()
+	return render(request,"BOOKAPPT.html",{'doctor_id':doctor_id})
 
 def appointmentRequests(request):
 	return render(request, 'appointmentRequests.html') 
@@ -773,7 +781,7 @@ class ClaimTableView(tables.SingleTableView):
     queryset = Claim_Request.objects.all()
     template_name = "claimTable.html"
     
-def payment_records(request):
+def insurance(request):
     #patient_id = request.user.patient_id
     user = request.user
     shs_user_id = SHSUser.objects.get(user = user)
@@ -804,7 +812,7 @@ def saveInsurInfo(request):
         #Patient.objects.filter(patient_id = request.user.patient_id).update(patient_insurance_provider_id = insurancePv, patient_insurance_member_id = patientMemID )
         Patient.objects.filter(patient_id = 10).update(patient_insurance_provider_id = insurancePv, patient_insurance_member_id = patientMemID )
 
-    return payment_records(request)
+    return insurance(request)
 
 @csrf_exempt
 def fileClaim(request):

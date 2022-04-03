@@ -26,7 +26,8 @@ def twofaEnabled(user):
 
 def saveAppointmentDetails(request, patient):
 	purposeOfVisit = request.POST['purposeOfvisit']
-	doctor_preference = request.POST['DocPref']
+	#doctor_preference = request.POST['DocPref']
+	doctorId = request.POST['doctor_id']
 	appointment_date_request = request.POST['appointmentDate']
 	opted_slot = request.POST['AvailableSlots']
 	print("appointment details")
@@ -47,19 +48,19 @@ def saveAppointmentDetails(request, patient):
 		#	appointment_start_time = "4:00 PM"
 		#	appointment_end_time = "5:00 PM"
 	print("appointment details abou to be saved")
-	doctor_preference = "Yes"
-	print("doctor_preference ",doctor_preference)
-	if doctor_preference == "Yes":
-		doctor_id = 1
-		doctorObj = Doctor.objects.filter(doctor_id=doctor_id)
-		print("doctorObj",doctorObj)
-		doctorAvailabilityBooked = Doctor_availability_booked(patient_id=patient, doctor_id=doctorObj[0], appointment_date = appointment_date_request,
-			appointment_start_time=appointment_start_time, appointment_end_time=appointment_end_time, booking_request_timestamp = date.today(),
-			status = 'PENDING')
-	else:
-		doctorAvailabilityBooked = Doctor_availability_booked(patient_id=patient, appointment_date = appointment_date_request,
-			appointment_start_time=appointment_start_time, appointment_end_time=appointment_end_time, booking_request_timestamp = date.today(),
-			status = 'PENDING') 
+	#doctor_preference = "Yes"
+	#print("doctor_preference ",doctor_preference)
+	#if doctor_preference == "Yes":
+	#doctor_id = 1
+	doctorObj = Doctor.objects.filter(doctor_id=doctorId)
+	print("doctorObj",doctorObj)
+	doctorAvailabilityBooked = Doctor_availability_booked(patient_id=patient, doctor_id=doctorObj[0], appointment_date = appointment_date_request,
+		appointment_start_time=appointment_start_time, appointment_end_time=appointment_end_time, booking_request_timestamp = date.today(),
+		status = 'pending')
+	#else:
+	#	doctorAvailabilityBooked = Doctor_availability_booked(patient_id=patient, appointment_date = appointment_date_request,
+	#		appointment_start_time=appointment_start_time, appointment_end_time=appointment_end_time, booking_request_timestamp = date.today(),
+	#		status = 'pending') 
 	doctorAvailabilityBooked.save()
 
 

@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -171,23 +170,13 @@ legend{
 h4
 {
 color:#E60000; }
-#a
-{
-position:absolute;
-top:2px;
-left:2px;
-}
+
   </style>
   </head>
   <body>
-    <div class="container-fluid">
-      <img id="a"  class="img-responsive" src="{%static 'pics/hlogo.jpg' %}" alt="" title="" width="400" > 
-     </div>
-     <br>
-     <br>
-     <br>
-     <br>
-     
+  <div class="container-fluid">
+ <img class="img-responsive" src="pics/hlogo.jpg" alt="" title="" width="400" > 
+</div>
 <nav class="navbar navbar-inverse ">
   <div class="container-fluid">
   <div class="navbar-header">
@@ -199,15 +188,16 @@ left:2px;
 	  </div>
 	   <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-<li ><a href="home">Home</a></li>
-    <li ><a href="aboutUs">About Us</a></li>
-<li ><a href="findDoc">Find A Doctor</a></li>
-	  <li><a href="contactUs">Contact Us</a></li>
+<li ><a href="HOME.html">Home</a></li>
+    <li ><a href="ABOUT_US.html">About Us</a></li>
+	<li ><a href="EVENTS.html">Events</a></li>   
+<li><a href="BIBLIOGRAPHY.html">Find A Doctor</a></li>
+	  <li><a href="CONTACT_US.html">Contact Us</a></li>
 	  </ul>
     <ul class="nav navbar-nav navbar-right">
-	<li class='active'><a href="bookAppointment"> Book An Appointment
+	<li  class='active' ><a href="login.html"> Book An Appointment
 	</a></li>
-      <li><a href="{% url 'login' %}" font-size= 20px><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      <li><a href="login.html" font-size= 20px><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
     </ul>
 	
 	</div>
@@ -215,7 +205,7 @@ left:2px;
 <div class="container" id="wrap">
 	  <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form action="/onSubmitOfNewPatientsAppointmentDetails/" method="post" accept-charset="utf-8" class="form" role="form" enctype="multipart/form-data">  
+            <form action="/onSubmitOfExistingPatientsAppointmentBooking/" method="post" accept-charset="utf-8" class="form" role="form" enctype="multipart/form-data">  
 			<br> 
 			<legend><u>Book An Appointment With Us!</u></legend>
 			<br>
@@ -226,11 +216,11 @@ left:2px;
 <option value="new">New</option>
 <option value="existing">Existing</option>
 </select>                     
-			</div>-->
+			</div>
 			<br>
 			<br>
-			<br>
-                    <h4>Patient Information</h4>
+			<br>-->
+                 <!--   <h4>Patient Information</h4>
                     <br>
 					<div class="row">
                         <div class="col-xs-6 col-md-6">
@@ -412,7 +402,7 @@ left:2px;
            
             &nbsp;
             &nbsp;
-			</div>
+			</div>-->
 			
 			<h4 align=leftwards>Appointment Details</h4>
              <div class="row"
@@ -421,15 +411,15 @@ left:2px;
               
               
                <!-- <label for="DocPref" class="form-label">Do you have a doctor preference?</label>
-                <select id="DocPref" name = "DocPref" class="form-control" onclick="checkDoctorPreference()">
+                <select id="DocPref" name = "DocPref" class="form-control">
 				  <option>No</option>
                   <option>Yes</option>
                   
               </select> 
 			  
 			  
-                <label for="Doc" class="form-label">Select your preferred doctor</label>
-                <select id="Doc" name = "Doc" class="form-control" disabled>
+                <label for="Doc" class="form-label">Do you have a doctor preference?</label>
+                <select id="Doc" name = "Doc" class="form-control">
 				  <option>Dr A</option>
                   <option>Dr B</option>
                   
@@ -447,7 +437,7 @@ left:2px;
                   <option>9-10 AM</option>
                   <option>1-2 PM</option>
                   <option>4-5 PM</option>
-                </select> 
+              </select> 
               
               &nbsp;
               &nbsp;
@@ -462,16 +452,6 @@ left:2px;
 </div>            
 </div>
 </div>
-<script>
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth() + 1; 
-  var yyyy = today.getFullYear();
-  if (dd < 10) {dd = '0' + dd;}
-  if (mm < 10) {mm = '0' + mm;}  
-  today = yyyy + '-' + mm + '-' + dd;
-  document.getElementById('appointmentDate').setAttribute('min',today);
-  document.getElementById('DOB').setAttribute('max',today);
-</script>
+
 </body>
 </html>
