@@ -17,6 +17,7 @@ import django_on_heroku
 
 from django.contrib.messages import constants as messages
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -185,3 +186,5 @@ MESSAGE_TAGS = {
         messages.WARNING: 'alert-warning',
         messages.ERROR: 'alert-danger',
 }
+
+BLOCKCHAINURL = "shsblockchain.pagekite.me"
