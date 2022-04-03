@@ -46,5 +46,54 @@
             "menu_name": "Contact Us",
             "menu_url":"patientContactUs"
         }
+    },
+    {
+        "model": "secure_hospital_system.Menu",
+        "pk": 7,
+        "fields":{
+            "menu_name": "My Appointments",
+            "menu_url":"doctorWorklist"
+        }
+    },
+    {
+        "model": "secure_hospital_system.Menu",
+        "pk": 8,
+        "fields":{
+            "menu_name": "All Appointments",
+            "menu_url":"patientsViewWithFilter"
+        }
+    },
+    {
+        "model": "secure_hospital_system.Menu",
+        "pk": 9,
+        "fields":{
+            "menu_name": "Appointment Requests",
+            "menu_url":"appointmentConf"
+        }
+    },
+    {
+        "model": "secure_hospital_system.Menu",
+        "pk": 10,
+        "fields":{
+            "menu_name": "Lab Tests",
+            "menu_url":"labstaffWorklist"
+        }
+    },
+    {
+        "model": "secure_hospital_system.Menu",
+        "pk": 11,
+        "fields":{
+            "menu_name": "Lab Test Requests",
+            "menu_url":"labtestRequests"
+        }
+    },
+    {
+        "model": "secure_hospital_system.Menu",
+        "pk": 12,
+        "fields":{
+            "menu_name": "Insurance Claims",
+            "menu_url":"insuranceconf"
+        }
     }
+
 ]

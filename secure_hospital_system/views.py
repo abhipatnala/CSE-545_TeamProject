@@ -399,6 +399,15 @@ def contact(request):
 	else:
 		return render(request, 'contact.html', {})
 
+def appointmentApproval(request):
+	userId = request.user.id
+	userContext = getRoleBasedMenus(userId)
+	queryset = Doctor_availability_booked.objects.filter(status="pending")
+	doctorsTable = SimpleTable(queryset)
+	template = loader.get_template('simple_list.html')
+	userContext = getRoleBasedMenus(userId)
+	return render(request, 'simple_list.html', userContext)
+
 class TableView(tables.SingleTableView):
 	table_class = SimpleTable
 	queryset = Doctor_availability_booked.objects.filter(status="pending")
@@ -408,8 +417,8 @@ class DoctorViewTable(tables.SingleTableView):
 	table_class = DoctorView
 	queryset = Doctor_availability_booked.objects.filter()
 	template_name = "simple_list.html"
-@login_required
-@is_doctor('home', {'message': "Oops, can't go there."})
+# @login_required
+# @is_doctor('home', {'message': "Oops, can't go there."})
 def doctorWorklist(request):
 	userId = request.user
 	shsUser = SHSUser.objects.get(user = userId)
@@ -420,7 +429,8 @@ def doctorWorklist(request):
 	worklistDetails = filter.qs
 	doctorsTable = DoctorView(worklistDetails)
 	template = loader.get_template('doctorWorklist.html')
-	userContext = getRoleBasedMenus(userId)
+	userContext = getRoleBasedMenus(userId.id)
+	print(userContext)
 	context = {
 		'filter' : filter,
 		'doctorsTable' : doctorsTable,
