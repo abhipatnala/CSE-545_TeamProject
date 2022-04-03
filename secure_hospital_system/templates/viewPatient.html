@@ -11,25 +11,15 @@
 
                 <div class="form-row">
                     <div class="col-md-4 mb-3">
-                        <label for="patient id">Patient ID</label>
-                        <input type="text" class="form-control" id="patient id" name="patient id" disabled placeholder="XXXXXXXX">
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label for="user id">User ID</label>
-                        <input type="text" class="form-control" id="user id" name="lastName" placeholder="XXXXXXXXX" disabled>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="col-md-4 mb-3">
                         <label for="firstName">First name</label>
-                        <input pattern="[a-zA-Z\s]+" type="text" class="form-control" id="firstName" name="firstName" placeholder="First name" disabled>
+                        <input pattern="[a-zA-Z\s]+" type="text" class="form-control" id="firstName" name="firstName" placeholder="First name"
+                        value= '{{user.first_name}}'>
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <label for="lastName">Last name</label>
-                        <input pattern="[a-zA-Z\s]+" type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name" disabled>
+                        <input pattern="[a-zA-Z\s]+" type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name"
+                        value= '{{user.last_name}}' >
                     </div>
 
                     <div class="col-md-4 mb-3" style="padding-left: 27px">
@@ -54,7 +44,8 @@
                     <div class="col-md-3 mb-3" style="padding-left: 50px">
                         <label for="dateOfBirth">Date of Birth</label>
                         <div>
-                            <input type="Date" name="dateOfBirth" id="dateOfBirth" placeholder="Enter date" disabled>
+                          <input type="Date" name="dateOfBirth" id="dateOfBirth" placeholder="Enter date"
+                          value = {{patient.patient_dob}}>
                         </div>
                     </div>
 
@@ -118,19 +109,22 @@
 
                     <div class="col-md-2 mb-3">
                         <label for="city">City</label>
-                        <input type="text" pattern="[a-zA-Z\s]+" class="form-control" name="city" id="city" placeholder="city">
+                        <input type="text" pattern="[a-zA-Z\s]+" class="form-control" name="city" id="city" placeholder="city"
+                        value={{patient.city}}>
                     </div>
 
                     <div class="col-md-2 mb-3">
                         <label for="pincode">Pin Code</label>
-                        <input type="number" pattern="[0-9]{5}" class="form-control" name="pincode" id="pincode" placeholder="PinCode">
+                        <input type="number" pattern="[0-9]{5}" class="form-control" name="pincode" id="pincode" placeholder="PinCode"
+                        value={{patient.zipCode}}>
                     </div>
                 </div>
 
                 <div class="form-row" style="padding-bottom: 10px">
                     <div class="col-md-8 mb-3">
                         <label for="address">Address</label>
-                        <input type="text" class="form-control" id="address" name="address" placeholder="Address">
+                        <input type="text" class="form-control" id="address" name="address" placeholder="Address"
+                        value={{patient.address}}>
                     </div>
 
                     <div class="col-md-4 mb-3">
@@ -176,14 +170,16 @@
                     <div class="col-md-3 mb-3">
                         <label for="contact">Contact Number</label>
                         <div style="padding-top: 10px">
-                            <input type="tel" pattern="[0-9]{10}" class="form-control" id="contact" name="contact" placeholder="Contact Number">
+                          <input type="tel" pattern="[0-9]{10}" class="form-control" id="contact" name="contact" placeholder="Contact Number"
+                          value={{patient.phone_number}}>
                         </div>
                     </div>
 
                     <div class="col-md-5 mb-3">
                         <label for="email">Email</label>
                         <div style="padding-top: 10px">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                          <input type="email" class="form-control" id="email" name="email" placeholder="Email" disabled
+                          value={{user.email}}>
                         </div>
                     </div>
                 </div>
@@ -197,12 +193,14 @@
                 <div class="form-row">
                     <div class="col-md-4 mb-3">
                         <label for="firstName">First name</label>
-                        <input pattern="[a-zA-Z\s]+" type="text" class="form-control" id="gfirstName" name="gfirstName" placeholder="First name">
+                        <input pattern="[a-zA-Z\s]+" type="text" class="form-control" id="gfirstName" name="gfirstName" placeholder="First name"
+                        value={{patient.emergency_contact_firstname}}>
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <label for="lastName">Last name</label>
-                        <input pattern="[a-zA-Z\s]+" type="text" class="form-control" id="glastName" name="glastName" placeholder="Last name">
+                        <input pattern="[a-zA-Z\s]+" type="text" class="form-control" id="glastName" name="glastName" placeholder="Last name"
+                        value={{patient.emergency_contact_lastname}}>
                     </div>
 
                     <div class="col-md-4 mb-3" style="padding-left: 27px">
@@ -219,13 +217,15 @@
                     <div class="col-md-3 mb-3">
                         <label for="econtact">Contact Number</label>
                         <div style="padding-top: 10px">
-                            <input type="tel" pattern="[0-9]{10}" class="form-control" id="gcontact" name="econtact" placeholder="Contact Number">
+                          <input type="tel" pattern="[0-9]{10}" class="form-control" id="gcontact" name="econtact" placeholder="Contact Number"
+                          value={{patient.emergency_contact_phone_number}}>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <label for="eemail">Email</label>
                         <div style="padding-top: 10px">
-                            <input type="email" class="form-control" id="eemail" name="eemail" placeholder="Email">
+                          <input type="email" class="form-control" id="eemail" name="eemail" placeholder="Email"
+                          value={{patient.emergency_contact_email}}>
                         </div>
                     </div>
                 </div>
@@ -236,37 +236,24 @@
                 <div class="form-row">
                     <div class="col-md-4 mb-3">
                         <label for="medications">Medications Followed</label>
-                        <input type="text" class="form-control" id="medications" name="medications" placeholder="Medications">
+                        <input type="text" class="form-control" id="medications" name="medications" placeholder="Medications"
+                        value={{patient.medicationFollowed}}>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="premedication">Pre Exisiting Medical Conditions</label>
-                        <input type="text" class="form-control" id="premedical" name="premedical" placeholder="pre medical conditions">
+                        <input type="text" class="form-control" id="premedical" name="premedical" placeholder="pre medical conditions"
+                        value={{patient.preExistingMedicalConditions}}>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label for="othermedical">Other Medical conditions</label>
-                        <input type="text" class="form-control" id="othermedical" name="othermedical" placeholder="other medical conditions">
+                        <input type="text" class="form-control" id="othermedical" name="othermedical" placeholder="other medical conditions"
+                        value={{patient.preExistingMedicalConditions}}>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-md-4 mb-3">
                         <label for="llergies">Allergies</label>
                         <input type="text" class="form-control" id="llergies" name="llergies" placeholder="Allergies">
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="user">update user</label>
-                        <input type="text" class="form-control" id="user" name="user" placeholder="update user">
-                    </div>
-                    <div class="col-md-2 mb-3">
-                        <label for="createdDate">Created Date</label>
-                        <div>
-                            <input type="Date" disabled>
-                        </div>
-                    </div>
-                    <div class="col-md-2 mb-3">
-                        <label for="createdDate">Last update</label>
-                        <div>
-                            <input type="Date" disabled>
-                        </div>
                     </div>
                 </div>
             </div>

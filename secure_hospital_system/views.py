@@ -517,9 +517,18 @@ def viewRecord(request):
 
 @is_patient('home', {'message': "Oops, can't go there."})
 def view_patient(request):
-	context = getRoleBasedMenus(request.user.id)
-	template = loader.get_template('viewPatient.html')
-	return HttpResponse(template.render(context, request))
+    shs_user = SHSUser.objects.select_related().filter(user = request.user.id)[0]
+    patient = Patient.objects.select_related().filter(user_id = shs_user)[0]
+
+    context = {
+        'user': request.user,
+        'patient': patient
+    }
+
+    RoleContext = getRoleBasedMenus(request.user.id)
+    template = loader.get_template('viewPatient.html')
+    context.update(RoleContext)
+    return HttpResponse(template.render(context, request))
 
 @csrf_exempt
 @login_required
