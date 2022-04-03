@@ -32,6 +32,7 @@ urlpatterns = [
     path('home',views.home, name ='home'),
     path('aboutUs',views.aboutUs, name ='aboutUs'),
     path('findDoc',views.findDoc, name ='findDoc'),
+    path('findPatientDoc',views.findPatientDoc, name ='findPatientDoc'),
     path('contactUs',views.contactUs, name ='contactUs'),
     path('patientContactUs',views.patientContactUs, name ='patientContactUs'),
     path('bookAppointment',views.bookAppointment, name ='bookAppointment'),

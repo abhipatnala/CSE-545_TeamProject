@@ -51,6 +51,15 @@ def findDoc(request):
 	docList = Doctor.objects.all()
 	return render(request, 'FINDDOC.html',{'docList':docList}) 
 
+def findPatientDoc(request):
+    context1 = getRoleBasedMenus(request.user.id)
+    docList = Doctor.objects.all()
+    context = {
+		'docList':docList
+	}
+    context.update(context1)
+    return render(request, "patientDoc.html", context)
+
 def contactUs(request):
 	# if request.method == "POST":
 	#     form = ContactForm(request.POST)
