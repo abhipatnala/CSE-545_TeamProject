@@ -784,7 +784,7 @@ class ClaimTableView(tables.SingleTableView):
     queryset = Claim_Request.objects.all()
     template_name = "claimTable.html"
     
-def insurance(request):
+def patientInsurance(request):
     #patient_id = request.user.patient_id
     user = request.user
     shs_user_id = SHSUser.objects.get(user = user)
@@ -815,7 +815,7 @@ def saveInsurInfo(request):
         #Patient.objects.filter(patient_id = request.user.patient_id).update(patient_insurance_provider_id = insurancePv, patient_insurance_member_id = patientMemID )
         Patient.objects.filter(patient_id = 10).update(patient_insurance_provider_id = insurancePv, patient_insurance_member_id = patientMemID )
 
-    return insurance(request)
+    return patientInsurance(request)
 
 @csrf_exempt
 def fileClaim(request):
@@ -834,7 +834,7 @@ def fileClaim(request):
         data = {'claim_id': '1', 'patient_id': '1', 'insurance_id': '1', 'amount': '50000', 'bill_id': '1', 'status':"claimed"}
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         r = requests.post(url, data=json.dumps(data), headers=headers)
-    return insurance(request)
+    return patientInsurance(request)
 
 
 def activate(request, uidb64, token):

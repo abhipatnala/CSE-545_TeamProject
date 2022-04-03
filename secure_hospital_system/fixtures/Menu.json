@@ -28,7 +28,7 @@
         "pk": 4,
         "fields":{
             "menu_name":"Insurance",
-            "menu_url":"insurance"
+            "menu_url":"patientInsurance"
         }
     },
     {
