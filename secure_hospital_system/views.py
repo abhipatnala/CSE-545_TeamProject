@@ -417,8 +417,9 @@ class DoctorViewTable(tables.SingleTableView):
 	table_class = DoctorView
 	queryset = Doctor_availability_booked.objects.filter()
 	template_name = "simple_list.html"
-# @login_required
-# @is_doctor('home', {'message': "Oops, can't go there."})
+
+@login_required
+@is_doctor('home', {'message': "Oops, can't go there."})
 def doctorWorklist(request):
 	userId = request.user
 	shsUser = SHSUser.objects.get(user = userId)
