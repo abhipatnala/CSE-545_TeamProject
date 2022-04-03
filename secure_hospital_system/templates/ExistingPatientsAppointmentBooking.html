@@ -205,7 +205,8 @@ color:#E60000; }
 <div class="container" id="wrap">
 	  <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form action="/onSubmitOfExistingPatientsAppointmentBooking/" method="post" accept-charset="utf-8" class="form" role="form" enctype="multipart/form-data">  
+            <form action="/onSubmitOfExistingPatientsAppointmentBooking/" method="post" accept-charset="utf-8" class="form" role="form" enctype="multipart/form-data">
+              {% csrf_token %}  
 			<br> 
 			<legend><u>Book An Appointment With Us!</u></legend>
 			<br>
