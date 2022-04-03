@@ -11,11 +11,10 @@
             </div>
             <div class="modal-body" id="modal-body">
                 <!-- form here -->
-                <form action="create_labtest_report" method="post">
-                    <!--<label for="pwd">Diagnosis</label>-->
+                <form action="createLabtestReport" method="post">
                     <textarea id="labtest_report_string" name="labtest_report_string" rows="4" cols="50" placeholder="Enter the Lab Test Report" required></textarea><br><br>
-                    <button class="btn btn-info" href="{% url 'create_labtest_report' %}" ><span class="glyphicon glyphicon-save"></span> Save </button>
-                    <input type="hidden" name="lab_test_id" value="{{4}}">
+                    <button class="btn btn-info" href="{% url 'createLabtestReport' %}" ><span class="glyphicon glyphicon-save"></span> Save </button>
+                    <input type="hidden" name="lab_test_id" value="{{ record.lab_test_id }}">
                     <input type="hidden" name="user_id" value="{{ 1 }}">
                 </form>
             </div>

@@ -11,9 +11,12 @@
     </div>
         <!--<button onclick="CloneForm('formNameHere');" class="button button1">Create Diagnoses </button>-->
     <button class="btn btn-info" data-toggle="modal" data-target="#diagnosis-modal">Create Diagnoses</button>
-    <button class="btn btn-info" data-toggle="modal" data-target="#labtest-modal">Create Lab Tests</button>
+    <button class="btn btn-info" data-toggle="modal" data-target="#labtest-modal">Recommend Lab Test</button>
     <button class="btn btn-info" data-toggle="modal" data-target="#prescription-modal">Create Prescription</button>
-    <a class="btn btn-info" type="submit" href="{% url 'medical_records' %}">View Patient History</a>
+    <form action="medicalRecords" method="post">
+        <button type="submit" class="btn btn-info" href="{% url 'medicalRecords' %}" style="margin-left: 10%; margin-top: 2%;">View Patient History</button>
+        <input type="hidden" name="patient_id" value="{{ patient_id }}">
+    </form>
     <div class="modal fade" id="diagnosis-modal">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -26,12 +29,11 @@
                 </div>
                 <div class="modal-body" id="modal-body">
                     <!-- form here -->
-                    <form action="create_diagnosis" method="post">
+                    <form action="createDiagnosis" method="post">
                         <!--<label for="pwd">Diagnosis</label>-->
                         <textarea id="diagnosis_string" name="diagnosis_string" rows="4" cols="50" placeholder="Enter the Diagnosis" required></textarea><br><br>
-                        <button class="btn btn-info" href="{% url 'create_diagnosis' %}" ><span class="glyphicon glyphicon-save"></span> Save </button>
+                        <button class="btn btn-info" href="{% url 'createDiagnosis' %}" ><span class="glyphicon glyphicon-save"></span> Save </button>
                         <input type="hidden" name="patient_id" value="{{ patient_id }}">
-                        <input type="hidden" name="user_id" value="{{ 1 }}">
                         <input type="hidden" name="appointment_id" value="{{ appointment_id }}">
                     </form>
                 </div>
@@ -50,12 +52,11 @@
                 </div>
                 <div class="modal-body" id="modal-body">
                     <!-- form here -->
-                    <form action="recommend_labtest" method="post">
+                    <form action="recommendLabtest" method="post">
                         <!--<label for="pwd">Diagnosis</label>-->
                         <textarea id="labtest_recommendation" name="labtest_recommendation" rows="4" cols="50" placeholder="Enter the Recommendation for a Lab test" required></textarea><br><br>
-                        <button class="btn btn-info" href="{% url 'recommend_labtest' %}" ><span class="glyphicon glyphicon-pencil"></span> Submit </button>
+                        <button class="btn btn-info" href="{% url 'recommendLabtest' %}" ><span class="glyphicon glyphicon-pencil"></span> Submit </button>
                         <input type="hidden" name="patient_id" value="{{ patient_id }}">
-                        <input type="hidden" name="user_id" value="{{ 1 }}">
                         <input type="hidden" name="appointment_id" value="{{ appointment_id }}">
                     </form>
                 </div>
@@ -74,12 +75,11 @@
                 </div>
                 <div class="modal-body" id="modal-body">
                     <!-- form here -->
-                    <form action="create_prescription" method="post">
+                    <form action="createPrescription" method="post">
                         <!--<label for="pwd">Diagnosis</label>-->
                         <textarea id="prescription_string" name="prescription_string" rows="4" cols="50" placeholder="Enter the Prescription" required></textarea><br><br>
-                        <button class="btn btn-info" href="{% url 'create_prescription' %}" ><span class="glyphicon glyphicon-save"></span> Save </button>
+                        <button class="btn btn-info" href="{% url 'createPrescription' %}" ><span class="glyphicon glyphicon-save"></span> Save </button>
                         <input type="hidden" name="patient_id" value="{{ patient_id }}">
-                        <input type="hidden" name="user_id" value="{{ 1 }}">
                         <input type="hidden" name="appointment_id" value="{{ appointment_id }}">
                     </form>
                 </div>

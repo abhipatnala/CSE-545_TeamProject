@@ -1,7 +1,31 @@
-{% extends 'base.html' %}
+{% extends 'Portal.html' %}
 {% block content %}
 
-<div class="container">
-    {{ record_id }}<br>{{ document }}
+<div class="container" style="margin-left:25%; margin-right:25%; margin-top:5%; background-color: powderblue; width: 40%; height: 250px;">
+    <form action="editRecord" method="post">
+        <h1><br>
+            {% if document_type == 'D' %}
+                Diagnosis 
+            {% elif document_type == 'P' %}
+                Prescription
+            {% elif document_type == 'L' %}
+                Lab Test Report
+            {% endif %}
+        </h1><br>
+        <p>{{ document }}</p>
+        <button type="submit" href="{% url 'editRecord' %}" class="btn btn-info" {% if not isDoctor %} style="display:none" {% endif %} value="edit" name="action_taken">
+            <span class="glyphicon glyphicon-edit"></span> Edit
+        </button>
+        <button type="submit" href="{% url 'editRecord' %}" class="btn btn-info" {% if not isDoctor %} style="display:none" {% endif %} value="delete" name="action_taken">
+            <span class="glyphicon glyphicon-trash"></span> Delete
+        </button>
+        <input type="hidden" name="record_id" value="{{ record_id }}">
+        <input type="hidden" name="document_type" value="{{ document_type }}">
+        <input type="hidden" name="document" value="{{ document }}">
+        <input type="hidden" name="patient_id" value="{{ patient_id }}">
+    </form>
 </div>
 {% endblock %}
+
+
+
