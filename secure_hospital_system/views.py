@@ -839,7 +839,7 @@ def fileClaim(request):
 
         Claim_Request.objects.create(patient_id_id = patient_id, payment_id_id = payment_ID, claim_status = 'pending', claim_raised_date = claim_raised_date)
 
-    return payment_records(request)
+    return insurance(request)
 
 
 def activate(request, uidb64, token):
