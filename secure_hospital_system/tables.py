@@ -95,5 +95,5 @@ class PaymentTable(tables.Table):
     attrs = {'class': 'payment_table table-sm'}
     #fields = ['Insurance ID', 'Claim ID', 'Bill ID', 'Bill Amount', 'Bill Date', 'Claim Status', 'File_Claim']
     fields = ['Claim ID', 'insur_id', 'claim_raised_date', 'claim_status', 'file']
-    file = tables.TemplateColumn(template_name='btn.html')  
+    file = tables.TemplateColumn(template_name='claimbtn.html')  
 

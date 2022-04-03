@@ -51,7 +51,7 @@
         "model": "secure_hospital_system.Menu",
         "pk": 7,
         "fields":{
-            "menu_name": "My Appointments",
+            "menu_name": "Patient Worklist",
             "menu_url":"doctorWorklist"
         }
     },

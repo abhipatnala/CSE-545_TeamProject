@@ -30,6 +30,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login
 from .decorators import *
 from django.utils import timezone
+import requests
+import json
+from django.conf import settings 
 
 def home(request):
     if request.user.is_authenticated:
@@ -441,33 +444,20 @@ def doctorWorklist(request):
 
 def patientsViewWithFilter(request):
 	patientDetails = ''
-	#roleName = request.POST['roleName']
-	roleName = ''
-	if roleName == "doctor":
-		doctorsTable = (Doctor_availability_booked.objects.filter(doctor_id=doc_id).filter(status='Approved'))
-		patientDetails = Patient.objects.filter(patient_id__in=Subquery(doctorsTable.values('patient_id')))
-		# get the patients and then filter the patients
-		#patientDetails =                                                                                                                                           patientDetails.filter()
-	elif roleName == "labStaff":
-		#recordsTable = (Records.objects.exclude(LabReport__isnull=True))
-		recordsTable = (Records.objects.filter(document_type="L"))
-		patientDetails = Patient.objects.filter(patient_id__in=Subquery(recordsTable.values('patient')))
-	else:
-		patientDetails = (Patient.objects.all())
-		# get the patients who has lab reports as not null and then filter the patients
-		#reports table
-	#if request.method == "POST":
-	#only get the active users
-	#patientDetails = PatientDetails(Patient.objects.all())
+	userId = request.user
+	roleName = getCurrentUserRole(userId)
+	userContext = getRoleBasedMenus(userId.id)
+	patientDetails = (Patient.objects.all())
 	filter = PatientViewFilter(request.GET, queryset=patientDetails)
 	patientDetails = filter.qs
-	#filter = PatientViewFilter()
-
 	template = loader.get_template('patientGrid.html')
+	context = {
+		'filter' : filter,
+		'patientDetails' : patientDetails
+	}
+	context.update(userContext)
+	return render(request, 'patientGrid.html', context)
 
-	#return HttpResponse(template.render(context, request))
-	return render(request, 'patientGrid.html', {'filter': filter, 'patientDetails': patientDetails})
-	#return render(request, 'blog/filtertable2.html', {'filter': filter})
 
 
 @login_required
@@ -798,7 +788,7 @@ def insurance(request):
     #patient_id = request.user.patient_id
     user = request.user
     shs_user_id = SHSUser.objects.get(user = user)
-    patient_id = Patient(user_id =shs_user_id )
+    patient_id = Patient.objects.get(user_id =shs_user_id )
     paymentsTable = PaymentTable(Payments.objects.filter(patient_id=patient_id).order_by('payment_update_date'))
     claimsTable = ClaimTable(Claim_Request.objects.filter(patient_id=patient_id).order_by('claim_raised_date'))
     
@@ -832,13 +822,18 @@ def fileClaim(request):
     #patient_id = request.user.patient_id
     user = request.user
     shs_user_id = SHSUser.objects.get(user = user)
-    patient_id = Patient(user_id =shs_user_id )
+    patient = Patient.objects.get(user_id =shs_user_id)
+    patient_id = patient.patient_id
     claim_raised_date = datetime.now()
+    claim_update_date = datetime.now()
     payment_ID = request.POST['payment_id']
     if Claim_Request.objects.filter(payment_id = payment_ID).count() == 0:
 
-        Claim_Request.objects.create(patient_id_id = patient_id, payment_id_id = payment_ID, claim_status = 'pending', claim_raised_date = claim_raised_date)
-
+        Claim_Request.objects.create(patient_id_id = patient_id, payment_id_id = payment_ID, claim_status = 'pending', claim_raised_date = claim_raised_date, claim_update_date=claim_update_date)
+        url = settings.BLOCKCHAINURL
+        data = {'claim_id': '1', 'patient_id': '1', 'insurance_id': '1', 'amount': '50000', 'bill_id': '1', 'status':"claimed"}
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        r = requests.post(url, data=json.dumps(data), headers=headers)
     return insurance(request)
 
 
