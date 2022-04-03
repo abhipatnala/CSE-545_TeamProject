@@ -66,8 +66,8 @@ urlpatterns = [
     path('labstaffWorklist', views.labstaffWorklist, name='labstaffWorklist'),
     path('createLabtestReport', views.createLabtestReport, name='createLabtestReport'),
     path('doctorWorklist',views.doctorWorklist,name='doctorWorklist'),
-    path('insurancePortal/', views.payment_records, name = "payment_records"),
-    path('insurancePortal/saveInsurInfo', views.saveInsurInfo, name = 'saveInsurInfo'),
-    path('insurancePortal/fileClaim', views.fileClaim, name = 'fileClaim'),
+    path('insurance/', views.payment_records, name = "payment_records"),
+    path('insurance/saveInsurInfo', views.saveInsurInfo, name = 'saveInsurInfo'),
+    path('insurance/fileClaim', views.fileClaim, name = 'fileClaim'),
     path('activate/<slug:uidb64>/<slug:token>/', views.activate, name='activate')
 ]

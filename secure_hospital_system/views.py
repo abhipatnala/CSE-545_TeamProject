@@ -775,16 +775,20 @@ class ClaimTableView(tables.SingleTableView):
     
 def payment_records(request):
     #patient_id = request.user.patient_id
-    patient_id = '10'
+    user = request.user
+    shs_user_id = SHSUser.objects.get(user = user)
+    patient_id = Patient(user_id =shs_user_id )
     paymentsTable = PaymentTable(Payments.objects.filter(patient_id=patient_id).order_by('payment_update_date'))
     claimsTable = ClaimTable(Claim_Request.objects.filter(patient_id=patient_id).order_by('claim_raised_date'))
     
     template = loader.get_template('insurancePortal.html')
+    context1 = getRoleBasedMenus(request.user.id)
     context = {
         'paymentsTable' : paymentsTable,
         'claimsTable' : claimsTable,
         'patient_id' : patient_id,
     }
+    context.update(context1)
     return HttpResponse(template.render(context, request))
 
 @csrf_exempt
@@ -805,7 +809,9 @@ def saveInsurInfo(request):
 @csrf_exempt
 def fileClaim(request):
     #patient_id = request.user.patient_id
-    patient_id = '10'
+    user = request.user
+    shs_user_id = SHSUser.objects.get(user = user)
+    patient_id = Patient(user_id =shs_user_id )
     claim_raised_date = datetime.now()
     payment_ID = request.POST['payment_id']
     if Claim_Request.objects.filter(payment_id = payment_ID).count() == 0:
