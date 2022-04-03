@@ -4,6 +4,7 @@
 
 {% if filter %}
     <form action="doctorWorklist" method="get" class="form form-inline">
+        {% csrf_token %}
         {% bootstrap_form filter.form layout='inline' %}
         {% bootstrap_button 'filter' %}
     </form>

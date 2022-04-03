@@ -13,7 +13,8 @@
     <button class="btn btn-info" data-toggle="modal" data-target="#diagnosis-modal">Create Diagnoses</button>
     <button class="btn btn-info" data-toggle="modal" data-target="#labtest-modal">Recommend Lab Test</button>
     <button class="btn btn-info" data-toggle="modal" data-target="#prescription-modal">Create Prescription</button>
-    <form action="medicalRecords" method="post">
+    <form action="medicalRecords" method="get">
+        {% csrf_token %}
         <button type="submit" class="btn btn-info" href="{% url 'medicalRecords' %}" style="margin-left: 10%; margin-top: 2%;">View Patient History</button>
         <input type="hidden" name="patient_id" value="{{ patient_id }}">
     </form>
@@ -30,7 +31,7 @@
                 <div class="modal-body" id="modal-body">
                     <!-- form here -->
                     <form action="createDiagnosis" method="post">
-                        <!--<label for="pwd">Diagnosis</label>-->
+                        {% csrf_token %}
                         <textarea id="diagnosis_string" name="diagnosis_string" rows="4" cols="50" placeholder="Enter the Diagnosis" required></textarea><br><br>
                         <button class="btn btn-info" href="{% url 'createDiagnosis' %}" ><span class="glyphicon glyphicon-save"></span> Save </button>
                         <input type="hidden" name="patient_id" value="{{ patient_id }}">
@@ -53,7 +54,7 @@
                 <div class="modal-body" id="modal-body">
                     <!-- form here -->
                     <form action="recommendLabtest" method="post">
-                        <!--<label for="pwd">Diagnosis</label>-->
+                        {% csrf_token %}
                         <textarea id="labtest_recommendation" name="labtest_recommendation" rows="4" cols="50" placeholder="Enter the Recommendation for a Lab test" required></textarea><br><br>
                         <button class="btn btn-info" href="{% url 'recommendLabtest' %}" ><span class="glyphicon glyphicon-pencil"></span> Submit </button>
                         <input type="hidden" name="patient_id" value="{{ patient_id }}">
@@ -76,7 +77,7 @@
                 <div class="modal-body" id="modal-body">
                     <!-- form here -->
                     <form action="createPrescription" method="post">
-                        <!--<label for="pwd">Diagnosis</label>-->
+                        {% csrf_token %}
                         <textarea id="prescription_string" name="prescription_string" rows="4" cols="50" placeholder="Enter the Prescription" required></textarea><br><br>
                         <button class="btn btn-info" href="{% url 'createPrescription' %}" ><span class="glyphicon glyphicon-save"></span> Save </button>
                         <input type="hidden" name="patient_id" value="{{ patient_id }}">

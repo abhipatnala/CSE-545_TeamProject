@@ -408,27 +408,25 @@ class DoctorViewTable(tables.SingleTableView):
 	table_class = DoctorView
 	queryset = Doctor_availability_booked.objects.filter()
 	template_name = "simple_list.html"
-
-@csrf_exempt
 @login_required
+@is_doctor('home', {'message': "Oops, can't go there."})
 def doctorWorklist(request):
 	userId = request.user
-	if getCurrentUserRole(userId) == 'Doctor':
-		shsUser = SHSUser.objects.get(user = userId)
-		doctor = Doctor.objects.get(user_id=shsUser)
-		docId = doctor.doctor_id
-		worklistDetails = Doctor_availability_booked.objects.filter(doctor_id=docId).filter(status='approved').order_by('appointment_date')
-		filter = DoctorViewFilter(request.POST, queryset=worklistDetails)
-		worklistDetails = filter.qs
-		doctorsTable = DoctorView(worklistDetails)
-		template = loader.get_template('doctorWorklist.html')
-		userContext = getRoleBasedMenus(userId)
-		context = {
-			'filter' : filter,
-			'doctorsTable' : doctorsTable,
-		}
-		context.update(userContext)
-		return render(request, 'doctorWorklist.html', context)
+	shsUser = SHSUser.objects.get(user = userId)
+	doctor = Doctor.objects.get(user_id=shsUser)
+	docId = doctor.doctor_id
+	worklistDetails = Doctor_availability_booked.objects.filter(doctor_id=docId).filter(status='approved').order_by('appointment_date')
+	filter = DoctorViewFilter(request.POST, queryset=worklistDetails)
+	worklistDetails = filter.qs
+	doctorsTable = DoctorView(worklistDetails)
+	template = loader.get_template('doctorWorklist.html')
+	userContext = getRoleBasedMenus(userId)
+	context = {
+		'filter' : filter,
+		'doctorsTable' : doctorsTable,
+	}
+	context.update(userContext)
+	return render(request, 'doctorWorklist.html', context)
 
 def patientsViewWithFilter(request):
 	patientDetails = ''
@@ -461,18 +459,22 @@ def patientsViewWithFilter(request):
 	#return render(request, 'blog/filtertable2.html', {'filter': filter})
 
 
-@csrf_exempt
 @login_required
 def medicalRecords(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
 	shsUser = SHSUser.objects.get(user = userId)
-	doctor = Doctor.objects.get(user_id=shsUser)
 	patientId = ''
-	if request.method == 'POST':
-		patientId = request.POST['patient_id']
+	if role == 'patient':
+		patient = Patient.objects.get(user_id=shsUser)
+		if(patient.patient_id == patientId):
+			messages.error(request, "Oops, can't go there.")
+			return HttpResponseRedirect(reverse('home'))
+		else:
+			patientId = patient.patient_id
+	elif role == 'doctor':
+		patientId = request.GET['patient_id']
 	userContext = getRoleBasedMenus(userId)
-
 	patientDetails = PatientDetails(Patient.objects.filter(patient_id=patientId)).as_values()
 	appointmentsTable = Appointments(Doctor_availability_booked.objects.filter(patient_id=patientId).order_by('appointment_date'))
 	diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patientId).filter(document_type='D').order_by('records_id'))
@@ -492,12 +494,11 @@ def medicalRecords(request):
 	context.update(userContext)
 	return HttpResponse(template.render(context, request))
 
-@csrf_exempt
 @login_required
 def viewRecord(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
-	if(role == 'Doctor'):
+	if(role == 'doctor'):
 		isDoctor = True
 	else:
 		isDoctor = False
@@ -538,15 +539,15 @@ def view_patient(request):
     context.update(RoleContext)
     return HttpResponse(template.render(context, request))
 
-@csrf_exempt
 @login_required
+@is_doc_or_labstaff('home', {'message': "Oops, can't go there."})
 def editRecord(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
 	action_taken = request.POST['action_taken']
 	document_type = request.POST['document_type']
 	record_id = request.POST['record_id']
-	if (role == 'Doctor' and (document_type == 'D' or document_type == 'P')):
+	if (role == 'doctor' and (document_type == 'D' or document_type == 'P')):
 		if action_taken == 'edit':
 			
 			document = request.POST['document']
@@ -565,7 +566,7 @@ def editRecord(request):
 		elif action_taken == 'delete':
 			Records.objects.filter(records_id=record_id).delete()
 			return medicalRecords(request)
-	elif (role == 'Lab Staff' and document_type == 'L'):
+	elif (role == 'labstaff' and document_type == 'L'):
 		if action_taken == 'edit':
 			document = request.POST['document']
 			patient_id = request.POST['patient_id']
@@ -585,98 +586,90 @@ def editRecord(request):
 			Records.objects.filter(records_id=record_id).delete()
 			return medicalRecords(request)
 
-@csrf_exempt
 @login_required
+@is_doc_or_labstaff('home', {'message': "Oops, can't go there."})
 def saveRecord(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
-	if role == 'Doctor':
-		record_id = request.POST['record_id']
-		document = request.POST['editeddocument']
-		patient_id = request.POST['patient_id']
-		Records.objects.filter(records_id=record_id).update(document=document, last_modified_date=timezone.now())
-		return medicalRecords(request)
+	record_id = request.POST['record_id']
+	document = request.POST['editeddocument']
+	patient_id = request.POST['patient_id']
+	Records.objects.filter(records_id=record_id).update(document=document, last_modified_date=timezone.now())
+	return medicalRecords(request)
 
-@csrf_exempt
 @login_required
+@is_doctor('home', {'message': "Oops, can't go there."})
 def viewAppointmentDoctor(request):
-	#user_id = request.POST['user_id']
-	if request.user.is_authenticated:
-		userId = request.user
-		role = getCurrentUserRole(userId)
-		shsUser = SHSUser.objects.get(user = userId)
-		doctor = Doctor.objects.get(user_id=shsUser)
-		if request.method == 'POST':
-			patientId = request.POST['patient_id']
-			appointment_id = request.POST['appointment_id']
-		userContext = getRoleBasedMenus(userId)
-		user_id = '1'
+	userId = request.user
+	role = getCurrentUserRole(userId)
+	shsUser = SHSUser.objects.get(user = userId)
+	doctor = Doctor.objects.get(user_id=shsUser)
+	if request.method == 'POST':
+		patientId = request.POST['patient_id']
 		appointment_id = request.POST['appointment_id']
-		patient = Patient.objects.get(patient_id=patientId)
-		patient_name = patient.user_id.user.first_name
-		patient_address = patient.address
-		patient_zipcode = patient.zipCode
-		patient_DOB = patient.patient_dob
-		template = loader.get_template('appointmentViewDoctor.html')
-		context={
-			'patient_id' : patientId,
-			'appointment_id' : appointment_id,
-			'patient_name' : patient_name,
-			'patient_address': patient_address,
-			'patient_zipcode': patient_zipcode,
-			'patient_DOB': patient_DOB,
-			'user_id' : user_id
-		}
-		userContext = getRoleBasedMenus(userId)
-		context.update(userContext)
-		return HttpResponse(template.render(context,request))
+	userContext = getRoleBasedMenus(userId)
+	appointment_id = request.POST['appointment_id']
+	patient = Patient.objects.get(patient_id=patientId)
+	patient_name = patient.user_id.user.first_name
+	patient_address = patient.address
+	patient_zipcode = patient.zipCode
+	patient_DOB = patient.patient_dob
+	template = loader.get_template('appointmentViewDoctor.html')
+	context={
+		'patient_id' : patientId,
+		'appointment_id' : appointment_id,
+		'patient_name' : patient_name,
+		'patient_address': patient_address,
+		'patient_zipcode': patient_zipcode,
+		'patient_DOB': patient_DOB,
+		'user_id' : userId
+	}
+	userContext = getRoleBasedMenus(userId)
+	context.update(userContext)
+	return HttpResponse(template.render(context,request))
 
-@csrf_exempt
 @login_required
+@is_doctor('home', {'message': "Oops, can't go there."})
 def createDiagnosis(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
-	if role == 'Doctor':
-		patient_id = request.POST['patient_id']
-		diagnosis = request.POST['diagnosis_string']
-		patient=Patient.objects.get(patient_id=patient_id)
-		doctor=Doctor.objects.get(doctor_id=1)#change to get using doctor id from request
-		diagnosisRecord = Records(document=diagnosis, patient=patient,doctor=doctor,created_date=timezone.now(),last_modified_date=timezone.now(),document_type='D')
-		diagnosisRecord.save()
-		return viewAppointmentDoctor(request)
+	patient_id = request.POST['patient_id']
+	diagnosis = request.POST['diagnosis_string']
+	patient=Patient.objects.get(patient_id=patient_id)
+	doctor=Doctor.objects.get(doctor_id=1)#change to get using doctor id from request
+	diagnosisRecord = Records(document=diagnosis, patient=patient,doctor=doctor,created_date=timezone.now(),last_modified_date=timezone.now(),document_type='D')
+	diagnosisRecord.save()
+	return viewAppointmentDoctor(request)
 
-
-@csrf_exempt
 @login_required
+@is_doctor('home', {'message': "Oops, can't go there."})
 def createPrescription(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
-	if role == 'Doctor':
-		patient_id = request.POST['patient_id']
-		prescription = request.POST['prescription_string']
-		patient=Patient.objects.get(patient_id=patient_id)
-		doctor=Doctor.objects.get(doctor_id=1)#change to get using doctor id from request
-		prescriptionRecord = Records(document=prescription, patient=patient,doctor=doctor,created_date=timezone.now(),last_modified_date=timezone.now(),document_type='P')
-		prescriptionRecord.save()
-		return viewAppointmentDoctor(request)    
+	patient_id = request.POST['patient_id']
+	prescription = request.POST['prescription_string']
+	patient=Patient.objects.get(patient_id=patient_id)
+	doctor=Doctor.objects.get(doctor_id=1)#change to get using doctor id from request
+	prescriptionRecord = Records(document=prescription, patient=patient,doctor=doctor,created_date=timezone.now(),last_modified_date=timezone.now(),document_type='P')
+	prescriptionRecord.save()
+	return viewAppointmentDoctor(request)
 
-@csrf_exempt
 @login_required
+@is_doctor('home', {'message': "Oops, can't go there."})
 def recommendLabtest(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
-	if role == 'Doctor':
-		patient_id = request.POST['patient_id']
-		labtest_recommendation = request.POST['labtest_recommendation']
-		patient=Patient.objects.get(patient_id=patient_id)
-		doctor=Doctor.objects.get(doctor_id=1)#change to get using doctor id from request
-		
-		labTest = Lab_Test(recommended_test=labtest_recommendation, patient=patient,doctor=doctor,recommended_date=timezone.now())
-		labTest.save()
-		return viewAppointmentDoctor(request)
+	patient_id = request.POST['patient_id']
+	labtest_recommendation = request.POST['labtest_recommendation']
+	patient=Patient.objects.get(patient_id=patient_id)
+	doctor=Doctor.objects.get(doctor_id=1)#change to get using doctor id from request
+	
+	labTest = Lab_Test(recommended_test=labtest_recommendation, patient=patient,doctor=doctor,recommended_date=timezone.now())
+	labTest.save()
+	return viewAppointmentDoctor(request)
 
-@csrf_exempt
 @login_required
+@is_lab_staff('home', {'message': "Oops, can't go there."})
 def labtestRequests(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -689,12 +682,12 @@ def labtestRequests(request):
 	template = loader.get_template('labTestRequests.html')
 	return HttpResponse(template.render(context,request))
 
-@csrf_exempt
 @login_required
+@is_lab_staff('home', {'message': "Oops, can't go there."})
 def labtestAction(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
-	if role == 'Lab Staff':
+	if role == 'labstaff':
 		lab_test_id = request.POST['lab_test_id']
 		post_data = dict(request.POST.lists())
 	#    Records.objects.filter(records_id=record_id).update(document=document, last_updated_date=timezone.now())
@@ -705,8 +698,8 @@ def labtestAction(request):
 			Lab_Test.objects.filter(lab_test_id=lab_test_id).update(status='Denied', action_taken_date=timezone.now())
 		return labtestRequests(request)
 
-@csrf_exempt
 @login_required
+@is_lab_staff('home', {'message': "Oops, can't go there."})
 def labstaffWorklist(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -723,12 +716,12 @@ def labstaffWorklist(request):
 	context.update(userContext)
 	return render(request, 'labstaffWorklist.html', context)
 
-@csrf_exempt
 @login_required
+@is_lab_staff('home', {'message': "Oops, can't go there."})
 def createLabtestReport(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
-	if role == 'Lab Staff':
+	if role == 'labstaff':
 		labtest_report_string = request.POST['labtest_report_string']
 		lab_test_id = request.POST['lab_test_id']
 		user_id = request.POST['user_id']
