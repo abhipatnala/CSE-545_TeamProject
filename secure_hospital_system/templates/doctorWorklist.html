@@ -1,0 +1,27 @@
+{% extends 'portal.html' %}
+{% load django_tables2 %}
+{% load bootstrap3 %}
+
+{% if filter %}
+    <form action="doctorWorklist" method="get" class="form form-inline">
+        {% bootstrap_form filter.form layout='inline' %}
+        {% bootstrap_button 'filter' %}
+    </form>
+{% endif %}
+{% render_table table 'django_tables2/bootstrap.html' %}
+{% block content %}
+    <div class="container">
+        <h1>Doctor's Worklist</h1>
+        <div class="row">
+            <div class="col">
+                <div class="card card-body">
+                    <form method="post">
+                        {{filter.form}}
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% render_table doctorsTable %}
+    </div>
+{% endblock content %}

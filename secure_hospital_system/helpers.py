@@ -79,3 +79,11 @@ def sendActivationEmail(user, current_site, user_email):
         [user_email],
         fail_silently=False
     )
+
+def getCurrentUserRole(user_id):
+    user =  SHSUser.objects.select_related().filter(user = user_id)
+    role = user[0].role_id
+    if role is not None:
+        role_name = role.role_name
+        return role_name
+    return ''
