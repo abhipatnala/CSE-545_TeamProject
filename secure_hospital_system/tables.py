@@ -130,13 +130,17 @@ class LabStaffView(tables.Table):
 class ClaimTable(tables.Table):
     class Meta:
         model = Claim_Request
-        fields = ['patient_name','claim_raised_date','claim_status','overall_payment']
-    patient_name = tables.Column(accessor='patient_id.user_id.user.first_name', verbose_name="Patient Name")
-    claim_raised_date = tables.Column(accessor='claim_raised_date', verbose_name='Claim Raised Date')
-    claim_status = tables.Column(accessor='claim_status', verbose_name='Claim Status')
-    overall_payment = tables.Column(accessor='payment_id.overall_payment', verbose_name='Overall Fees')
-    block = tables.TemplateColumn(template_name='blockchain.html')
-
+        fields = ['Claim_ID','Insurance_ID', 'Bill_ID', 'Bill_Amount', 'Claim_Status', "claim_raised_date","claim_update_date",'block']
+    Claim_ID = tables.Column(accessor='claim_id', verbose_name="Claim Id")
+    Insurance_ID = tables.Column(accessor='patient_id.patient_insurance_provider_id.provider_name', verbose_name="Insurance")
+    Bill_ID = tables.Column(accessor='payment_id.payment_id', verbose_name='Bill Id')
+    Bill_Amount = tables.Column(accessor='payment_id.overall_payment', verbose_name='Amount')
+    Claim_Status = tables.Column(accessor='claim_status', verbose_name='Status')
+    claim_raised_date = tables.Column(accessor='claim_raised_date',verbose_name='Claimed Date')
+    claim_update_date = tables.Column(accessor='claim_update_date', verbose_name='Claim Update')
+    block = tables.TemplateColumn(template_name='blockchain.html') 
+        
+    
 
 class PaymentTable(tables.Table):
     class Meta:

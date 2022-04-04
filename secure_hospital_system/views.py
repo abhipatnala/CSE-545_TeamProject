@@ -1060,29 +1060,39 @@ def updatePatient(request):
 @login_required
 @twoFARequired()
 @is_patient('home',  "Oops, can't go there.")
-def viewBlockChainClaims(request):
-    claim_id = request.claim_id
-    data=''
-    try:
-        url = settings.BLOCKCHAINURL + "/api/getClaimHistory/"+claim_id
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        data = requests.get(url).json
-        print(data)
-    except Exception:
-        print("An exception occurred")
-    return HttpResponse(data)
+def viewBlockChainInfo(request):
+    claim_id = request.POST['claim_id']
+    print(claim_id)
+    action_taken = request.POST['action_taken']
+    print(action_taken)
+    if(action_taken == "Claim"):
+        resp=viewBlockChainClaims(claim_id)
+    elif(action_taken == "Status"):
+        resp=viewBlockChainClaimStatus(claim_id)
+    return HttpResponse(resp)
 
-@login_required
-@twoFARequired()
-@is_patient('home',  "Oops, can't go there.")
-def viewBlockChainClaimStatus(request):
-    claim_id = request.claim_id
-    data=''
-    try:
-        url = settings.BLOCKCHAINURL + "/api/getClaim/"+claim_id
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        data = requests.get(url).json
-        print(data)
-    except Exception:
-        print("An exception occurred")
-    return HttpResponse(data)
+
+def viewBlockChainClaims(claim_id):
+	print("Inside block chain claims")
+	data=''
+	try:
+		url = settings.BLOCKCHAINURL + "/api/getClaimHistory/"+claim_id
+		print(url)
+		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		data = requests.get(url).json
+		print(data)
+	except Exception:
+		print("An exception occurred")
+	return data
+
+def viewBlockChainClaimStatus(claim_id):
+	print("Inside block chain status")
+	data=''
+	try:
+		url = settings.BLOCKCHAINURL + "/api/getClaim/"+claim_id
+		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		data = requests.get(url).json
+		print(data)
+	except Exception:
+		print("An exception occurred")
+	return data

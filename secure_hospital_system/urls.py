@@ -74,6 +74,5 @@ urlpatterns = [
     path('fileClaim', views.fileClaim, name = 'fileClaim'),
     path('activate/<slug:uidb64>/<slug:token>/', views.activate, name='activate'),
     path('updatePatient', views.updatePatient, name='updatePatient'),
-    path('viewBlockChainClaims', views.viewBlockChainClaims, name='updatePatient'),
-    path('viewBlockChainClaimStatus', views.viewBlockChainClaimStatus, name='updatePatient')
-]
+    path('viewBlockChainInfo', views.viewBlockChainInfo, name='viewBlockChainInfo'),
+ ]
