@@ -32,7 +32,8 @@ from .decorators import *
 from django.utils import timezone
 import requests
 import json
-from django.conf import settings 
+from django.conf import settings
+from django.utils.dateparse import parse_date
 
 def home(request):
     if request.user.is_authenticated:
@@ -565,21 +566,6 @@ def viewRecord(request):
 #	insuranceRequests = filter.qs
 #	return render(request, 'insuranceApproverGrid.html', {'filter': filter, 'insuranceRequests': insuranceRequests})
 
-@is_patient('home', "Oops, can't go there.")
-def view_patient(request):
-    shs_user = SHSUser.objects.select_related().filter(user = request.user.id)[0]
-    patient = Patient.objects.select_related().filter(user_id = shs_user)[0]
-
-    context = {
-        'user': request.user,
-        'patient': patient
-    }
-
-    RoleContext = getRoleBasedMenus(request.user.id)
-    template = loader.get_template('viewPatient.html')
-    context.update(RoleContext)
-    return HttpResponse(template.render(context, request))
-
 @login_required
 @twoFARequired()
 @is_doc_or_labstaff('home', "Oops, can't go there.")
@@ -918,3 +904,49 @@ def activate(request, uidb64, token):
         return redirect('password_reset')
     else:
         return render(request, 'account_activation_invalid.html')
+
+
+@is_patient('home', "Oops, can't go there")
+def view_patient(request):
+    shs_user = SHSUser.objects.select_related().filter(user = request.user.id)[0]
+    patient = Patient.objects.select_related().filter(user_id = shs_user)[0]
+
+    context = {
+        'user': request.user,
+        'patient': patient
+    }
+
+    RoleContext = getRoleBasedMenus(request.user.id)
+    template = loader.get_template('viewPatient.html')
+    context.update(RoleContext)
+    return HttpResponse(template.render(context, request))
+
+@is_patient('home', {'message': "Oops, can't go there."})
+def updatePatient(request):
+    user = User.objects.filter(id=request.user.id)[0]
+    shs_user = SHSUser.objects.select_related().filter(user = request.user.id)[0]
+    patient = Patient.objects.select_related().filter(user_id = shs_user)[0]
+    user.first_name = request.POST.get("firstName", "")
+    user.last_name = request.POST.get("lastName", "")
+    patient.phone_number = request.POST.get("contact", "")
+    patient.patient_dob = parse_date(request.POST.get('dateOfBirth', '1945-08-15'))
+    patient.blood_type = request.POST.get('blood_type', "A+")
+    patient.address = request.POST.get("address", "")
+    patient.city = request.POST.get('city', "")
+    patient.state = request.POST.get("state", "")
+    patient.zipCode = request.POST.get("pincode", "")
+    patient.emergency_contact_firstname = request.POST.get("gfirstName", "")
+    patient.emergency_contact_lastname = request.POST.get("glastName", "")
+    patient.emergency_contact_phone_number = request.POST.get("econtact", "")
+    patient.emergency_contact_email = request.POST.get("eemail", "")
+    patient.allergies = request.POST.get("allergies", "")
+    patient.medicationFollowed = request.POST.get("medications", "")
+    patient.preExistingMedicalConditions = request.POST.get("premedical","")
+    patient.anyOtherMedicalDetails = request.POST.get("othermedical", "")
+    patient.gender = request.POST.get('gender', "MALE")
+    patient.emergency_contact_gender = request.POST.get('egender', "MALE")
+
+    user.save()
+    patient.save()
+    messages.success(request, "Patient details updated")
+    return redirect(to=reverse('view_patient'))

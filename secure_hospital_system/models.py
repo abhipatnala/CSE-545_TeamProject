@@ -20,6 +20,12 @@ PAYMENT_STATUS = (
     ('paid','paid')
 )
 
+GENDER = (
+    ('MALE', 'MALE'),
+    ('FEMALE', 'FEMALE'),
+    ('OTHER', 'OTHER')
+)
+
 #Roles available are patient, admin, doctor, hospitalstaff, labstaff, insurancestaff
 class Roles(models.Model):
     role_id = models.BigAutoField(primary_key=True)
@@ -60,6 +66,8 @@ class Patient(models.Model):
     preExistingMedicalConditions = models.CharField(max_length=150, default=None, blank=True, null=True)
     anyOtherMedicalDetails = models.CharField(max_length=150, default=None, blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True, null=True)
+    gender = models.CharField(max_length=200, choices=GENDER, null=True)
+    emergency_contact_gender = models.CharField(max_length=200, choices=GENDER, null=True)
     update_user = models.ForeignKey(SHSUser, on_delete=models.CASCADE, related_name='update_user', default=None)
     last_update_date = models.DateTimeField( null=True)
 
