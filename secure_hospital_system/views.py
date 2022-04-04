@@ -579,11 +579,7 @@ def medicalRecords(request):
 	isHospitalStaff = False
 	if role == 'patient':
 		patient = Patient.objects.get(user_id=shsUser)
-		if(patient.patient_id == patientId):
-			messages.error(request, "Oops, can't go there.")
-			return HttpResponseRedirect(reverse('home'))
-		else:
-			patientId = patient.patient_id
+		patientId = patient.patient_id
 	elif role == 'doctor':
 		patientId = request.POST['patient_id']
 	elif role == 'hospitalstaff':
@@ -931,6 +927,8 @@ def patientInsurance(request):
     user = request.user
     shs_user_id = SHSUser.objects.get(user = user)
     patient_id = Patient.objects.get(user_id =shs_user_id )
+    patientInsuranceMemberId = patient_id.patient_insurance_member_id
+    patientInsuranceProvider = InsuranceProvider.objects.get(provider_id=patient_id.patient_insurance_provider_id.provider_id).provider_name
     paymentsTable = PaymentTable(Payments.objects.filter(patient_id=patient_id).filter(is_claimed = False).order_by('payment_update_date'))
     claimsTable = ClaimTable(Claim_Request.objects.filter(patient_id=patient_id).order_by('claim_raised_date'))
     template = loader.get_template('insurancePortal.html')
@@ -939,6 +937,8 @@ def patientInsurance(request):
         'paymentsTable' : paymentsTable,
         'claimsTable' : claimsTable,
         'patient_id' : patient_id,
+		'patient_insurance_member_id' : patientInsuranceMemberId,
+		'patient_insurance_provider_name' : patientInsuranceProvider,
     }
     context.update(context1)
     return HttpResponse(template.render(context, request))
@@ -947,17 +947,15 @@ def patientInsurance(request):
 @twoFARequired()
 @is_patient('home', "Oops, can't go there")
 def saveInsurInfo(request):
-    if request.method == "POST":
-        insurName = request.POST.get('insurName')
-        insurancePv = InsuranceProvider.objects.get(provider_name=insurName)
-        #request.user.patient_insurance_provider_id = insurancePv.provider_id
-        patientMemID = request.POST.get('patientInsurID')
-        #request.user.patient_insurance_member_id = patientMemID
-
-        #Patient.objects.filter(patient_id = request.user.patient_id).update(patient_insurance_provider_id = insurancePv, patient_insurance_member_id = patientMemID )
-        Patient.objects.filter(patient_id = 10).update(patient_insurance_provider_id = insurancePv, patient_insurance_member_id = patientMemID )
-
-    return patientInsurance(request)
+	user = request.user
+	shsUser = SHSUser.objects.get(user=user)
+	patient = Patient.objects.get(user_id=shsUser)
+	patientId = patient.patient_id
+	insurName = request.POST.get('insurName')
+	insurancePv = InsuranceProvider.objects.get(provider_name=insurName)
+	patientMemID = request.POST.get('patientInsurID')
+	Patient.objects.filter(patient_id=patientId).update(patient_insurance_provider_id = insurancePv, patient_insurance_member_id = patientMemID )
+	return patientInsurance(request)
 
 @login_required
 @twoFARequired()

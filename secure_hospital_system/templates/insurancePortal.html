@@ -31,7 +31,6 @@
         
         <form action="saveInsurInfo" method="POST">
           {% csrf_token %}
-
           <select name="insurName" id="insurName">
             <option value="Aetna">Aetna</option>
             <option value="Allstate">Allstate</option>
@@ -39,7 +38,7 @@
           </select>
 
           <p>Please enter Insurance Member ID:</p>
-          <input name ="patientInsurID" type="text" id = "patientInsurID" required>
+          <input name ="patientInsurID" type="text" id = "patientInsurID" required value="{{ patient_insurance_member_id }}">
            
           <button type="submit" formaction="saveInsurInfo" >Save</button>
 
@@ -47,4 +46,9 @@
       </div>
     </div>
   </div>
+  <script>
+    window.addEventListener("load",function(){
+      document.getElementById("insurName").value="{{ patient_insurance_provider_name }}"
+    })
+  </script>
   {% endblock %}

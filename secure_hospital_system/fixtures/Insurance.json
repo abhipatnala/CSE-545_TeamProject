@@ -2,7 +2,7 @@
     {
         "model":"secure_hospital_system.InsuranceProvider",
         "fields":{
-            "provider_name":""
+            "provider_name":"Aetna"
         }
     },
     {
