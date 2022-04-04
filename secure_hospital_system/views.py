@@ -307,7 +307,7 @@ def onSubmitOfExistingPatientsAppointmentBooking(request):
 	user = request.user
 	patient = Patient.objects.filter(user_id__in=Subquery(SHSUser.objects.get(user = user)))
 	saveAppointmentDetails(request, patient)
-    #messages.success("Appointment booked")
+	messages.success("Appointment booked")
 	return redirect(to=reverse('home'))
 
 
