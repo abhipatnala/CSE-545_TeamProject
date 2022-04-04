@@ -101,8 +101,14 @@ def bookingAppointmentsForSelectedDocByExistingPatients(request,doctor_id):
 	return render(request,"ExistingPatientsAppointmentBooking.html",{'doctor_id':doctor_id})
 
 def bookingAppointmentsByExistingPatients(request):
+	userId = request.user
+	userContext = getRoleBasedMenus(userId.id)
 	doctor_id = 1
-	return render(request,"ExistingPatientsAppointmentBooking.html",{'doctor_id':doctor_id})
+	context = {
+		'doctor_id' : doctor_id
+	}
+	context.update(userContext)
+	return render(request,"ExistingPatientsAppointmentBooking.html",context)
 
 def bookAppointmentForSelectedDoc(request, doctor_id):
 	#doctors = Doctor.objects.filter(doctor_id = doctor_id)
@@ -301,7 +307,7 @@ def onSubmitOfExistingPatientsAppointmentBooking(request):
 	user = request.user
 	patient = Patient.objects.filter(user_id__in=Subquery(SHSUser.objects.get(user = user)))
 	saveAppointmentDetails(request, patient)
-    messages.success("Appointment booked")
+    #messages.success("Appointment booked")
 	return redirect(to=reverse('home'))
 
 
