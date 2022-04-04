@@ -55,6 +55,8 @@ def findDoc(request):
 	docList = Doctor.objects.all()
 	return render(request, 'FINDDOC.html',{'docList':docList}) 
 
+@login_required
+@twoFARequired()
 def findPatientDoc(request):
     context1 = getRoleBasedMenus(request.user.id)
     docList = Doctor.objects.all()
@@ -97,9 +99,21 @@ def sendContactUsEmail(request):
 		fail_silently=False
 	)
 	return render(request,'sentmail.html')
-def bookingAppointmentsForSelectedDocByExistingPatients(request,doctor_id):
-	return render(request,"ExistingPatientsAppointmentBooking.html",{'doctor_id':doctor_id})
 
+@login_required
+@twoFARequired()
+@is_patient('home', "Oops, can't go there")
+def bookingAppointmentsForSelectedDocByExistingPatients(request,doctor_id):
+	updateContext = getRoleBasedMenus(request.user.id)
+	context = {
+		'doctor_id':doctor_id
+	}
+	context.update(updateContext)
+	return render(request,"ExistingPatientsAppointmentBooking.html",context)
+
+@login_required
+@twoFARequired()
+@is_patient('home', "Oops, can't go there")
 def bookingAppointmentsByExistingPatients(request):
 	userId = request.user
 	userContext = getRoleBasedMenus(userId.id)
@@ -127,13 +141,20 @@ def bookAppointment(request):
 	#		doctors = Doctor.objects.all()
 	return render(request,"BOOKAPPT.html",{'doctor_id':doctor_id})
 
+@login_required
+@twoFARequired()
+@is_patient('home', "Oops, can't go there")
 def appointmentRequests(request):
-	return render(request, 'appointmentRequests.html') 
+	updateContext = getRoleBasedMenus(request.user.id)
+	return render(request, 'appointmentRequests.html',updateContext) 
 
+@login_required
+@twoFARequired()
+@is_patient('home', "Oops, can't go there")
 def appointments(request):
 	context1 = getRoleBasedMenus(request.user.id)
-	patient_id =1
-	#patient_id = Patient.objects.filter(patient_user = user_id)
+	#patient_id =1
+	patient_id = Patient.objects.filter(user_id__in=Subquery(SHSUser.objects.get(user = request.user)))
 	upcomingAppointments = Doctor_availability_booked.objects.filter(patient_id=patient_id)
 	upcomingAppointments  = upcomingAppointments.filter(appointment_date__gte=date.today())
 	upcomingAppointments  = upcomingAppointments.filter(status='approved')
@@ -149,7 +170,9 @@ def appointments(request):
 	context.update(context1)
 	return HttpResponse(template.render(context, request))
 
-
+@login_required
+@twoFARequired()
+@is_patient('home', "Oops, can't go there")
 def appointmentsRetrieval(request):
 	if request.method == 'POST':
 		patient_id = request.POST['patient_id']
@@ -159,6 +182,8 @@ def appointmentsRetrieval(request):
 	else:
 		return('/')
 
+@login_required
+@twoFARequired()
 def getAvailableSlots(request):
 	appointmentDate = request.POST['appointmentDate']
 	doctorId = request.POST['doctor_id']
@@ -183,6 +208,8 @@ def getAvailableSlots(request):
 	}
 	return JsonResponse(data)
 
+@login_required
+@twoFARequired()
 def newAppointments(request):
 	if request.method == 'POST':
 		# if doctor is selected
@@ -224,7 +251,12 @@ def newAppointments(request):
 				docShiftTime = docShiftTime+ 1
 		# if doctor is not selected
 		########### get the atleast one day available
-		return render(request,"test.html",{'availabeSlots':availabeSlots})
+		context1 = getRoleBasedMenus(request.user.id)
+		context = {
+			'availabeSlots':availabeSlots
+		}
+		context.update(context1)
+		return render(request,"test.html",context)
 
 def newAppointmentBooking(request):
 	if request.method == 'POST':
@@ -241,6 +273,8 @@ def newAppointmentBooking(request):
 			doctorAvailabilityBooked.save()
 
 
+@login_required
+@twoFARequired()
 def getPatientDetails(request):
 	if request.method == 'POST':
 		patient_id= request.POST['patient_id']
@@ -250,6 +284,9 @@ def getPatientDetails(request):
 		patientDetails = Patient.objects.filter(patient_id=patient_id)
 		return patientDetails
 
+@login_required
+@twoFARequired()
+@is_hospital_staff('home', "Oops, can't go there.")
 def newBillGenerated(request):
 	#if request.method == 'POST':
 	userId = request.user
@@ -277,6 +314,9 @@ def newBillGenerated(request):
 	#response = redirect('/medicalRecords/'+patient_id)
 	#return response
 
+@login_required
+@twoFARequired()
+@is_hospital_staff('home', "Oops, can't go there.")
 def generateBills(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -300,9 +340,13 @@ def getUserDetails(userId):
 #	userInfo = User.objects.filter(id=userId)[0]
 #	return render(request,'appointmentBookingRequests.html',{'first_name':userInfo.first_name,'last_name':userInfo.last_name,'email_id':userInfo.email})
 
+
 def patients(request):
 	return render(request,'BookAppt.html')
 
+@login_required
+@twoFARequired()
+@is_patient('home', "Oops, can't go there")
 def onSubmitOfExistingPatientsAppointmentBooking(request):
 	user = request.user
 	patient = Patient.objects.filter(user_id__in=Subquery(SHSUser.objects.get(user = user)))
@@ -312,30 +356,30 @@ def onSubmitOfExistingPatientsAppointmentBooking(request):
 
 
 def onSubmitOfNewPatientsAppointmentDetails(request):
-    if request.method == 'POST':
-        patientRoleObj = Roles.objects.filter(role_name="patient")
-        print("entered patientRoleObj ", patientRoleObj)
-        # patient and user details
-        first_name = request.POST.get('firstname')
-        print("firstName ",first_name)
-        last_name = request.POST.get('lastname')
-        blood_type = request.POST['blood group']
-        address = request.POST['Address']
-        city = request.POST['city']
-        state = request.POST['state']
-        zipCode = request.POST['zip']
-        email = request.POST['emailInfo']
-        phone_number = request.POST['phoneNumber']
-        loginDate = date.today()
-        print("user email ",email)
-        userInfo = User.objects.filter(email = email)
-        if userInfo:
+	if request.method == 'POST':
+		patientRoleObj = Roles.objects.filter(role_name="patient")
+		print("entered patientRoleObj ", patientRoleObj)
+		# patient and user details
+		first_name = request.POST.get('firstname')
+		print("firstName ",first_name)
+		last_name = request.POST.get('lastname')
+		blood_type = request.POST['blood group']
+		address = request.POST['Address']
+		city = request.POST['city']
+		state = request.POST['state']
+		zipCode = request.POST['zip']
+		email = request.POST['emailInfo']
+		phone_number = request.POST['phoneNumber']
+		loginDate = date.today()
+		print("user email ",email)
+		userInfo = User.objects.filter(email = email)
+		if userInfo:
             # render login html
-            print("user existed ",userInfo)
-            return render(request,"error.html")
+			print("user existed ",userInfo)
+			return render(request,"error.html")
 
-        print("user about to be saved")
-        user = User(password=(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=5))),
+		print("user about to be saved")
+		user = User(password=(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=5))),
                     last_login = loginDate,
                     is_superuser = 0,
                     username= email,
@@ -346,22 +390,22 @@ def onSubmitOfNewPatientsAppointmentDetails(request):
                     is_active=0,
                     date_joined = loginDate
         )
-        user.save()
-        print("user saved")
-        shsUser = SHSUser(user=user, role_id=patientRoleObj[0])
-        shsUser.save()
-        insuranceProviderObj = InsuranceProvider.objects.filter(provider_name = request.POST['insuranceprovider'])
-        #medical history
-        allergies = request.POST['allergies']
-        medicationFollowed = request.POST['medications']
-        preExistingMedicalConditions = request.POST['medicalConditions']
-        anyOtherMedicalDetails = request.POST['medicalInfo']
-        print("about to save patient details")
-        ecFirstName = request.POST['ecFirstname']
-        ecLastName = request.POST['ecLastname']
-        ecEmailInfo = request.POST['ecEmailInfo']
-        ecPhoneNumber = request.POST['ecPhoneNumber']
-        patient = Patient(
+		user.save()
+		print("user saved")
+		shsUser = SHSUser(user=user, role_id=patientRoleObj[0])
+		shsUser.save()
+		insuranceProviderObj = InsuranceProvider.objects.filter(provider_name = request.POST['insuranceprovider'])
+		#medical history
+		allergies = request.POST['allergies']
+		medicationFollowed = request.POST['medications']
+		preExistingMedicalConditions = request.POST['medicalConditions']
+		anyOtherMedicalDetails = request.POST['medicalInfo']
+		print("about to save patient details")
+		ecFirstName = request.POST['ecFirstname']
+		ecLastName = request.POST['ecLastname']
+		ecEmailInfo = request.POST['ecEmailInfo']
+		ecPhoneNumber = request.POST['ecPhoneNumber']
+		patient = Patient(
             update_user = shsUser,
             user_id = shsUser,
             patient_insurance_member_id = request.POST['insuranceid'],
@@ -381,15 +425,19 @@ def onSubmitOfNewPatientsAppointmentDetails(request):
             preExistingMedicalConditions=preExistingMedicalConditions,
             anyOtherMedicalDetails=anyOtherMedicalDetails
         )
-        patient.save()
-        saveAppointmentDetails(request, patient)
-        current_site = get_current_site(request)
-        sendActivationEmail(user, current_site, email)
-        messages.add("Appointment request sent")
+		patient.save()
+		saveAppointmentDetails(request, patient)
+		current_site = get_current_site(request)
+		sendActivationEmail(user, current_site, email)
+		messages.add("Appointment request sent")
 
-        return redirect(to=reverse('home'))
+		return redirect(to=reverse('home'))
 
+@login_required
+@twoFARequired()
+@is_hospital_staff('home', "Oops, can't go there.")
 def appointmentApprovedMail(request,booking_id):
+	updateContext = getRoleBasedMenus(request.user.id)
 	record = Doctor_availability_booked.objects.get(booking_id=booking_id)
 	record.status = "approved"
 	record.save()
@@ -407,9 +455,13 @@ def appointmentApprovedMail(request,booking_id):
 		[patient_email],
 		fail_silently=False
 	)
-	return render(request, 'sentmail.html')
+	return render(request, 'sentmail.html',updateContext)
 	
+@login_required
+@twoFARequired()
+@is_hospital_staff('home', "Oops, can't go there.")
 def appointmentDeniedMail(request,booking_id):
+	updateContext = getRoleBasedMenus(request.user.id)
 	record = Doctor_availability_booked.objects.get(booking_id=booking_id)
 	record.status ="denied"
 	record.save()
@@ -423,7 +475,7 @@ def appointmentDeniedMail(request,booking_id):
 		[patient_email],
 		fail_silently=False
 	)
-	return render(request, 'sentmail.html')
+	return render(request, 'sentmail.html',updateContext)
 
 def index(request):
 	return render(request, 'index.html') 
@@ -446,6 +498,9 @@ def contact(request):
 	else:
 		return render(request, 'contact.html', {})
 
+@login_required
+@twoFARequired()
+@is_hospital_staff('home', "Oops, can't go there.")
 def appointmentApproval(request):
 	userId = request.user.id
 	userContext = getRoleBasedMenus(userId)
@@ -487,6 +542,9 @@ def doctorWorklist(request):
 	context.update(userContext)
 	return render(request, 'doctorWorklist.html', context)
 
+@login_required
+@twoFARequired()
+@is_hospital_staff('home', "Oops, can't go there.")
 def patientsViewWithFilter(request):
 	userId = request.user
 	shsUser = SHSUser.objects.get(user = userId)
@@ -525,7 +583,7 @@ def medicalRecords(request):
 	elif role == 'hospitalstaff':
 		patientId = request.POST['patient_id']
 		isHospitalStaff = True
-		
+
 	userContext = getRoleBasedMenus(userId)
 	patientDetails = PatientDetails(Patient.objects.filter(patient_id=patientId)).as_values()
 	appointmentsTable = Appointments(Doctor_availability_booked.objects.filter(patient_id=patientId).order_by('appointment_date'))
@@ -763,38 +821,45 @@ def labstaffWorklist(request):
 @twoFARequired()
 @is_lab_staff('home', "Oops, can't go there.")
 def createLabtestReport(request):
-	labtest_report_string = request.POST['labtest_report_string']
-	lab_test_id = request.POST['lab_test_id']
-	labTest = Lab_Test.objects.get(lab_test_id=lab_test_id)
-	patient = labTest.patient
-	doctor = labTest.doctor
-	labTestReportRecord = Records(document=labtest_report_string,patient=patient,doctor=doctor,created_date=timezone.now(),last_modified_date=timezone.now(),document_type='L')
-	labTestReportRecord.save()
-	labTestRecord = Records.objects.get(records_id=labTestReportRecord.records_id)
-	Lab_Test.objects.filter(lab_test_id=lab_test_id).update(record=labTestRecord,status='Completed')
-	return labstaffWorklist(request)
+		labtest_report_string = request.POST['labtest_report_string']
+		lab_test_id = request.POST['lab_test_id']
+		labTest = Lab_Test.objects.get(lab_test_id=lab_test_id)
+		patient = labTest.patient
+		doctor = labTest.doctor
+		labTestReportRecord = Records(document=labtest_report_string,patient=patient,doctor=doctor,created_date=timezone.now(),last_modified_date=timezone.now(),document_type='L')
+		labTestReportRecord.save()
+		labTestRecord = Records.objects.get(records_id=labTestReportRecord.records_id)
+		Lab_Test.objects.filter(lab_test_id=lab_test_id).update(record=labTestRecord,status='Completed')
+		return labstaffWorklist(request)
 
+@login_required
+@twoFARequired()
+@is_insurance_staff('home', "Oops, can't go there.")
 def insuranceApprovedMail(request,claim_id):
 	#how to fetch the claim_id
-    record = Claim_Request.objects.get(claim_id=claim_id)
-    record.claim_status = "approved"
-    record.save()
-    print(record.patient_id.user_id.user.email)
-    print(record.claim_status)
-    #print(record.appointment_date)
+	updateContext = getRoleBasedMenus(request.user.id)
+	record = Claim_Request.objects.get(claim_id=claim_id)
+	record.claim_status = "approved"
+	record.save()
+	print(record.patient_id.user_id.user.email)
+	print(record.claim_status)
+	#print(record.appointment_date)
     #print(record.doctor_id.user_id.user.first_name)
-    subject = 'Appointment Confirmation'
-    body ="Dear ,\n"+"\nYour insurance has been confirmed! \n\nThank you,\nSHS Healthcare"
-    patient_email = record.patient_id.user_id.user.email
-    send_mail(
+	subject = 'Appointment Confirmation'
+	body ="Dear ,\n"+"\nYour insurance has been confirmed! \n\nThank you,\nSHS Healthcare"
+	patient_email = record.patient_id.user_id.user.email
+	send_mail(
 		subject,
         body,
         'shsgrp1@gmail.com',
         [patient_email],
         fail_silently=False
     )
-    return render(request, 'sentmail.html')
+	return render(request, 'sentmail.html',updateContext)
     
+@login_required
+@twoFARequired()
+@is_insurance_staff('home', "Oops, can't go there.")
 def insuranceLoginRecords(request):
 	userId = request.user
 	shsUser = SHSUser.objects.get(user = userId)	
@@ -816,27 +881,34 @@ class InsuranceLoginRecords(tables.SingleTableView):
 	#insuranceRequests = filter.qs
 	template_name = "simple_list.html"
 
+@login_required
+@twoFARequired()
+@is_insurance_staff('home', "Oops, can't go there.")
 def insuranceDeniedMail(request,claim_id):
-    record = Claim_Request.objects.get(claim_id=claim_id)
-    record.claim_status = "denied"
-    record.save()
-    subject ='Appointment Denied'
-    body = "Your insurance claim has been denied due to doctor unavailability. We apologize for the inconvenience.\n\nThank you,\nSHS Healthcare"
-    patient_email = record.patient_id.user_id.user.email
-    send_mail(
+	updateContext = getRoleBasedMenus(request.user.id)
+	record = Claim_Request.objects.get(claim_id=claim_id)
+	record.claim_status = "denied"
+	record.save()
+	subject ='Appointment Denied'
+	body = "Your insurance claim has been denied due to doctor unavailability. We apologize for the inconvenience.\n\nThank you,\nSHS Healthcare"
+	patient_email = record.patient_id.user_id.user.email
+	send_mail(
 		subject,
         body,
         'shsgrp1@gmail.com',
         [patient_email],
         fail_silently=False
     )
-    return render(request, 'sentmail.html')
+	return render(request, 'sentmail.html',updateContext)
 
 class ClaimTableView(tables.SingleTableView):
     table_class = ClaimTable
     queryset = Claim_Request.objects.all()
     template_name = "claimTable.html"
     
+@login_required
+@twoFARequired()
+@is_patient('home', "Oops, can't go there")
 def patientInsurance(request):
     #patient_id = request.user.patient_id
     user = request.user
@@ -854,6 +926,9 @@ def patientInsurance(request):
     context.update(context1)
     return HttpResponse(template.render(context, request))
 
+@login_required
+@twoFARequired()
+@is_patient('home', "Oops, can't go there")
 def saveInsurInfo(request):
     if request.method == "POST":
         insurName = request.POST.get('insurName')
@@ -867,6 +942,9 @@ def saveInsurInfo(request):
 
     return patientInsurance(request)
 
+@login_required
+@twoFARequired()
+@is_patient('home', "Oops, can't go there")
 def fileClaim(request):
     user = request.user
     shs_user_id = SHSUser.objects.get(user = user)
@@ -906,7 +984,8 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'account_activation_invalid.html')
 
-
+@login_required
+@twoFARequired()
 @is_patient('home', "Oops, can't go there")
 def view_patient(request):
     shs_user = SHSUser.objects.select_related().filter(user = request.user.id)[0]
@@ -922,6 +1001,8 @@ def view_patient(request):
     context.update(RoleContext)
     return HttpResponse(template.render(context, request))
 
+@login_required
+@twoFARequired()
 @is_patient('home',  "Oops, can't go there.")
 def updatePatient(request):
     user = User.objects.filter(id=request.user.id)[0]
