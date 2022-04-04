@@ -34,6 +34,18 @@ class Appointments(tables.Table):
     Status = tables.Column(accessor='status', verbose_name='Appointment Status')
     AppointmentDetails = tables.TemplateColumn(template_name='viewAppointment.html', verbose_name="Appointment Details")
 
+class PastOrPresentAppointments(tables.Table):
+    class Meta:
+        model = Doctor_availability_booked
+        fields = ['Appointment_id', 'Doctor_Name', 'Appointment_Date', 'Appointment_start_time', 'Appointment_end_time', 'Status', 'AppointmentDetails']
+    Appointment_id = tables.Column(accessor="booking_id", verbose_name="Appointment ID", visible=False)
+    Doctor_Name =  tables.Column(accessor='doctor_id.user_id.user.first_name', verbose_name='Doctor Name')
+    Appointment_Date = tables.Column(accessor='appointment_date', verbose_name='Appointment Date')
+    Appointment_start_time = tables.Column(accessor='appointment_start_time', verbose_name='Start Time')
+    Appointment_end_time = tables.Column(accessor='appointment_end_time', verbose_name='End Time')
+    Status = tables.Column(accessor='status', verbose_name='Appointment Status')
+
+
 class DoctorView(tables.Table):
     class MetaView:
         model = Doctor_availability_booked
@@ -139,8 +151,8 @@ class ClaimTable(tables.Table):
     claim_raised_date = tables.Column(accessor='claim_raised_date',verbose_name='Claimed Date')
     claim_update_date = tables.Column(accessor='claim_update_date', verbose_name='Claim Update')
     block = tables.TemplateColumn(template_name='blockchain.html') 
-        
-    
+
+
 
 class PaymentTable(tables.Table):
     class Meta:

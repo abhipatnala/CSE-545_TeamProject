@@ -167,14 +167,17 @@ def appointments(request):
 	upcomingAppointments = Doctor_availability_booked.objects.filter(patient_id=patient_id[0])
 	upcomingAppointments  = upcomingAppointments.filter(appointment_date__gte=date.today())
 	upcomingAppointments  = upcomingAppointments.filter(status='approved')
+	upcomingAppointmentsTable = PastOrPresentAppointments(upcomingAppointments)
+
 	pastAppointments = Doctor_availability_booked.objects.filter(patient_id=patient_id[0])
 	pastAppointments  = pastAppointments.filter(appointment_date__lt=date.today())
 	pastAppointments  = pastAppointments.filter(status='approved')
+	pastAppointmentsTable = PastOrPresentAppointments(pastAppointments)
 	
 	template = loader.get_template('appointments.html')
 	context = {
-		'upcomingAppointment' : upcomingAppointments,
-		'pastAppointment' : pastAppointments
+		'upcomingAppointment' : upcomingAppointmentsTable,
+		'pastAppointment' : pastAppointmentsTable
 	}
 	context.update(context1)
 	return HttpResponse(template.render(context, request))
@@ -982,18 +985,18 @@ class ClaimTableView(tables.SingleTableView):
 @is_patient('home', "Oops, can't go there")
 def patientInsurance(request):
     #patient_id = request.user.patient_id
-    user = request.user
-    shs_user_id = SHSUser.objects.get(user = user)
-    patient_id = Patient.objects.get(user_id =shs_user_id )
-    patientInsuranceMemberId = patient_id.patient_insurance_member_id
-    patientInsuranceProvider = InsuranceProvider.objects.get(provider_id=patient_id.patient_insurance_provider_id.provider_id).provider_name
-    paymentsTable = PaymentTable(Payments.objects.filter(patient_id=patient_id).filter(is_claimed = False).order_by('payment_update_date'))
-    claimsTable = ClaimTable(Claim_Request.objects.filter(patient_id=patient_id).order_by('claim_raised_date'))
-    template = loader.get_template('insurancePortal.html')
-    insuranceProviders = InsuranceProvider.objects.all().values_list('provider_name', flat=True)
-    insuranceProviders = list(insuranceProviders)
-    context1 = getRoleBasedMenus(request.user.id)
-    context = {
+	user = request.user
+	shs_user_id = SHSUser.objects.get(user = user)
+	patient_id = Patient.objects.get(user_id =shs_user_id )
+	patientInsuranceMemberId = patient_id.patient_insurance_member_id
+	patientInsuranceProvider = InsuranceProvider.objects.get(provider_id=patient_id.patient_insurance_provider_id.provider_id).provider_name
+	paymentsTable = PaymentTable(Payments.objects.filter(patient_id=patient_id).filter(is_claimed = False).order_by('payment_update_date'))
+	claimsTable = ClaimTable(Claim_Request.objects.filter(patient_id=patient_id).order_by('claim_raised_date'))
+	template = loader.get_template('insurancePortal.html')
+	insuranceProviders = InsuranceProvider.objects.all().values_list('provider_name', flat=True)
+	insuranceProviders = list(insuranceProviders)
+	context1 = getRoleBasedMenus(request.user.id)
+	context = {
         'paymentsTable' : paymentsTable,
         'claimsTable' : claimsTable,
         'patient_id' : patient_id,
@@ -1001,8 +1004,8 @@ def patientInsurance(request):
 		'insurance_providers' : insuranceProviders,
 		'patient_insurance_provider_name' : patientInsuranceProvider,
     }
-    context.update(context1)
-    return HttpResponse(template.render(context, request))
+	context.update(context1)
+	return HttpResponse(template.render(context, request))
 
 @login_required
 @twoFARequired()
