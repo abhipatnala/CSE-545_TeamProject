@@ -23,14 +23,14 @@
     	<div class="col-lg-3">
     				<div class="cuadro_intro_hover " style="background-color:#cccccc;">
 						<p style="text-align:center;">
-							<img src="{%static 'pics/d.jpg'%}" class="img-responsive" alt="">
+							<img id = "test" src="{%static 'pics/d.jpg'%}" class="img-responsive" alt="">
 						</p>
 						<div class="caption">
 							<div class="blur"></div>
 							<div class="caption-text">
 								<h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">{{doc.specialization}}</h3>
 								<p>{{doc.specialization}}</p>
-								<a class=" btn btn-default" href="bookAppointmentForSelectedDoc/{{doc.doctor_id}}" name ="docid" value = {{doc.doctor_id}} target="_blank"><span class="glyphicon glyphicon-plus"> Book an Appointment
+								<a class=" btn btn-default" href="bookingAppointmentsForSelectedDocByExistingPatients/{{doc.doctor_id}}" name ="docid" value = {{doc.doctor_id}} target="_blank"><span class="glyphicon glyphicon-plus"> Book an Appointment
 								</span></a>
 							</div>
 						</div>
