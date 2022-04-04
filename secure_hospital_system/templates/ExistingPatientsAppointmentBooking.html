@@ -205,254 +205,45 @@ color:#E60000; }
 <div class="container" id="wrap">
 	  <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form action="/onSubmitOfExistingPatientsAppointmentBooking/" method="post" accept-charset="utf-8" class="form" role="form" enctype="multipart/form-data">
+            <form action="/onSubmitOfExistingPatientsAppointmentBooking/" method="post" accept-charset="utf-8" class="form" role="form" >
               {% csrf_token %}  
-			<br> 
-			<legend><u>Book An Appointment With Us!</u></legend>
-			<br>
-			<!--<div class="row">
-			 <label>Is the Appointment for a New or Existing Patient?</label> 
-					   
-                            <select name="patienttype" class = "form-control input-lg" />
-<option value="new">New</option>
-<option value="existing">Existing</option>
-</select>                     
-			</div>
-			<br>
-			<br>
-			<br>-->
-                 <!--   <h4>Patient Information</h4>
-                    <br>
-					<div class="row">
-                        <div class="col-xs-6 col-md-6">
-						 <label for="firstname" class="form-label">First Name</label>
-                            <input type="text" name="firstname" value="" class="form-control input-lg"/>                        </div>
-                        <div class="col-xs-6 col-md-6">
-						<label for="lastname" class="form-label">Last Name</label>
-                            <input type="text" name="lastname" value="" class="form-control input-lg"/>                        </div>
-                    </div>
-					<div class="row">
-                        <div class="col-xs-6 col-md-6">
-						<label for="emailInfo" class="form-label">E-mail</label>
-                            <input type="email"  class="form-control input-lg" id="emailInfo" name = "emailInfo" required>
-                                  </div>
-                        <div class="col-xs-6 col-md-6">
-						    <label for="phoneNumber" class="form-label">Phone Number</label>
-            <input type="text" class="form-control input-lg" id="phoneNumber" name = "phoneNumber" >                        </div>
-                    </div>
-	<label for="DOB" class="form-label">Date of Birth</label>
-	 <input type="date" id ="DOB" name="Age" value="" class="form-control input-lg" placeholder="Your DOB"  />
- 
-  <label for="Address" class="form-label">Address</label>
-				 <input type="text" name="Address" value="" class="form-control input-lg" id="Address" required placeholder="Address Line 1"  />
-				
-				 	<div class="row">
-                        <div class="col-xs-4 col-md-4">
-                             <input type="text" name="city" value="" class="form-control input-lg" id="city" required placeholder="City"  />                       </div>
-                        <div class="col-xs-4 col-md-4">
-<select name="state" id="state" class="form-control input-lg">
-<option hidden disabled selected value> State </option>
-				  <option value="AL">Alabama</option>
-				  <option value="AK">Alaska</option>
-				  <option value="AZ">Arizona</option>
-				  <option value="AR">Arkansas</option>
-				  <option value="CA">California</option>
-				  <option value="CO">Colorado</option>
-				  <option value="CT">Connecticut</option>
-				  <option value="DE">Delaware</option>
-				  <option value="DC">District Of Columbia</option>
-				  <option value="FL">Florida</option>
-				  <option value="GA">Georgia</option>
-				  <option value="HI">Hawaii</option>
-				  <option value="ID">Idaho</option>
-				  <option value="IL">Illinois</option>
-				  <option value="IN">Indiana</option>
-				  <option value="IA">Iowa</option>
-				  <option value="KS">Kansas</option>
-				  <option value="KY">Kentucky</option>
-				  <option value="LA">Louisiana</option>
-				  <option value="ME">Maine</option>
-				  <option value="MD">Maryland</option>
-				  <option value="MA">Massachusetts</option>
-				  <option value="MI">Michigan</option>
-				  <option value="MN">Minnesota</option>
-				  <option value="MS">Mississippi</option>
-				  <option value="MO">Missouri</option>
-				  <option value="MT">Montana</option>
-				  <option value="NE">Nebraska</option>
-				  <option value="NV">Nevada</option>
-				  <option value="NH">New Hampshire</option>
-				  <option value="NJ">New Jersey</option>
-				  <option value="NM">New Mexico</option>
-				  <option value="NY">New York</option>
-				  <option value="NC">North Carolina</option>
-				  <option value="ND">North Dakota</option>
-				  <option value="OH">Ohio</option>
-				  <option value="OK">Oklahoma</option>
-				  <option value="OR">Oregon</option>
-				  <option value="PA">Pennsylvania</option>
-				  <option value="RI">Rhode Island</option>
-				  <option value="SC">South Carolina</option>
-				  <option value="SD">South Dakota</option>
-				  <option value="TN">Tennessee</option>
-				  <option value="TX">Texas</option>
-				  <option value="UT">Utah</option>
-				  <option value="VT">Vermont</option>
-				  <option value="VA">Virginia</option>
-				  <option value="WA">Washington</option>
-				  <option value="WV">West Virginia</option>
-				  <option value="WI">Wisconsin</option>
-				  <option value="WY">Wyoming</option>
-				</select>	</div>
-				 <div class="col-xs-4 col-md-4">
-                             <input type="text"  name="zip" value=""class="form-control input-lg" pattern="[0-9]{5}" id="ZipCode" placeholder="Zip code"  required>
-							 </div>                       
-							  </div>
-							  
-						
-					
-					 <label>Blood group</label> 
-					    <div class="row">
-                        <div class="col-xs-6 col-md-6">
-                            <select name="blood group" class = "form-control input-lg" />
-							
-<option value="unknown">Unknown</option>
-<option value="A+">A+</option>
-<option value="A-">A-</option>
-<option value="AB+">AB+</option>
-<option value="AB-">AB-</option>
-<option value="B+">B+</option>
-<option value="B-">B-</option>
-<option value="O+">O+</option>
-<option value="O-">O-</option>
-</select>                        </div>
-  
-
-
-<div class="col-xs-6 col-md-6">
-                     <label>  Gender :</label>
-
-					 <label class="radio-inline">
-                        <input type="radio" name="gender" value="M" id=male />                        Male
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="gender" value="F" id=female />                        Female
-                    </label>
-					  <label class="radio-inline">
-                        <input type="radio" name="gender" value="O" id=other />                        Other
-                    </label>
-					</div>
-					</div>
-
-
- <div class="row">
-
-                        <div class="col-xs-6 col-md-6">
- <label>Insurance Provider</label> 
-					   
-                            <select name="insuranceprovider" class = "form-control input-lg" />
-
-<option value="Aetna">Aetna</option>
-<option value="A-">UnitedHealth</option>
-</select>                        </div>
-					<div class="col-xs-6 col-md-6">
-					<label for="memberid" class="form-label">Insurance Id</label>
-                            <input type="text" name="insuranceid" value="" class="form-control input-lg"/>
-					</div>
-					</div>
-					<br>
-					 <br>
-		 <h4>Emergency Contact Information</h4>
-		 <div class="row">
-                        <div class="col-xs-6 col-md-6">
-						 <label for="firstname" class="form-label">First Name</label>
-                            <input type="text" name="ecFirstname" value="" class="form-control input-lg"/>                        </div>
-                        <div class="col-xs-6 col-md-6">
-						<label for="lastname" class="form-label">Last Name</label>
-                            <input type="text" name="ecLastname" value="" class="form-control input-lg"/>                        </div>
-                    </div>
-					<div class="row">
-                        <div class="col-xs-6 col-md-6">
-						<label for="emailInfo" class="form-label">E-mail</label>
-                            <input type="email"  class="form-control input-lg" id="eccEmailInfo" name = "ecEmailInfo" required>
-                                  </div>
-                        <div class="col-xs-6 col-md-6">
-						    <label for="phoneNumber" class="form-label">Phone Number</label>
-            <input type="text" class="form-control input-lg" id="ecPhoneNumber" name ="ecPhoneNumber" >                        </div>
-                    </div>
-                    <br>
-          <h4>Medical History</h4>
-		  
-		  <div class="row">
-           
-              <label for="allergies" class="form-label">Do you have any known Allergies?</label>
-              <textarea class="form-control" id="allergies" name = "allergies" rows="3" ></textarea>
-         
-		 
-            
-              <label for="medications" class="form-label">Are you on any Medication? Please provide the details below.</label>
-              <textarea class="form-control" id="medications" name = "medications" rows="3" ></textarea>
-            
-            
-              <label for="medicalConditions" class="form-label">Do you have any pre existing medical conditions? If yes please provide the details.</label>
-              <textarea class="form-control" id="medicalConditions" name="medicalConditions" rows="3" ></textarea>
-
-           
-              <label for="medicalInfo" class="form-label">Any other medical information we need to know about, please provide details below.</label>
-              <textarea class="form-control" id="medicalInfo" name="medicalInfo" rows="3" ></textarea>
-           
-            &nbsp;
-            &nbsp;
-			</div>-->
-			
-			<h4 align=leftwards>Appointment Details</h4>
-             <div class="row"
+			        <br/> 
+			        <legend><u>Book An Appointment With Us!</u></legend>
+			        <br/>			
+			        <h4 align=leftwards>Appointment Details</h4>
+              <div class="row">
                 <label for="purposeOfvisit" class="form-label">What is the purpose of your visit? If applicable, the type of doctor you are requesting </label>
                 <textarea class="form-control" id="purposeOfvisit" name = "purposeOfvisit" rows="3" ></textarea>
               
-              
-               <!-- <label for="DocPref" class="form-label">Do you have a doctor preference?</label>
-                <select id="DocPref" name = "DocPref" class="form-control">
-				  <option>No</option>
-                  <option>Yes</option>
-                  
-              </select> 
-			  
-			  
-                <label for="Doc" class="form-label">Do you have a doctor preference?</label>
-                <select id="Doc" name = "Doc" class="form-control">
-				  <option>Dr A</option>
-                  <option>Dr B</option>
-                  
-              </select> -->
-              
-              <input type="hidden" name="doctor_id" value='{{doctor_id}}'>
-              
+                
+                <input type="hidden" name="doctor_id" value='{{doctor_id}}'>
+                
                 <label for="appointmentDate" class="form-label">Appointment Date (Blurred Based on Availability)</label>
                 <input type="date" name = "appointmentDate" class="form-control" id="appointmentDate" required>
-             
               
+                
                 <label for="AvailableSlots" class="form-label">Available Slots</label>
                 <select id="AvailableSlots" class="form-control" name="AvailableSlots" multiple>
                   <option>8-9 AM</option>
                   <option>9-10 AM</option>
                   <option>1-2 PM</option>
                   <option>4-5 PM</option>
-              </select> 
-              
-              &nbsp;
-              &nbsp;
-            </div>
+                </select> 
+                
+                &nbsp;
+                &nbsp;
+              </div>
         
-                    <br />
+              <br />
               <span class="help-block">By clicking submit, you agree to our Terms and that you have read our Data Use Policy, including our Cookie Use.</span>
-                    <button class="btn btn-lg btn-primary btn-block signup-btn" type="submit">
-                        Submit</button>
+              <button class="btn btn-lg btn-primary btn-block signup-btn" type="submit">
+                  Submit
+              </button>
             </form>          
           
-</div>            
-</div>
-</div>
+        </div>            
+      </div>
+  </div>
 
 </body>
 </html>

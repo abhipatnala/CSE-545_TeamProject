@@ -1,0 +1,6 @@
+
+<form action="medicalRecords" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-info" href="{% url 'medicalRecords' %}" style="margin-left: 10%; margin-top: 2%;">View Details</button>
+    <input type="hidden" name="patient_id" value="{{ record.patient_id }}">
+</form>
