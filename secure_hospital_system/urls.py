@@ -51,6 +51,7 @@ urlpatterns = [
     path('onSubmitOfExistingPatientsAppointmentBooking/',views.onSubmitOfExistingPatientsAppointmentBooking, name = 'onSubmitOfExistingPatientsAppointmentBooking'),
     path('sendContactUsEmail',views.sendContactUsEmail,name='sendContactUsEmail'),
     path('insuranceconf',views.insuranceLoginRecords,name='insuranceLoginRecords'),
+    path('addInsuranceProvider', views.addInsuranceProvider, name='addInsuranceProvider'),
     path('generateBills',views.generateBills,name='generateBills'),
     path('newBillGenerated',views.newBillGenerated,name='newBillGenerated'),
     path("patient", views.view_patient, name='view_patient'),

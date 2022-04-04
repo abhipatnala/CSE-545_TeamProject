@@ -1008,6 +1008,15 @@ def activate(request, uidb64, token):
 
 @login_required
 @twoFARequired()
+@is_insurance_staff('home', "Oops, can't go there")
+def addInsuranceProvider (request):
+	providerName = request.POST['insuranceProvider']
+	insurance = InsuranceProvider(provider_name=providerName)
+	insurance.save()
+	return insuranceLoginRecords(request)
+
+@login_required
+@twoFARequired()
 @is_patient('home', "Oops, can't go there")
 def view_patient(request):
     shs_user = SHSUser.objects.select_related().filter(user = request.user.id)[0]
