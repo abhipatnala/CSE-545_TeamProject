@@ -817,9 +817,8 @@ def patientInsurance(request):
     user = request.user
     shs_user_id = SHSUser.objects.get(user = user)
     patient_id = Patient.objects.get(user_id =shs_user_id )
-    paymentsTable = PaymentTable(Payments.objects.filter(patient_id=patient_id).order_by('payment_update_date'))
+    paymentsTable = PaymentTable(Payments.objects.filter(patient_id=patient_id).filter(is_claimed = False).order_by('payment_update_date'))
     claimsTable = ClaimTable(Claim_Request.objects.filter(patient_id=patient_id).order_by('claim_raised_date'))
-    
     template = loader.get_template('insurancePortal.html')
     context1 = getRoleBasedMenus(request.user.id)
     context = {
@@ -833,7 +832,6 @@ def patientInsurance(request):
 @csrf_exempt
 def saveInsurInfo(request):
     if request.method == "POST":
-
         insurName = request.POST.get('insurName')
         insurancePv = InsuranceProvider.objects.get(provider_name=insurName)
         #request.user.patient_insurance_provider_id = insurancePv.provider_id
@@ -847,7 +845,6 @@ def saveInsurInfo(request):
 
 @csrf_exempt
 def fileClaim(request):
-    #patient_id = request.user.patient_id
     user = request.user
     shs_user_id = SHSUser.objects.get(user = user)
     patient = Patient.objects.get(user_id =shs_user_id)
@@ -856,13 +853,18 @@ def fileClaim(request):
     claim_update_date = datetime.now()
     payment_ID = request.POST['payment_id']
     if Claim_Request.objects.filter(payment_id = payment_ID).count() == 0:
-
         Claim_Request.objects.create(patient_id_id = patient_id, payment_id_id = payment_ID, claim_status = 'pending', claim_raised_date = claim_raised_date, claim_update_date=claim_update_date)
-        url = settings.BLOCKCHAINURL
-        data = {'claim_id': '1', 'patient_id': '1', 'insurance_id': '1', 'amount': '50000', 'bill_id': '1', 'status':"claimed"}
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        r = requests.post(url, data=json.dumps(data), headers=headers)
-    return patientInsurance(request)
+        Payments.objects.filter(payment_id=payment_ID).update(is_claimed = True)
+        # url = settings.BLOCKCHAINURL + "/api/addClaim"
+        # data = {'claim_id': '1', 'patient_id': '1', 'insurance_id': '1', 'amount': '50000', 'bill_id': '1', 'status':"claimed"}
+        # headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        # r = requests.post(url, data=json.dumps(data), headers=headers)
+        # if r.status_code == 200:
+        #     print("worked")
+        # else:
+        #     print("not worked")
+        #     print(r.status_code)
+        return patientInsurance(request)
 
 
 def activate(request, uidb64, token):

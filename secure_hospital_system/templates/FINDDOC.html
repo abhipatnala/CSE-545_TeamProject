@@ -253,9 +253,7 @@ body{font-family: 'Raleway', sans-serif;}
   text-transform: uppercase;
   width: 40.2%;
 }
-img {
-  height: 200px !important;
-}
+
 
 .row.text-center p {
   font-size: 17px;
@@ -336,18 +334,25 @@ img {
 {
 margin:-100px 10px auto 300px;
  }
- #lg
-{
-  height: 100px;
-top:2px;
-left:2px;
-width: 400px;
-}
+#x{
+  width: 400px;
+  height:87px;
+ position:absolute;
+ top:2px;
+ left:2px;
+  }
+ #z
+ {
+ height:100px;
+ }
+#test {
+   height: 200px !important;
+ }
  </style>
   </head>
   <body>
-    <div class="container-fluid">
-      <img id="lg"  class="img-responsive" src="{%static 'pics/hlogo.jpg' %}" alt="" title="" height: 100> 
+    <div class="container-fluid" id ="z">
+      <img id="x"  class="img-responsive" src="{%static 'pics/hlogo.jpg' %}" alt="" title=""> 
      </div>
      <nav class="navbar navbar-inverse ">
       <div class="container-fluid">
@@ -396,7 +401,7 @@ width: 400px;
     	<div class="col-lg-3">
     				<div class="cuadro_intro_hover " style="background-color:#cccccc;">
 						<p style="text-align:center;">
-							<img src="pics/d.jpg" class="img-responsive" alt="">
+							<img id="test" src="pics/d.jpg" class="img-responsive" alt="">
 						</p>
 						<div class="caption">
 							<div class="blur"></div>
