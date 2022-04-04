@@ -566,21 +566,6 @@ def viewRecord(request):
 #	insuranceRequests = filter.qs
 #	return render(request, 'insuranceApproverGrid.html', {'filter': filter, 'insuranceRequests': insuranceRequests})
 
-@is_patient('home', "Oops, can't go there.")
-def view_patient(request):
-    shs_user = SHSUser.objects.select_related().filter(user = request.user.id)[0]
-    patient = Patient.objects.select_related().filter(user_id = shs_user)[0]
-
-    context = {
-        'user': request.user,
-        'patient': patient
-    }
-
-    RoleContext = getRoleBasedMenus(request.user.id)
-    template = loader.get_template('viewPatient.html')
-    context.update(RoleContext)
-    return HttpResponse(template.render(context, request))
-
 @login_required
 @twoFARequired()
 @is_doc_or_labstaff('home', "Oops, can't go there.")
