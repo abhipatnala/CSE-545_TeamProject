@@ -851,7 +851,6 @@ def patientInsurance(request):
     context.update(context1)
     return HttpResponse(template.render(context, request))
 
-@csrf_exempt
 def saveInsurInfo(request):
     if request.method == "POST":
         insurName = request.POST.get('insurName')
@@ -865,7 +864,6 @@ def saveInsurInfo(request):
 
     return patientInsurance(request)
 
-@csrf_exempt
 def fileClaim(request):
     user = request.user
     shs_user_id = SHSUser.objects.get(user = user)

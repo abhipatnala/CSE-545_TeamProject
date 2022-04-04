@@ -1,5 +1,5 @@
 <form action="fileClaim" method="POST">
-
-    <button type="submit" formaction="fileClaim">File Claim</button>
-    <input type = "hidden" name = "payment_id" value = "{{record.payment_id}}">
-  </form>
+  {% csrf_token %}
+  <button type="submit" formaction="fileClaim">File Claim</button>
+  <input type = "hidden" name = "payment_id" value = "{{record.payment_id}}">
+</form>
