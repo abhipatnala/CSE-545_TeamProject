@@ -1,49 +1,33 @@
 
-{% extends 'Portal.html' %}
+{% extends 'portal.html' %}
 {% load django_tables2 %}
 {% load bootstrap3 %}
 
 {% if filter %}
     <form action="patientsViewWithFilter" method="get" class="form form-inline">
+        {% csrf_token %}
         {% bootstrap_form filter.form layout='inline' %}
         {% bootstrap_button 'filter' %}
     </form>
 {% endif %}
 {% render_table table 'django_tables2/bootstrap.html' %}
-
 {% block content %}
-    <div class="row">
-        <div class="col">
-        <div class="card card-body">
-        <form method="get">
-               {{filter.form}}
-            <button class="btn btn-primary" type="submit">Search</button>
-        </form>
+    <div class="container">
+        <h1>Patients's Worklist</h1>
+        <div class="row">
+            <div class="col">
+                <div class="card card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{filter.form}}
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
         </div>
-        </div>
+        {% render_table patientsTable %}
     </div>
-    {% render_table patientDetails %}
-    <script>
-        $(document).ready(function () {
-            $('table tbody tr').bind("mouseover", function () {
-                var colour = $(this).css("background-color");
-                $(this).css("background", '#0099ff');
+{% endblock content %}
 
-                $(this).bind("mouseout", function () {
-                    $(this).css("background", colour);
-                });
-            });
-            $('table tbody tr').click(function () {
-                 var currentRow=$(this).closest("tr"); 
-         
-                var patient_id=currentRow.find("td:eq(0)").text();
-                
-                
-                window.location = "/medical_records/"+patient_id;
-                //on table row click event, pass back to django
-            });
-        });
-    </script>
-{% endblock %}
 
  

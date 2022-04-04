@@ -1,0 +1,12 @@
+{% extends 'portal.html' %}
+{% load django_tables2 %}
+{% load bootstrap3 %}
+
+
+{% render_table table 'django_tables2/bootstrap.html' %}
+{% block content %}
+    <div class="container">
+        <h1>Insurance Worklist</h1>
+        {% render_table claimRequestTable %}
+    </div>
+{% endblock content %}

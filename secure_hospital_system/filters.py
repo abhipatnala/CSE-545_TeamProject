@@ -5,7 +5,10 @@ from .models import *
 class PatientViewFilter(django_filters.FilterSet):
     class Meta:
         model = Patient
-        fields = '__all__'
+        #fields = '__all__'
+        fields = ['patient_id', 'blood_type']
+    patient_id = django_filters.CharFilter(field_name='patient_id__user_id__user__first_name',label='Patient Name' , lookup_expr='contains')
+    blood_type = django_filters.CharFilter(field_name='blood_type',label='Blood Type' , lookup_expr='exact')
 
 class ClaimRequestViewFilter(django_filters.FilterSet):
     class Meta:
