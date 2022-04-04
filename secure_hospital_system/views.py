@@ -301,8 +301,9 @@ def onSubmitOfExistingPatientsAppointmentBooking(request):
 	user = request.user
 	patient = Patient.objects.filter(user_id__in=Subquery(SHSUser.objects.get(user = user)))
 	saveAppointmentDetails(request, patient)
-	return render(request,"test.html")
-	
+    messages.success("Appointment booked")
+	return redirect(to=reverse('home'))
+
 
 def onSubmitOfNewPatientsAppointmentDetails(request):
     if request.method == 'POST':
@@ -378,8 +379,9 @@ def onSubmitOfNewPatientsAppointmentDetails(request):
         saveAppointmentDetails(request, patient)
         current_site = get_current_site(request)
         sendActivationEmail(user, current_site, email)
+        messages.add("Appointment request sent")
 
-        return render(request,"test.html")
+        return redirect(to=reverse('home'))
 
 def appointmentApprovedMail(request,booking_id):
 	record = Doctor_availability_booked.objects.get(booking_id=booking_id)
