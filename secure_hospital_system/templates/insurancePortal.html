@@ -30,6 +30,7 @@
         <p>Please Select Insurance Name:</p>
         
         <form action="saveInsurInfo" method="POST">
+          {% csrf_token %}
 
           <select name="insurName" id="insurName">
             <option value="Aetna">Aetna</option>
