@@ -7,7 +7,13 @@ from tabnanny import verbose
 class SimpleTable(tables.Table):
     class Meta:
         model = Doctor_availability_booked
-        fields = ['patient_id','doctor_id','appointment_date','appointment_start_time','appointment_end_time','edit']
+        fields = ['Appointment_id','patient_name','doctor_name','appointment_date','appointment_start_time','appointment_end_time','edit']
+    patient_name = tables.Column(accessor='patient_id.user_id.user.first_name', verbose_name="Patient Name")
+    Appointment_id = tables.Column(accessor="booking_id", verbose_name="Appointment ID", visible=False)
+    doctor_name =  tables.Column(accessor='doctor_id.user_id.user.first_name', verbose_name='Doctor Name')
+    appointment_date = tables.Column(accessor='appointment_date', verbose_name='Appointment Date')
+    appointment_start_time = tables.Column(accessor='appointment_start_time', verbose_name='Start Time')
+    appointment_end_time = tables.Column(accessor='appointment_end_time', verbose_name='End Time')    
     edit = tables.TemplateColumn(template_name='btn.html'  )
 
 class ClaimRequestTable(tables.Table):
@@ -122,13 +128,18 @@ class LabStaffView(tables.Table):
     
 
 class ClaimTable(tables.Table):
-    class Meta:model = Claim_Request
-    attrs = {'class': 'claim_table table-sm'}
-    # file = tables.TemplateColumn(template_name='blockClaim.html')  
-    # file = tables.TemplateColumn(template_name='blockInsuranceStatus.html')  
-    #fields = ['Insurance ID', 'Claim ID', 'Bill ID', 'Bill Amount', 'Bill Date', 'Claim Status', 'File_Claim']
-    #fields = ['Claim ID', 'insur_id', 'claim_raised_date', 'claim_status', 'file']
-
+    class Meta:
+        model = Claim_Request
+        fields = ['Claim_ID','Insurance_ID', 'Bill_ID', 'Bill_Amount', 'Claim_Status', "claim_raised_date","claim_update_date",'block']
+    Claim_ID = tables.Column(accessor='user_id.user.first_name', verbose_name="Claim Id")
+    Insurance_Name = tables.Column(accessor='phone_number', verbose_name="Insurance")
+    Bill_ID = tables.Column(accessor='patient_insurance_member_id', verbose_name='Bill Id')
+    Bill_Amount = tables.Column(accessor='blood_type', verbose_name='Amount')
+    Claim_Status = tables.Column(accessor='emergency_contact_phone_number', verbose_name='Status')
+    claim_raised_date = tables.Column(accessor='emergency_contact_firstname',verbose_name='Claimed Date')
+    claim_update_date = tables.Column(accessor='emergency_contact_email', verbose_name='Claim Update')
+    block = tables.TemplateColumn(template_name='blockchain.html') 
+    
 
 class PaymentTable(tables.Table):
     class Meta:model = Payments

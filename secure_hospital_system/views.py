@@ -432,6 +432,7 @@ def onSubmitOfNewPatientsAppointmentDetails(request):
 
         return redirect(to=reverse('home'))
 
+
 @login_required
 @twoFARequired()
 @is_hospital_staff('home', "Oops, can't go there.")
@@ -501,13 +502,16 @@ def contact(request):
 @twoFARequired()
 @is_hospital_staff('home', "Oops, can't go there.")
 def appointmentApproval(request):
-	userId = request.user.id
-	userContext = getRoleBasedMenus(userId)
-	queryset = Doctor_availability_booked.objects.filter(status="pending")
-	doctorsTable = SimpleTable(queryset)
+	userId = request.user
+	worklistDetails = Doctor_availability_booked.objects.filter(status="pending")
+	appointmentsTable = SimpleTable(worklistDetails)
 	template = loader.get_template('simple_list.html')
 	userContext = getRoleBasedMenus(userId)
-	return render(request, 'simple_list.html', userContext)
+	context = {
+		'appointmentsTable' : appointmentsTable,
+	}
+	context.update(userContext)
+	return render(request, 'simple_list.html', context)
 
 class TableView(tables.SingleTableView):
 	table_class = SimpleTable
@@ -840,21 +844,21 @@ def insuranceApprovedMail(request,claim_id):
     record = Claim_Request.objects.get(claim_id=claim_id)
     record.claim_status = "approved"
     record.save()
-    url = settings.BLOCKCHAINURL + "/api/setClaimStatus"
-    data = {'id': claim_id, 'claim_status':record.claim_status}
-    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    r = requests.post(url, data=json.dumps(data), headers=headers)
-    if r.status_code == 200:
-        print("worked")
-    else:
-        print("not worked")
-        print(r.status_code)
-    print(record.patient_id.user_id.user.email)
-    print(record.claim_status)
+    try:
+        url = settings.BLOCKCHAINURL + "/api/setClaimStatus"
+        data = {'id': claim_id, 'claim_status':record.claim_status}
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        r = requests.post(url, data=json.dumps(data), headers=headers)
+        if r.status_code == 200:		
+            print("worked")
+        else:
+            print("not worked")
+    except Exception:
+        print("An exception occurred")
     #print(record.appointment_date)
     #print(record.doctor_id.user_id.user.first_name)
-    subject = 'Appointment Confirmation'
-    body ="Dear ,\n"+"\nYour insurance has been confirmed! \n\nThank you,\nSHS Healthcare"
+    subject = 'Insurance Claim Confirmation'
+    body ="Dear ,\n"+"\nYour insurance claim#"+record.claim_id+" has been approved! \n\nThank you,\nSHS Healthcare"
     patient_email = record.patient_id.user_id.user.email
     send_mail(
 		subject,
@@ -897,8 +901,8 @@ def insuranceDeniedMail(request,claim_id):
 	record = Claim_Request.objects.get(claim_id=claim_id)
 	record.claim_status = "denied"
 	record.save()
-	subject ='Appointment Denied'
-	body = "Your insurance claim has been denied due to doctor unavailability. We apologize for the inconvenience.\n\nThank you,\nSHS Healthcare"
+	subject ='Claim Denied'
+	body = "Your insurance claim#"+record.claim_id+" has been denied.\n\nThank you,\nSHS Healthcare"
 	patient_email = record.patient_id.user_id.user.email
 	send_mail(
 		subject,
@@ -971,15 +975,15 @@ def fileClaim(request):
         # print(claim_created.payment_id.payment_id)
         # print(claim_created.payment_id.overall_payment)
         # print(claim_created.claim_status)
-        url = settings.BLOCKCHAINURL + "/api/addClaim"
-        data = {'claim_id': claim_created.claim_id, 'patient_id': claim_created.patient_id.patient_id, 'insurance_id': claim_created.patient_id.patient_insurance_provider_id.provider_id, 'amount': claim_created.payment_id.overall_payment, 'bill_id': claim_created.payment_id.payment_id, 'status':claim_created.claim_status}
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        r = requests.post(url, data=json.dumps(data), headers=headers)
-        if r.status_code == 200:
-            print("worked")
-        else:
-            print("not worked")
-            print(r.status_code)
+        try:
+            url = settings.BLOCKCHAINURL + "/api/addClaim"
+            data = {'claim_id': claim_created.claim_id, 'patient_id': claim_created.patient_id.patient_id, 'insurance_id': claim_created.patient_id.patient_insurance_provider_id.provider_id, 'amount': claim_created.payment_id.overall_payment, 'bill_id': claim_created.payment_id.payment_id, 'status':claim_created.claim_status}
+            headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+            r = requests.post(url, data=json.dumps(data), headers=headers)
+            if r.status_code == 200:
+                print("worked")
+        except Exception:
+            print("An exception occurred")
         return patientInsurance(request)
 
 
@@ -1047,3 +1051,9 @@ def updatePatient(request):
     patient.save()
     messages.success(request, "Patient details updated")
     return redirect(to=reverse('view_patient'))
+
+def viewBlockChainClaims(request):
+	return render(request, 'ABOUT_US.html') 
+
+def viewBlockChainClaimStatus(request):
+    return render(request, 'ABOUT_US.html') 
