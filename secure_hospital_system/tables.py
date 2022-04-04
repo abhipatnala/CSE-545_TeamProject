@@ -124,6 +124,8 @@ class LabStaffView(tables.Table):
 class ClaimTable(tables.Table):
     class Meta:model = Claim_Request
     attrs = {'class': 'claim_table table-sm'}
+    # file = tables.TemplateColumn(template_name='blockClaim.html')  
+    # file = tables.TemplateColumn(template_name='blockInsuranceStatus.html')  
     #fields = ['Insurance ID', 'Claim ID', 'Bill ID', 'Bill Amount', 'Bill Date', 'Claim Status', 'File_Claim']
     #fields = ['Claim ID', 'insur_id', 'claim_raised_date', 'claim_status', 'file']
 
