@@ -624,7 +624,10 @@ def saveRecord(request):
 	document = request.POST['editeddocument']
 	patient_id = request.POST['patient_id']
 	Records.objects.filter(records_id=record_id).update(document=document, last_modified_date=timezone.now())
-	return medicalRecords(request)
+	if role == 'doctor':
+		return medicalRecords(request)
+	else:
+		return labstaffWorklist(request)
 
 @login_required
 @twoFARequired()
@@ -663,11 +666,11 @@ def viewAppointmentDoctor(request):
 @is_doctor('home', "Oops, can't go there.")
 def createDiagnosis(request):
 	userId = request.user
-	role = getCurrentUserRole(userId)
+	shsUser = SHSUser.objects.get(user = userId)
+	doctor = Doctor.objects.get(user_id=shsUser)
 	patient_id = request.POST['patient_id']
 	diagnosis = request.POST['diagnosis_string']
 	patient=Patient.objects.get(patient_id=patient_id)
-	doctor=Doctor.objects.get(doctor_id=1)#change to get using doctor id from request
 	diagnosisRecord = Records(document=diagnosis, patient=patient,doctor=doctor,created_date=timezone.now(),last_modified_date=timezone.now(),document_type='D')
 	diagnosisRecord.save()
 	return viewAppointmentDoctor(request)
@@ -677,11 +680,11 @@ def createDiagnosis(request):
 @is_doctor('home', "Oops, can't go there.")
 def createPrescription(request):
 	userId = request.user
-	role = getCurrentUserRole(userId)
+	shsUser = SHSUser.objects.get(user = userId)
+	doctor = Doctor.objects.get(user_id=shsUser)
 	patient_id = request.POST['patient_id']
 	prescription = request.POST['prescription_string']
 	patient=Patient.objects.get(patient_id=patient_id)
-	doctor=Doctor.objects.get(doctor_id=1)#change to get using doctor id from request
 	prescriptionRecord = Records(document=prescription, patient=patient,doctor=doctor,created_date=timezone.now(),last_modified_date=timezone.now(),document_type='P')
 	prescriptionRecord.save()
 	return viewAppointmentDoctor(request)
@@ -691,12 +694,11 @@ def createPrescription(request):
 @is_doctor('home', "Oops, can't go there.")
 def recommendLabtest(request):
 	userId = request.user
-	role = getCurrentUserRole(userId)
+	shsUser = SHSUser.objects.get(user = userId)
+	doctor = Doctor.objects.get(user_id=shsUser)
 	patient_id = request.POST['patient_id']
 	labtest_recommendation = request.POST['labtest_recommendation']
 	patient=Patient.objects.get(patient_id=patient_id)
-	doctor=Doctor.objects.get(doctor_id=1)#change to get using doctor id from request
-	
 	labTest = Lab_Test(recommended_test=labtest_recommendation, patient=patient,doctor=doctor,recommended_date=timezone.now())
 	labTest.save()
 	return viewAppointmentDoctor(request)
@@ -706,7 +708,6 @@ def recommendLabtest(request):
 @is_lab_staff('home', "Oops, can't go there.")
 def labtestRequests(request):
 	userId = request.user
-	role = getCurrentUserRole(userId)
 	userContext = getRoleBasedMenus(userId)
 	lab_test_requests = LabTestRequests(Lab_Test.objects.filter(status='Pending').order_by('recommended_date'))
 	context = {
@@ -720,26 +721,20 @@ def labtestRequests(request):
 @twoFARequired()
 @is_lab_staff('home', "Oops, can't go there.")
 def labtestAction(request):
-	userId = request.user
-	role = getCurrentUserRole(userId)
-	if role == 'labstaff':
-		lab_test_id = request.POST['lab_test_id']
-		post_data = dict(request.POST.lists())
-	#    Records.objects.filter(records_id=record_id).update(document=document, last_updated_date=timezone.now())
-		action_taken = request.POST['action_taken']
-		if(action_taken == 'Approve'):
-			Lab_Test.objects.filter(lab_test_id=lab_test_id).update(status='Approved', action_taken_date=timezone.now())
-		elif(action_taken == 'Deny'):
-			Lab_Test.objects.filter(lab_test_id=lab_test_id).update(status='Denied', action_taken_date=timezone.now())
-		return labtestRequests(request)
+	lab_test_id = request.POST['lab_test_id']
+	action_taken = request.POST['action_taken']
+	if(action_taken == 'Approve'):
+		Lab_Test.objects.filter(lab_test_id=lab_test_id).update(status='Approved', action_taken_date=timezone.now())
+	elif(action_taken == 'Deny'):
+		Lab_Test.objects.filter(lab_test_id=lab_test_id).update(status='Denied', action_taken_date=timezone.now())
+	return labtestRequests(request)
 
 @login_required
 @twoFARequired()
 @is_lab_staff('home', "Oops, can't go there.")
 def labstaffWorklist(request):
 	userId = request.user
-	role = getCurrentUserRole(userId)
-	labTestQuery = Lab_Test.objects.filter(status='Approved').order_by('action_taken_date')
+	labTestQuery = Lab_Test.objects.filter(status__in=['Approved','Completed']).order_by('action_taken_date')
 	filter = LabStaffViewFilter(request.POST, queryset=labTestQuery)
 	labTestQuery = filter.qs
 	labStaffTable = LabStaffView(labTestQuery)
@@ -756,20 +751,16 @@ def labstaffWorklist(request):
 @twoFARequired()
 @is_lab_staff('home', "Oops, can't go there.")
 def createLabtestReport(request):
-	userId = request.user
-	role = getCurrentUserRole(userId)
-	if role == 'labstaff':
-		labtest_report_string = request.POST['labtest_report_string']
-		lab_test_id = request.POST['lab_test_id']
-		user_id = request.POST['user_id']
-		labTest = Lab_Test.objects.get(lab_test_id=lab_test_id)
-		patient = labTest.patient
-		doctor = labTest.doctor
-		labTestReportRecord = Records(document=labtest_report_string,patient=patient,doctor=doctor,created_date=timezone.now(),last_modified_date=timezone.now(),document_type='L')
-		labTestReportRecord.save()
-		labTestRecord = Records.objects.get(records_id=labTestReportRecord.records_id)
-		Lab_Test.objects.filter(lab_test_id=lab_test_id).update(record=labTestRecord,status='Completed')
-		return labstaffWorklist(request)
+	labtest_report_string = request.POST['labtest_report_string']
+	lab_test_id = request.POST['lab_test_id']
+	labTest = Lab_Test.objects.get(lab_test_id=lab_test_id)
+	patient = labTest.patient
+	doctor = labTest.doctor
+	labTestReportRecord = Records(document=labtest_report_string,patient=patient,doctor=doctor,created_date=timezone.now(),last_modified_date=timezone.now(),document_type='L')
+	labTestReportRecord.save()
+	labTestRecord = Records.objects.get(records_id=labTestReportRecord.records_id)
+	Lab_Test.objects.filter(lab_test_id=lab_test_id).update(record=labTestRecord,status='Completed')
+	return labstaffWorklist(request)
 
 def insuranceApprovedMail(request,claim_id):
 	#how to fetch the claim_id
