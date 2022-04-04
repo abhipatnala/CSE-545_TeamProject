@@ -1052,8 +1052,32 @@ def updatePatient(request):
     messages.success(request, "Patient details updated")
     return redirect(to=reverse('view_patient'))
 
+@login_required
+@twoFARequired()
+@is_patient('home',  "Oops, can't go there.")
 def viewBlockChainClaims(request):
-	return render(request, 'ABOUT_US.html') 
+    claim_id = request.claim_id
+    data=''
+    try:
+        url = settings.BLOCKCHAINURL + "/api/getClaimHistory/"+claim_id
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        data = requests.get(url).json
+        print(data)
+    except Exception:
+        print("An exception occurred")
+    return HttpResponse(data)
 
+@login_required
+@twoFARequired()
+@is_patient('home',  "Oops, can't go there.")
 def viewBlockChainClaimStatus(request):
-    return render(request, 'ABOUT_US.html') 
+    claim_id = request.claim_id
+    data=''
+    try:
+        url = settings.BLOCKCHAINURL + "/api/getClaim/"+claim_id
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        data = requests.get(url).json
+        print(data)
+    except Exception:
+        print("An exception occurred")
+    return HttpResponse(data)
