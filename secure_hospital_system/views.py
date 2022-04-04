@@ -152,7 +152,7 @@ def appointmentsRetrieval(request):
 	else:
 		return('/')
 
-@csrf_exempt
+
 def newAppointments(request):
 	if request.method == 'POST':
 		# if doctor is selected
@@ -220,29 +220,42 @@ def getPatientDetails(request):
 		patientDetails = Patient.objects.filter(patient_id=patient_id)
 		return patientDetails
 
-@csrf_exempt
 def newBillGenerated(request):
-	if request.method == 'POST':
-		patient_id= request.POST['patient_id']
-		#patient_id= 13
-		#overall_payment= request.POST['overallPayment']
-		consultation_fee = request.POST['consultationFee']
-		supplies_fee = request.POST['suppliesFee']
-		admit_fee = request.POST['admitFee']
-		discharge_fee = request.POST['dischargeFee']
+	#if request.method == 'POST':
+	userId = request.user
+	role = getCurrentUserRole(userId)
+	patient_id= request.POST['patient_id']
+	#patient_id= 13
+	#overall_payment= request.POST['overallPayment']
+	consultation_fee = request.POST['consultationFee']
+	supplies_fee = request.POST['suppliesFee']
+	admit_fee = request.POST['admitFee']
+	discharge_fee = request.POST['dischargeFee']
 
-		overall_payment = int(consultation_fee)+int(supplies_fee)+int(admit_fee)+int(discharge_fee)
+	overall_payment = int(consultation_fee)+int(supplies_fee)+int(admit_fee)+int(discharge_fee)
 
-		payments = Payments(admit_fee=admit_fee, patient_id=(getPatientDetails(request))[0], discharge_fee = discharge_fee,
-			supplies_fee=supplies_fee, consultation_fee=consultation_fee, overall_payment = overall_payment, payment_generated_date = date.today(),
-			payment_status = 'pending', payment_update_date = date.today())
-		payments.save()
-	#return render(request,"medical_records.html")	
-	response = redirect('/medical_records/'+patient_id)
-	return response
+	payments = Payments(admit_fee=admit_fee, patient_id=(getPatientDetails(request))[0], discharge_fee = discharge_fee,
+		supplies_fee=supplies_fee, consultation_fee=consultation_fee, overall_payment = overall_payment, payment_generated_date = date.today(),
+		payment_status = 'pending', payment_update_date = date.today())
+	payments.save()
+	userContext = getRoleBasedMenus(userId)
+	context = {
+		'patient_id' : request.POST['patient_id']
+	}
+	context.update(userContext)
+	return medicalRecords(request)	
+	#response = redirect('/medicalRecords/'+patient_id)
+	#return response
 
 def generateBills(request):
-	return render(request, 'generateBills.html',{'patient_id':request.GET['patient_id']}) 
+	userId = request.user
+	role = getCurrentUserRole(userId)
+	userContext = getRoleBasedMenus(userId)
+	context = {
+		'patient_id' : request.POST['patient_id']
+	}
+	context.update(userContext)
+	return render(request, 'generateBills.html',context) 
 
 def getUserDetails(userId):
 	user = User.objects.filter(id=userId)
@@ -261,13 +274,12 @@ def patients(request):
 	return render(request,'BookAppt.html')
 
 def onSubmitOfExistingPatientsAppointmentBooking(request):
-	userId = request.POST("user_id")
-	patient = Patient.objects.filter(user_id = userId)
+	user = request.user
+	patient = Patient.objects.filter(user_id__in=Subquery(SHSUser.objects.get(user = user)))
 	saveAppointmentDetails(request, patient)
 	return render(request,"test.html")
 	
-@csrf_exempt
-#@csrf_protect 
+
 def onSubmitOfNewPatientsAppointmentDetails(request):
     if request.method == 'POST':
         patientRoleObj = Roles.objects.filter(role_name="patient")
@@ -459,7 +471,6 @@ def patientsViewWithFilter(request):
 	return render(request, 'patientGrid.html', context)
 
 
-
 @login_required
 def medicalRecords(request):
 	userId = request.user
@@ -475,6 +486,8 @@ def medicalRecords(request):
 			patientId = patient.patient_id
 	elif role == 'doctor':
 		patientId = request.GET['patient_id']
+	elif role == 'hospitalstaff':
+		patientId = request.POST['patient_id']	
 	userContext = getRoleBasedMenus(userId)
 	patientDetails = PatientDetails(Patient.objects.filter(patient_id=patientId)).as_values()
 	appointmentsTable = Appointments(Doctor_availability_booked.objects.filter(patient_id=patientId).order_by('appointment_date'))
@@ -486,6 +499,7 @@ def medicalRecords(request):
 	template = loader.get_template('medicalRecords.html')
 	context = {
 		'patient_name' : patientDetails,
+		'patient_id' : patientId,
 		'appointmentsTable' : appointmentsTable,
 		'diagnosesTable' : diagnosesTable,
 		'labTestReportsTable' : labTestReportsTable,
@@ -756,6 +770,20 @@ def insuranceApprovedMail(request,claim_id):
     )
     return render(request, 'sentmail.html')
     
+def insuranceLoginRecords(request):
+	userId = request.user
+	shsUser = SHSUser.objects.get(user = userId)	
+	worklistDetails = Claim_Request.objects.filter(claim_status='pending')
+	claimRequestTable = ClaimRequestTable(worklistDetails)
+	template = loader.get_template('insuranceLoginRecords.html')
+	userContext = getRoleBasedMenus(userId.id)
+	print(userContext)
+	context = {
+		'claimRequestTable' : claimRequestTable,
+	}
+	context.update(userContext)
+	return render(request, 'insuranceLoginRecords.html', context)
+
 class InsuranceLoginRecords(tables.SingleTableView):
 	table_class = ClaimRequestTable
 	queryset = insuranceRequests = Claim_Request.objects.filter(claim_status='pending')

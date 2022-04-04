@@ -54,38 +54,32 @@
 
     <!-- Unnamed (Text Field) -->
     <div class="container mt-5">
-      <form action="/newBillGenerated" class="row g-3" method = "post" enctype="multipart/form-data>
+      <form action="/newBillGenerated" class="row g-3" method = "post">
         {% csrf_token %}
-      <div class="container mt-5_1" id="div2">
-        <h1 align=center>Bill Information</h1>
+        <div class="container mt-5_1" id="div2">
           <input type="hidden" name="patient_id" value='{{patient_id}}'>
-          <div class="col-md-6">
-            <label for="admitFee" class="form-label">Admit Fee</label>
-            <input name="admitFee" type="text" class="form-control" id="admitFee" required>
-          </div>
-          <div class="col-md-6">
-            <label for="dischargeFee" class="form-label">Discharge Fee</label>
-            <input name="dischargeFee" type="text" class="form-control" id="dischargeFee" required>
-          </div>
-          <div class="col-md-6">
-            <label for="suppliesFee" class="form-label">Supplies Fee</label>
-            <input name="suppliesFee" type="text" class="form-control" id="suppliesFee" required>
-          </div>
-          <div class="col-md-6">
-            <label for="consultationFee" class="form-label">Consultation Fee</label>
-            <input name="consultationFee" type="text" class="form-control" id="consultationFee" required>
-          </div>
-          &nbsp;
-          <div class="col-md-8">
-            <label for="overallPayment" class="form-label">Overall Payment</label>
-            <input name="overallPayment" type="text" class="form-control" id="overallPayment" required>
-          </div>
-         
-              <div id="wrapper">
-            <button type="submit" class="btn btn-primary" style="float: centre;">Submit</button>
+            <div class="col-md-6">
+              <label for="admitFee" class="form-label">Admit Fee</label>
+              <input name="admitFee" type="text" class="form-control" id="admitFee" required>
             </div>
-        </form>
+            <div class="col-md-6">
+              <label for="dischargeFee" class="form-label">Discharge Fee</label>
+              <input name="dischargeFee" type="text" class="form-control" id="dischargeFee" required>
+            </div>
+            <div class="col-md-6">
+              <label for="suppliesFee" class="form-label">Supplies Fee</label>
+              <input name="suppliesFee" type="text" class="form-control" id="suppliesFee" required>
+            </div>
+            <div class="col-md-6">
+              <label for="consultationFee" class="form-label">Consultation Fee</label>
+              <input name="consultationFee" type="text" class="form-control" id="consultationFee" required>
+            </div>         
+            <div id="wrapper">
+              <button type="submit" class="btn btn-primary" style="float: centre;">Submit</button>
+            </div>
         </div>
+      </form>
+    </div>
 
     
 
