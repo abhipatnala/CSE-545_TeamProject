@@ -154,11 +154,12 @@ def appointmentRequests(request):
 def appointments(request):
 	context1 = getRoleBasedMenus(request.user.id)
 	#patient_id =1
-	patient_id = Patient.objects.filter(user_id__in=Subquery(SHSUser.objects.get(user = request.user)))
-	upcomingAppointments = Doctor_availability_booked.objects.filter(patient_id=patient_id)
+	shsUser = SHSUser.objects.filter(user = request.user)
+	patient_id = Patient.objects.filter(user_id=shsUser[0])
+	upcomingAppointments = Doctor_availability_booked.objects.filter(patient_id=patient_id[0])
 	upcomingAppointments  = upcomingAppointments.filter(appointment_date__gte=date.today())
 	upcomingAppointments  = upcomingAppointments.filter(status='approved')
-	pastAppointments = Doctor_availability_booked.objects.filter(patient_id=patient_id)
+	pastAppointments = Doctor_availability_booked.objects.filter(patient_id=patient_id[0])
 	pastAppointments  = pastAppointments.filter(appointment_date__lt=date.today())
 	pastAppointments  = pastAppointments.filter(status='approved')
 	
@@ -351,7 +352,7 @@ def onSubmitOfExistingPatientsAppointmentBooking(request):
 	user = request.user
 	patient = Patient.objects.filter(user_id__in=Subquery(SHSUser.objects.get(user = user)))
 	saveAppointmentDetails(request, patient)
-	messages.success("Appointment booked")
+	messages.success(request,"Appointment booked")
 	return redirect(to=reverse('home'))
 
 
@@ -374,8 +375,8 @@ def onSubmitOfNewPatientsAppointmentDetails(request):
         print("user email ",email)
         userInfo = User.objects.filter(email = email)
         if userInfo:
-            print("user existed ",userInfo)
-            return render(request,"error.html")
+            messages.error(request, "User already exists please login to book")
+            return redirect('/accounts/login/')
 
         print("user about to be saved")
         user = User(password=(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=5))),
@@ -840,34 +841,35 @@ def createLabtestReport(request):
 @is_insurance_staff('home', "Oops, can't go there.")
 def insuranceApprovedMail(request,claim_id):
 	#how to fetch the claim_id
-    updateContext = getRoleBasedMenus(request.user.id)
-    record = Claim_Request.objects.get(claim_id=claim_id)
-    record.claim_status = "approved"
-    record.save()
-    try:
-        url = settings.BLOCKCHAINURL + "/api/setClaimStatus"
-        data = {'id': claim_id, 'claim_status':record.claim_status}
-        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        r = requests.post(url, data=json.dumps(data), headers=headers)
-        if r.status_code == 200:		
-            print("worked")
-        else:
-            print("not worked")
-    except Exception:
-        print("An exception occurred")
+	updateContext = getRoleBasedMenus(request.user.id)
+	record = Claim_Request.objects.get(claim_id=claim_id)
+	record.claim_status = "approved"
+	record.save()
+	try:
+		url = settings.BLOCKCHAINURL + "/api/setClaimStatus"
+		data = {'id': claim_id, 'claim_status':record.claim_status}
+		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		r = requests.post(url, data=json.dumps(data), headers=headers)
+		if r.status_code == 200:		
+			print("worked")
+		else:
+			print("not worked")
+	except Exception:
+		print("An exception occurred")
     #print(record.appointment_date)
     #print(record.doctor_id.user_id.user.first_name)
-    subject = 'Insurance Claim Confirmation'
-    body ="Dear ,\n"+"\nYour insurance claim#"+record.claim_id+" has been approved! \n\nThank you,\nSHS Healthcare"
-    patient_email = record.patient_id.user_id.user.email
-    send_mail(
+	subject = 'Insurance Claim Confirmation'
+	body ="Dear ,\n"+"\nYour insurance claim#"+record.claim_id+" has been approved! \n\nThank you,\nSHS Healthcare"
+	patient_email = record.patient_id.user_id.user.email
+	send_mail(
 		subject,
         body,
         'shsgrp1@gmail.com',
         [patient_email],
         fail_silently=False
     )
-    return render(request, 'sentmail.html',updateContext)
+	messages.success(request,"Status updated successfuly")
+	return render(request, 'insuranceLoginRecords.html',updateContext)
     
 @login_required
 @twoFARequired()
@@ -911,7 +913,8 @@ def insuranceDeniedMail(request,claim_id):
         [patient_email],
         fail_silently=False
     )
-	return render(request, 'sentmail.html',updateContext)
+	messages.success(request, "Status updated successfuly")
+	return render(request, 'insuranceLoginRecords.html',updateContext)
 
 class ClaimTableView(tables.SingleTableView):
     table_class = ClaimTable
