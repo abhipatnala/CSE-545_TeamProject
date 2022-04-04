@@ -779,6 +779,15 @@ def insuranceApprovedMail(request,claim_id):
     record = Claim_Request.objects.get(claim_id=claim_id)
     record.claim_status = "approved"
     record.save()
+    url = settings.BLOCKCHAINURL + "/api/setClaimStatus"
+    data = {'id': claim_id, 'claim_status':record.claim_status}
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+    r = requests.post(url, data=json.dumps(data), headers=headers)
+    if r.status_code == 200:
+        print("worked")
+    else:
+        print("not worked")
+        print(r.status_code)
     print(record.patient_id.user_id.user.email)
     print(record.claim_status)
     #print(record.appointment_date)
@@ -878,15 +887,22 @@ def fileClaim(request):
     if Claim_Request.objects.filter(payment_id = payment_ID).count() == 0:
         Claim_Request.objects.create(patient_id_id = patient_id, payment_id_id = payment_ID, claim_status = 'pending', claim_raised_date = claim_raised_date, claim_update_date=claim_update_date)
         Payments.objects.filter(payment_id=payment_ID).update(is_claimed = True)
-        # url = settings.BLOCKCHAINURL + "/api/addClaim"
-        # data = {'claim_id': '1', 'patient_id': '1', 'insurance_id': '1', 'amount': '50000', 'bill_id': '1', 'status':"claimed"}
-        # headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        # r = requests.post(url, data=json.dumps(data), headers=headers)
-        # if r.status_code == 200:
-        #     print("worked")
-        # else:
-        #     print("not worked")
-        #     print(r.status_code)
+        claim_created = Claim_Request.objects.get(payment_id = payment_ID)
+        # print(claim_created.claim_id)
+        # print(claim_created.patient_id.patient_id)
+        # print(claim_created.patient_id.patient_insurance_provider_id.provider_id)
+        # print(claim_created.payment_id.payment_id)
+        # print(claim_created.payment_id.overall_payment)
+        # print(claim_created.claim_status)
+        url = settings.BLOCKCHAINURL + "/api/addClaim"
+        data = {'claim_id': claim_created.claim_id, 'patient_id': claim_created.patient_id.patient_id, 'insurance_id': claim_created.patient_id.patient_insurance_provider_id.provider_id, 'amount': claim_created.payment_id.overall_payment, 'bill_id': claim_created.payment_id.payment_id, 'status':claim_created.claim_status}
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        r = requests.post(url, data=json.dumps(data), headers=headers)
+        if r.status_code == 200:
+            print("worked")
+        else:
+            print("not worked")
+            print(r.status_code)
         return patientInsurance(request)
 
 
