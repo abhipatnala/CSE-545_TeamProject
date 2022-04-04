@@ -435,10 +435,6 @@ left:2px;
                                 <label for="AvailableSlots" class="form-label">Available Slots</label>
                                 <select id="AvailableSlots" class="form-control" name="AvailableSlots" multiple>
                                   <option style="display:none"></option>
-                                  <!-- <option>8-9 AM</option>
-                                  <option>9-10 AM</option>
-                                  <option>1-2 PM</option>
-                                  <option>4-5 PM</option> -->
                                 </select> 
                               &nbsp;
                               &nbsp;
@@ -470,7 +466,6 @@ left:2px;
               const cookies = document.cookie.split(';');
               for (let i = 0; i < cookies.length; i++) {
                   const cookie = cookies[i].trim();
-                  // Does this cookie string begin with the name we want?
                   if (cookie.substring(0, name.length + 1) === (name + '=')) {
                       cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                       break;
@@ -483,7 +478,6 @@ left:2px;
       function getAvailableSlots() {
         date = document.getElementById('appointmentDate').value
         if(date != ""){
-          console.log(date)
           $.ajax({
             url: '{% url "getAvailableSlots" %}',
             method: 'POST',
@@ -499,7 +493,6 @@ left:2px;
             dataType: 'json',
             success: function (data) {
               slots = data.slots
-              console.log(data)
               select = document.getElementById('AvailableSlots')
               var i, L = select.options.length - 1;
               for(i = L; i >= 0; i--) {
