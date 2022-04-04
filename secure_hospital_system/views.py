@@ -456,7 +456,8 @@ def appointmentApprovedMail(request,booking_id):
 		[patient_email],
 		fail_silently=False
 	)
-	return render(request, 'sentmail.html',updateContext)
+	messages.success(request,"Status updated successfuly")
+	return appointmentApproval(request)
 	
 @login_required
 @twoFARequired()
@@ -476,7 +477,8 @@ def appointmentDeniedMail(request,booking_id):
 		[patient_email],
 		fail_silently=False
 	)
-	return render(request, 'sentmail.html',updateContext)
+	messages.success(request,"Status updated successfuly")
+	return appointmentApproval(request)
 
 def index(request):
 	return render(request, 'index.html') 
@@ -869,7 +871,7 @@ def insuranceApprovedMail(request,claim_id):
         fail_silently=False
     )
 	messages.success(request,"Status updated successfuly")
-	return render(request, 'insuranceLoginRecords.html',updateContext)
+	return insuranceLoginRecords(request)
     
 @login_required
 @twoFARequired()
@@ -914,7 +916,7 @@ def insuranceDeniedMail(request,claim_id):
         fail_silently=False
     )
 	messages.success(request, "Status updated successfuly")
-	return render(request, 'insuranceLoginRecords.html',updateContext)
+	return insuranceLoginRecords(request)
 
 class ClaimTableView(tables.SingleTableView):
     table_class = ClaimTable
