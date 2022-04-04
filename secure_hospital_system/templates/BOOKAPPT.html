@@ -361,9 +361,10 @@ left:2px;
                   <div class="col-xs-6 col-md-6">
                     <label>Insurance Provider</label> 
                     <select name="insuranceprovider" class = "form-control input-lg" >
-                      <option value="Aetna">Aetna</option>
-                      <option value="Allstate">Allstate</option>
-                      <option value="Liberty">Liberty</option>
+                      <option style="display:none"></option>
+                      {% for insurance_provider in insurance_providers %}
+                        <option value="{{ insurance_provider}}">{{ insurance_provider }}</option>
+                      {% endfor %}
                     </select> 
                   </div>
                   <div class="col-xs-6 col-md-6">

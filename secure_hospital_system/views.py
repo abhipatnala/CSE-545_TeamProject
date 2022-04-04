@@ -126,7 +126,9 @@ def bookingAppointmentsByExistingPatients(request):
 
 def bookAppointmentForSelectedDoc(request, doctor_id):
 	#doctors = Doctor.objects.filter(doctor_id = doctor_id)
-	return render(request,"BOOKAPPT.html",{'doctor_id':doctor_id})
+	insuranceProviders = InsuranceProvider.objects.all().values_list('provider_name', flat=True)
+	insuranceProviders = list(insuranceProviders)
+	return render(request,"BOOKAPPT.html",{'doctor_id':doctor_id, 'insurance_providers':insuranceProviders})
 
 def bookAppointment(request):
 	doctor_id =1 #General Physician is hard coded
@@ -139,7 +141,9 @@ def bookAppointment(request):
 	#		doctors = Doctor.objects.filter(doctor_id = doctorid)
 	#	else:
 	#		doctors = Doctor.objects.all()
-	return render(request,"BOOKAPPT.html",{'doctor_id':doctor_id})
+	insuranceProviders = InsuranceProvider.objects.all().values_list('provider_name', flat=True)
+	insuranceProviders = list(insuranceProviders)
+	return render(request,"BOOKAPPT.html",{'doctor_id':doctor_id, 'insurance_providers':insuranceProviders})
 
 @login_required
 @twoFARequired()
@@ -932,12 +936,15 @@ def patientInsurance(request):
     paymentsTable = PaymentTable(Payments.objects.filter(patient_id=patient_id).filter(is_claimed = False).order_by('payment_update_date'))
     claimsTable = ClaimTable(Claim_Request.objects.filter(patient_id=patient_id).order_by('claim_raised_date'))
     template = loader.get_template('insurancePortal.html')
+    insuranceProviders = InsuranceProvider.objects.all().values_list('provider_name', flat=True)
+    insuranceProviders = list(insuranceProviders)
     context1 = getRoleBasedMenus(request.user.id)
     context = {
         'paymentsTable' : paymentsTable,
         'claimsTable' : claimsTable,
         'patient_id' : patient_id,
 		'patient_insurance_member_id' : patientInsuranceMemberId,
+		'insurance_providers' : insuranceProviders,
 		'patient_insurance_provider_name' : patientInsuranceProvider,
     }
     context.update(context1)

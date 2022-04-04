@@ -32,9 +32,9 @@
         <form action="saveInsurInfo" method="POST">
           {% csrf_token %}
           <select name="insurName" id="insurName">
-            <option value="Aetna">Aetna</option>
-            <option value="Allstate">Allstate</option>
-            <option value="Liberty">Liberty</option>
+            {% for insurance_provider in insurance_providers %}
+            <option value="{{ insurance_provider}}">{{ insurance_provider }}</option>
+            {% endfor %}
           </select>
 
           <p>Please enter Insurance Member ID:</p>
