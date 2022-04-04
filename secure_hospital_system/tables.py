@@ -72,6 +72,22 @@ class RecordsTable(tables.Table):
     ViewDiagnosis = tables.TemplateColumn(template_name='viewRecords.html', verbose_name="Document", extra_context={'patient_id' : Patient_id})
     Last_Modified = tables.Column(accessor='last_modified_date')
 
+class PaymentsTable(tables.Table):
+    class Meta:
+        model = Payments
+        fields = ['payment_id', 'patient_name', 'admit_fee', 'discharge_fee', 'supplies_fee', 'consultation_fee', 'overall_payment', 'payment_generated_date', 'payment_status', 'is_claimed']
+    payment_id = tables.Column(accessor='payment_id', visible=False)
+    patient_name = tables.Column(accessor='patient_id.user_id.user.first_name', visible='Patient Name')
+    admit_fee = tables.Column(accessor='admit_fee', verbose_name='Admit Fee')
+    discharge_fee = tables.Column(accessor='discharge_fee', verbose_name='Discharge Fee')
+    supplies_fee = tables.Column(accessor='supplies_fee', verbose_name='Supplies Fee')
+    consultation_fee = tables.Column(accessor='consultation_fee', verbose_name='Consultation Fee')
+    overall_payment = tables.Column(accessor='overall_payment', verbose_name='Overall Fees')
+    payment_generated_date = tables.Column(accessor='payment_generated_date', visible='Bill Date')
+    payment_status = tables.Column(accessor='payment_status', verbose_name='Status')
+    is_claimed = tables.Column(accessor='is_claimed', verbose_name='Insurance Claimed?')
+
+
 class PatientDetails(tables.Table):
     class Meta:
         model = Patient

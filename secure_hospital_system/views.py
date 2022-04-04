@@ -512,6 +512,7 @@ def medicalRecords(request):
 	role = getCurrentUserRole(userId)
 	shsUser = SHSUser.objects.get(user = userId)
 	patientId = ''
+	isHospitalStaff = False
 	if role == 'patient':
 		patient = Patient.objects.get(user_id=shsUser)
 		if(patient.patient_id == patientId):
@@ -522,14 +523,16 @@ def medicalRecords(request):
 	elif role == 'doctor':
 		patientId = request.POST['patient_id']
 	elif role == 'hospitalstaff':
-		patientId = request.POST['patient_id']	
+		patientId = request.POST['patient_id']
+		isHospitalStaff = True
+		
 	userContext = getRoleBasedMenus(userId)
 	patientDetails = PatientDetails(Patient.objects.filter(patient_id=patientId)).as_values()
 	appointmentsTable = Appointments(Doctor_availability_booked.objects.filter(patient_id=patientId).order_by('appointment_date'))
 	diagnosesTable = RecordsTable(Records.objects.filter(patient_id=patientId).filter(document_type='D').order_by('records_id'))
 	labTestReportsTable = RecordsTable(Records.objects.filter(patient_id=patientId).filter(document_type='L').order_by('records_id'))
 	prescriptionsTable = RecordsTable(Records.objects.filter(patient_id=patientId).filter(document_type='P').order_by('records_id'))
-	paymentsList = Payments.objects.filter(patient_id=patientId).order_by('patient_id')
+	paymentsTable = PaymentsTable(Payments.objects.filter(patient_id=patientId).order_by('patient_id'))
 	
 	template = loader.get_template('medicalRecords.html')
 	context = {
@@ -539,7 +542,8 @@ def medicalRecords(request):
 		'diagnosesTable' : diagnosesTable,
 		'labTestReportsTable' : labTestReportsTable,
 		'prescriptionsTable' : prescriptionsTable,
-		'paymentsList': paymentsList,
+		'paymentsTable': paymentsTable,
+		'isHospitalStaff' : isHospitalStaff,
 	}
 	context.update(userContext)
 	return HttpResponse(template.render(context, request))

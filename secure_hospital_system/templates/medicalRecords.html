@@ -35,9 +35,11 @@
       <form action = '/generateBills' method="post">
         {% csrf_token %}
         <input type="hidden" name="patient_id" value="{{ patient_id }}">
+        {% if isHospitalStaff %}
         <button class="btn btn-primary" type="submit">Generate Bills</button>
+        {% endif %}
     </form>
-      {% render_table paymentsList %}
+      {% render_table paymentsTable %}
       <p></p>
     </div>
   </div>
