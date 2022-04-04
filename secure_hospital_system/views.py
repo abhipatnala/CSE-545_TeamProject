@@ -356,30 +356,29 @@ def onSubmitOfExistingPatientsAppointmentBooking(request):
 
 
 def onSubmitOfNewPatientsAppointmentDetails(request):
-	if request.method == 'POST':
-		patientRoleObj = Roles.objects.filter(role_name="patient")
-		print("entered patientRoleObj ", patientRoleObj)
-		# patient and user details
-		first_name = request.POST.get('firstname')
-		print("firstName ",first_name)
-		last_name = request.POST.get('lastname')
-		blood_type = request.POST['blood group']
-		address = request.POST['Address']
-		city = request.POST['city']
-		state = request.POST['state']
-		zipCode = request.POST['zip']
-		email = request.POST['emailInfo']
-		phone_number = request.POST['phoneNumber']
-		loginDate = date.today()
-		print("user email ",email)
-		userInfo = User.objects.filter(email = email)
-		if userInfo:
-            # render login html
-			print("user existed ",userInfo)
-			return render(request,"error.html")
+    if request.method == 'POST':
+        patientRoleObj = Roles.objects.filter(role_name="patient")
+        print("entered patientRoleObj ", patientRoleObj)
+        # patient and user details
+        first_name = request.POST.get('firstname')
+        print("firstName ",first_name)
+        last_name = request.POST.get('lastname')
+        blood_type = request.POST['blood group']
+        address = request.POST['Address']
+        city = request.POST['city']
+        state = request.POST['state']
+        zipCode = request.POST['zip']
+        email = request.POST['emailInfo']
+        phone_number = request.POST['phoneNumber']
+        loginDate = date.today()
+        print("user email ",email)
+        userInfo = User.objects.filter(email = email)
+        if userInfo:
+            print("user existed ",userInfo)
+            return render(request,"error.html")
 
-		print("user about to be saved")
-		user = User(password=(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=5))),
+        print("user about to be saved")
+        user = User(password=(''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase, k=5))),
                     last_login = loginDate,
                     is_superuser = 0,
                     username= email,
@@ -390,22 +389,22 @@ def onSubmitOfNewPatientsAppointmentDetails(request):
                     is_active=0,
                     date_joined = loginDate
         )
-		user.save()
-		print("user saved")
-		shsUser = SHSUser(user=user, role_id=patientRoleObj[0])
-		shsUser.save()
-		insuranceProviderObj = InsuranceProvider.objects.filter(provider_name = request.POST['insuranceprovider'])
-		#medical history
-		allergies = request.POST['allergies']
-		medicationFollowed = request.POST['medications']
-		preExistingMedicalConditions = request.POST['medicalConditions']
-		anyOtherMedicalDetails = request.POST['medicalInfo']
-		print("about to save patient details")
-		ecFirstName = request.POST['ecFirstname']
-		ecLastName = request.POST['ecLastname']
-		ecEmailInfo = request.POST['ecEmailInfo']
-		ecPhoneNumber = request.POST['ecPhoneNumber']
-		patient = Patient(
+        user.save()
+        print("user saved")
+        shsUser = SHSUser(user=user, role_id=patientRoleObj[0])
+        shsUser.save()
+        insuranceProviderObj = InsuranceProvider.objects.filter(provider_name = request.POST['insuranceprovider'])
+        #medical history
+        allergies = request.POST['allergies']
+        medicationFollowed = request.POST['medications']
+        preExistingMedicalConditions = request.POST['medicalConditions']
+        anyOtherMedicalDetails = request.POST['medicalInfo']
+        print("about to save patient details")
+        ecFirstName = request.POST['ecFirstname']
+        ecLastName = request.POST['ecLastname']
+        ecEmailInfo = request.POST['ecEmailInfo']
+        ecPhoneNumber = request.POST['ecPhoneNumber']
+        patient = Patient(
             update_user = shsUser,
             user_id = shsUser,
             patient_insurance_member_id = request.POST['insuranceid'],
@@ -425,13 +424,13 @@ def onSubmitOfNewPatientsAppointmentDetails(request):
             preExistingMedicalConditions=preExistingMedicalConditions,
             anyOtherMedicalDetails=anyOtherMedicalDetails
         )
-		patient.save()
-		saveAppointmentDetails(request, patient)
-		current_site = get_current_site(request)
-		sendActivationEmail(user, current_site, email)
-		messages.add("Appointment request sent")
+        patient.save()
+        saveAppointmentDetails(request, patient)
+        current_site = get_current_site(request)
+        sendActivationEmail(user, current_site, email)
+        messages.add("Appointment request sent")
 
-		return redirect(to=reverse('home'))
+        return redirect(to=reverse('home'))
 
 @login_required
 @twoFARequired()
