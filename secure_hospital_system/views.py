@@ -455,17 +455,18 @@ def doctorWorklist(request):
 	return render(request, 'doctorWorklist.html', context)
 
 def patientsViewWithFilter(request):
-	patientDetails = ''
 	userId = request.user
-	roleName = getCurrentUserRole(userId)
-	userContext = getRoleBasedMenus(userId.id)
+	shsUser = SHSUser.objects.get(user = userId)
 	patientDetails = (Patient.objects.all())
-	filter = PatientViewFilter(request.GET, queryset=patientDetails)
+	filter = PatientViewFilter(request.POST, queryset=patientDetails)
 	patientDetails = filter.qs
+	patientsTable = PatientsView(patientDetails)
 	template = loader.get_template('patientGrid.html')
+	userContext = getRoleBasedMenus(userId.id)
+	print(userContext)
 	context = {
 		'filter' : filter,
-		'patientDetails' : patientDetails
+		'patientsTable' : patientsTable,
 	}
 	context.update(userContext)
 	return render(request, 'patientGrid.html', context)
