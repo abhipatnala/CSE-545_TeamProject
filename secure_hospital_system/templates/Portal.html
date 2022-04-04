@@ -490,7 +490,7 @@ color:#E60000; }
     {% if messages %}
     <ul class="messages">
       {% for message in messages %}
-      <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+      <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %} style="line-height: 75px; font-size: xx-large; font-weight: bolder;"> {{ message }} </li>
       {% endfor %}
     </ul>
     {% endif %}
