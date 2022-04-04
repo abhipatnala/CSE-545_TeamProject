@@ -37,7 +37,7 @@ class Appointments(tables.Table):
 class PastOrPresentAppointments(tables.Table):
     class Meta:
         model = Doctor_availability_booked
-        fields = ['Appointment_id', 'Doctor_Name', 'Appointment_Date', 'Appointment_start_time', 'Appointment_end_time', 'Status', 'AppointmentDetails']
+        fields = ['Appointment_id', 'Doctor_Name', 'Appointment_Date', 'Appointment_start_time', 'Appointment_end_time', 'Status']
     Appointment_id = tables.Column(accessor="booking_id", verbose_name="Appointment ID", visible=False)
     Doctor_Name =  tables.Column(accessor='doctor_id.user_id.user.first_name', verbose_name='Doctor Name')
     Appointment_Date = tables.Column(accessor='appointment_date', verbose_name='Appointment Date')

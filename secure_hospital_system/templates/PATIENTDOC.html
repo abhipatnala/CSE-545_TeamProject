@@ -30,8 +30,11 @@
 							<div class="caption-text">
 								<h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">{{doc.specialization}}</h3>
 								<p>{{doc.specialization}}</p>
-								<a class=" btn btn-default" href="bookingAppointmentsForSelectedDocByExistingPatients/{{doc.doctor_id}}" name ="docid" value = {{doc.doctor_id}} target="_blank"><span class="glyphicon glyphicon-plus"> Book an Appointment
-								</span></a>
+								<form action="bookingAppointmentsForSelectedDocByExistingPatients" method="post">
+									{% csrf_token %}
+									<input type="hidden" name="docId" value="{{doc.doctor_id}}">
+									<button class="btn btn-default" href="{% url 'bookingAppointmentsForSelectedDocByExistingPatients' %}" ><span class="glyphicon glyphicon-plus"></span> Book an Appointment </button>
+								</form>
 							</div>
 						</div>
 					</div>

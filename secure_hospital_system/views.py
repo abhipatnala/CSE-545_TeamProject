@@ -107,7 +107,9 @@ def sendContactUsEmail(request):
 @login_required
 @twoFARequired()
 @is_patient('home', "Oops, can't go there")
-def bookingAppointmentsForSelectedDocByExistingPatients(request,doctor_id):
+def bookingAppointmentsForSelectedDocByExistingPatients(request):
+	doctor_id = request.POST['docId']
+	print('doctor_id ',doctor_id)
 	updateContext = getRoleBasedMenus(request.user.id)
 	context = {
 		'doctor_id':doctor_id
@@ -128,8 +130,9 @@ def bookingAppointmentsByExistingPatients(request):
 	context.update(userContext)
 	return render(request,"ExistingPatientsAppointmentBooking.html",context)
 
-def bookAppointmentForSelectedDoc(request, doctor_id):
+def bookAppointmentForSelectedDoc(request):
 	#doctors = Doctor.objects.filter(doctor_id = doctor_id)
+	doctor_id = request.POST['docId']
 	insuranceProviders = InsuranceProvider.objects.all().values_list('provider_name', flat=True)
 	insuranceProviders = list(insuranceProviders)
 	return render(request,"BOOKAPPT.html",{'doctor_id':doctor_id, 'insurance_providers':insuranceProviders})
