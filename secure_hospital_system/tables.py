@@ -130,21 +130,27 @@ class LabStaffView(tables.Table):
 class ClaimTable(tables.Table):
     class Meta:
         model = Claim_Request
-        fields = ['Claim_ID','Insurance_ID', 'Bill_ID', 'Bill_Amount', 'Claim_Status', "claim_raised_date","claim_update_date",'block']
-    Claim_ID = tables.Column(accessor='user_id.user.first_name', verbose_name="Claim Id")
-    Insurance_Name = tables.Column(accessor='phone_number', verbose_name="Insurance")
-    Bill_ID = tables.Column(accessor='patient_insurance_member_id', verbose_name='Bill Id')
-    Bill_Amount = tables.Column(accessor='blood_type', verbose_name='Amount')
-    Claim_Status = tables.Column(accessor='emergency_contact_phone_number', verbose_name='Status')
-    claim_raised_date = tables.Column(accessor='emergency_contact_firstname',verbose_name='Claimed Date')
-    claim_update_date = tables.Column(accessor='emergency_contact_email', verbose_name='Claim Update')
-    block = tables.TemplateColumn(template_name='blockchain.html') 
-    
+        fields = ['patient_name','claim_raised_date','claim_status','overall_payment']
+    patient_name = tables.Column(accessor='patient_id.user_id.user.first_name', verbose_name="Patient Name")
+    claim_raised_date = tables.Column(accessor='claim_raised_date', verbose_name='Claim Raised Date')
+    claim_status = tables.Column(accessor='claim_status', verbose_name='Claim Status')
+    overall_payment = tables.Column(accessor='payment_id.overall_payment', verbose_name='Overall Fees')
+    block = tables.TemplateColumn(template_name='blockchain.html')
+
 
 class PaymentTable(tables.Table):
-    class Meta:model = Payments
-    attrs = {'class': 'payment_table table-sm'}
-    #fields = ['Insurance ID', 'Claim ID', 'Bill ID', 'Bill Amount', 'Bill Date', 'Claim Status', 'File_Claim']
-    fields = ['Claim ID', 'insur_id', 'claim_raised_date', 'claim_status', 'file']
-    file = tables.TemplateColumn(template_name='claimbtn.html')  
+    class Meta:
+        model = Payments
+        fields = ['payment_id', 'patient_name', 'admit_fee', 'discharge_fee', 'supplies_fee', 'consultation_fee',
+         'overall_payment', 'payment_generated_date', 'payment_status', 'file']
+    payment_id = tables.Column(accessor='payment_id', visible=False)
+    patient_name = tables.Column(accessor='patient_id.user_id.user.first_name', visible='Patient Name')
+    admit_fee = tables.Column(accessor='admit_fee', verbose_name='Admit Fee')
+    discharge_fee = tables.Column(accessor='discharge_fee', verbose_name='Discharge Fee')
+    supplies_fee = tables.Column(accessor='supplies_fee', verbose_name='Supplies Fee')
+    consultation_fee = tables.Column(accessor='consultation_fee', verbose_name='Consultation Fee')
+    overall_payment = tables.Column(accessor='overall_payment', verbose_name='Overall Fees')
+    payment_generated_date = tables.Column(accessor='payment_generated_date', visible='Bill Date')
+    payment_status = tables.Column(accessor='payment_status', verbose_name='Status')
+    file = tables.TemplateColumn(template_name='claimbtn.html', verbose_name="File") 
 
