@@ -1,0 +1,20 @@
+[
+    {
+        "model":"secure_hospital_system.InsuranceProvider",
+        "fields":{
+            "provider_name":""
+        }
+    },
+    {
+        "model":"secure_hospital_system.InsuranceProvider",
+        "fields":{
+            "provider_name":"Allstate"
+        }
+    },
+    {
+        "model":"secure_hospital_system.InsuranceProvider",
+        "fields":{
+            "provider_name":"Liberty"
+        }
+    }
+]
