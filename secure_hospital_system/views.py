@@ -1,6 +1,6 @@
 # from asyncio.windows_events import NULL
 # from asyncio.windows_events import NULL
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.core.mail import send_mail
 from .models import *
@@ -153,6 +153,29 @@ def appointmentsRetrieval(request):
 	else:
 		return('/')
 
+def getAvailableSlots(request):
+	appointmentDate = request.POST['appointmentDate']
+	doctorId = request.POST['doctor_id']
+	doctor = Doctor.objects.get(doctor_id=doctorId)
+	shift_timings = doctor.shift_id
+	startTime = shift_timings.start_time
+	startTimee = startTime.hour
+	endTime = shift_timings.end_time
+	endTimee = endTime.hour
+	shiftName = shift_timings.shift_type
+	slots = []
+	for i in range (startTimee,endTimee-1):
+		slot = str(i)+" - "+str(i+1)
+		slots.append(slot)
+	
+	data = {
+		'slots' : slots,
+		'doctor_id' : doctorId,
+		'start_time' : startTimee,
+		'end_time' : endTimee,
+		'type' : shiftName,
+	}
+	return JsonResponse(data)
 
 def newAppointments(request):
 	if request.method == 'POST':
@@ -435,7 +458,8 @@ class DoctorViewTable(tables.SingleTableView):
 	template_name = "simple_list.html"
 
 @login_required
-@is_doctor('home', {'message': "Oops, can't go there."})
+@twoFARequired()
+@is_doctor('home', "Oops, can't go there.")
 def doctorWorklist(request):
 	userId = request.user
 	shsUser = SHSUser.objects.get(user = userId)
@@ -474,6 +498,7 @@ def patientsViewWithFilter(request):
 
 
 @login_required
+@twoFARequired()
 def medicalRecords(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -487,7 +512,7 @@ def medicalRecords(request):
 		else:
 			patientId = patient.patient_id
 	elif role == 'doctor':
-		patientId = request.GET['patient_id']
+		patientId = request.POST['patient_id']
 	elif role == 'hospitalstaff':
 		patientId = request.POST['patient_id']	
 	userContext = getRoleBasedMenus(userId)
@@ -512,10 +537,11 @@ def medicalRecords(request):
 	return HttpResponse(template.render(context, request))
 
 @login_required
+@twoFARequired()
 def viewRecord(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
-	if(role == 'doctor'):
+	if(role == 'doctor' or role == 'labstaff'):
 		isDoctor = True
 	else:
 		isDoctor = False
@@ -526,11 +552,10 @@ def viewRecord(request):
 	template = loader.get_template('record.html')
 	context = {
 		'record_id' : recordId,
-		'isDoctor': True,
+		'isDoctor': isDoctor,
 		'document_type' : record[0]['document_type'],
 		'document' : recordString,
-		'editAccess' : True,
-		'patient_id' : request.POST['patient_id']
+		'patient_id' : request.POST['patient_id'],
 	}
 	context.update(userContext)
 	return HttpResponse(template.render(context, request))
@@ -541,8 +566,24 @@ def viewRecord(request):
 #	insuranceRequests = filter.qs
 #	return render(request, 'insuranceApproverGrid.html', {'filter': filter, 'insuranceRequests': insuranceRequests})
 
+@is_patient('home', "Oops, can't go there.")
+def view_patient(request):
+    shs_user = SHSUser.objects.select_related().filter(user = request.user.id)[0]
+    patient = Patient.objects.select_related().filter(user_id = shs_user)[0]
+
+    context = {
+        'user': request.user,
+        'patient': patient
+    }
+
+    RoleContext = getRoleBasedMenus(request.user.id)
+    template = loader.get_template('viewPatient.html')
+    context.update(RoleContext)
+    return HttpResponse(template.render(context, request))
+
 @login_required
-@is_doc_or_labstaff('home', {'message': "Oops, can't go there."})
+@twoFARequired()
+@is_doc_or_labstaff('home', "Oops, can't go there.")
 def editRecord(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -586,10 +627,11 @@ def editRecord(request):
 		elif action_taken == 'delete':
 			record_id = request.POST['record_id']
 			Records.objects.filter(records_id=record_id).delete()
-			return medicalRecords(request)
+			return labstaffWorklist(request)
 
 @login_required
-@is_doc_or_labstaff('home', {'message': "Oops, can't go there."})
+@twoFARequired()
+@is_doc_or_labstaff('home', "Oops, can't go there.")
 def saveRecord(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -600,7 +642,8 @@ def saveRecord(request):
 	return medicalRecords(request)
 
 @login_required
-@is_doctor('home', {'message': "Oops, can't go there."})
+@twoFARequired()
+@is_doctor('home', "Oops, can't go there.")
 def viewAppointmentDoctor(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -631,7 +674,8 @@ def viewAppointmentDoctor(request):
 	return HttpResponse(template.render(context,request))
 
 @login_required
-@is_doctor('home', {'message': "Oops, can't go there."})
+@twoFARequired()
+@is_doctor('home', "Oops, can't go there.")
 def createDiagnosis(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -644,7 +688,8 @@ def createDiagnosis(request):
 	return viewAppointmentDoctor(request)
 
 @login_required
-@is_doctor('home', {'message': "Oops, can't go there."})
+@twoFARequired()
+@is_doctor('home', "Oops, can't go there.")
 def createPrescription(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -657,7 +702,8 @@ def createPrescription(request):
 	return viewAppointmentDoctor(request)
 
 @login_required
-@is_doctor('home', {'message': "Oops, can't go there."})
+@twoFARequired()
+@is_doctor('home', "Oops, can't go there.")
 def recommendLabtest(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -671,7 +717,8 @@ def recommendLabtest(request):
 	return viewAppointmentDoctor(request)
 
 @login_required
-@is_lab_staff('home', {'message': "Oops, can't go there."})
+@twoFARequired()
+@is_lab_staff('home', "Oops, can't go there.")
 def labtestRequests(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -685,7 +732,8 @@ def labtestRequests(request):
 	return HttpResponse(template.render(context,request))
 
 @login_required
-@is_lab_staff('home', {'message': "Oops, can't go there."})
+@twoFARequired()
+@is_lab_staff('home', "Oops, can't go there.")
 def labtestAction(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -701,7 +749,8 @@ def labtestAction(request):
 		return labtestRequests(request)
 
 @login_required
-@is_lab_staff('home', {'message': "Oops, can't go there."})
+@twoFARequired()
+@is_lab_staff('home', "Oops, can't go there.")
 def labstaffWorklist(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -719,7 +768,8 @@ def labstaffWorklist(request):
 	return render(request, 'labstaffWorklist.html', context)
 
 @login_required
-@is_lab_staff('home', {'message': "Oops, can't go there."})
+@twoFARequired()
+@is_lab_staff('home', "Oops, can't go there.")
 def createLabtestReport(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
@@ -870,23 +920,7 @@ def activate(request, uidb64, token):
     else:
         return render(request, 'account_activation_invalid.html')
 
-
-@is_patient('home', {'message': "Oops, can't go there."})
-def view_patient(request):
-    shs_user = SHSUser.objects.select_related().filter(user = request.user.id)[0]
-    patient = Patient.objects.select_related().filter(user_id = shs_user)[0]
-
-    context = {
-        'user': request.user,
-        'patient': patient
-    }
-
-    RoleContext = getRoleBasedMenus(request.user.id)
-    template = loader.get_template('viewPatient.html')
-    context.update(RoleContext)
-    return HttpResponse(template.render(context, request))
-
-@is_patient('home', {'message': "Oops, can't go there."})
+@is_patient('home', "Oops, can't go there.")
 def updatePatient(request):
     user = User.objects.filter(id=request.user.id)[0]
     shs_user = SHSUser.objects.select_related().filter(user = request.user.id)[0]

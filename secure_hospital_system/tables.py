@@ -41,27 +41,6 @@ class DoctorView(tables.Table):
     viewAppointment = tables.TemplateColumn(template_name='viewAppointment.html', verbose_name="Appointment Details")
     patient_id = tables.Column(accessor='patient_id.patient_id', visible=False)
 
-
-class PatientsView(tables.Table):
-    class MetaView:
-        model = Patient
-        fields = ['patient_name','phone_number','patient_insurance_member_id','blood_type',
-        'emergency_contact_phone_number','emergency_contact_firstname','emergency_contact_email','allergies',
-        'medicationFollowed','preExistingMedicalConditions','anyOtherMedicalDetails']
-    patient_name = tables.Column(accessor='user_id.user.first_name', verbose_name="Patient Name")
-    phone_number = tables.Column(accessor='phone_number', verbose_name="Phone Number")
-    patient_insurance_member_id = tables.Column(accessor='patient_insurance_member_id', verbose_name='Insurance Member Id')
-    blood_type = tables.Column(accessor='blood_type', verbose_name='Blood Type')
-    emergency_contact_phone_number = tables.Column(accessor='emergency_contact_phone_number', verbose_name='Emergency Contact Number')
-    emergency_contact_firstname = tables.Column(accessor='emergency_contact_firstname',verbose_name='Emergency Contact Name')
-    emergency_contact_email = tables.Column(accessor='emergency_contact_email', verbose_name='Emergency Contact Email')
-    allergies = tables.Column(accessor='allergies', verbose_name='Allergies')
-    medicationFollowed = tables.Column(accessor='medicationFollowed', verbose_name='Medication Followed')
-    preExistingMedicalConditions = tables.Column(accessor='preExistingMedicalConditions', verbose_name='Pre Existing Medical Conditions')
-    anyOtherMedicalDetails = tables.Column(accessor='anyOtherMedicalDetails',verbose_name='Other Medical Details')
-    viewDetails = tables.TemplateColumn(template_name='viewPatientDetails.html', verbose_name="View Details")
-    patient_id = tables.Column(accessor='patient_id', visible=False)
-
 class RecordsTable(tables.Table):
     class Meta:
         model = Records
@@ -95,11 +74,13 @@ class LabTestRequests(tables.Table):
 class LabStaffView(tables.Table):
     class MetaView:
         model = Lab_Test
-        fields = ['Patient_Name', 'Doctor_Name', 'Test_name', 'Date', 'Approve/Deny','create_labtest_report']
+        fields = ['Patient_Name', 'Doctor_Name', 'Test_name', 'Date', 'Approve/Deny','create_labtest_report', 'record', 'status']
     patient_Name = tables.Column(accessor='patient.user_id.user.first_name', verbose_name="Patient Name")
     doctor_name = tables.Column(accessor='doctor.user_id.user.first_name', verbose_name="Doctor Name")
     test_name = tables.Column(accessor='Recommended_tests',verbose_name='Recommended Tests')
     date = tables.Column(accessor='action_taken_date', verbose_name='Date')
+    status = tables.Column(accessor='status', visible=False)
+    record = tables.Column(accessor='record.records_id', visible=False)
     create_labtest_report = tables.TemplateColumn(template_name='createLabtestReport.html', verbose_name="Create Report")
     
     

@@ -460,6 +460,13 @@ section#contact {
   </style>
   </head>
   <body>
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
    <div class="container-fluid">
  <img id="a"  class="img-responsive" src="{%static 'pics/hlogo.jpg'%}" alt="" title="" width="400" > 
  <!-- <h4 class="text-capitalize"><b><i>

@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container">
     <div class="PatientDetails">
-        <h2>PATIENT DETAILS</h2>
+        <h1>PATIENT DETAILS</h1>
         <p>Patient Name : {{patient_name}}</p>
         <p>Patient Address : {{patient_address}}</p>
         <p>Patient Zipcode : {{patient_zipcode}}</p>
@@ -13,12 +13,12 @@
     <button class="btn btn-info" data-toggle="modal" data-target="#diagnosis-modal">Create Diagnoses</button>
     <button class="btn btn-info" data-toggle="modal" data-target="#labtest-modal">Recommend Lab Test</button>
     <button class="btn btn-info" data-toggle="modal" data-target="#prescription-modal">Create Prescription</button>
-    <form action="medicalRecords" method="get">
+    <form action="medicalRecords" method="post">
         {% csrf_token %}
         <button type="submit" class="btn btn-info" href="{% url 'medicalRecords' %}" style="margin-left: 10%; margin-top: 2%;">View Patient History</button>
         <input type="hidden" name="patient_id" value="{{ patient_id }}">
     </form>
-    <div class="modal fade" id="diagnosis-modal">
+    <div class="modal" id="diagnosis-modal">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <!-- Modal Header -->

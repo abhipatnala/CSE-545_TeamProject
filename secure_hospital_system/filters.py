@@ -21,11 +21,11 @@ class DoctorViewFilter(django_filters.FilterSet):
         model = Doctor_availability_booked
         fields = ['patient_id', 'appointment_date', 'status']
     patient_id = django_filters.CharFilter(field_name='patient_id__user_id__user__first_name',label='Patient Name' , lookup_expr='contains')
-    appointment_date = django_filters.CharFilter(field_name='appointment_date',label='Date' , lookup_expr='exact')
+    appointment_date = django_filters.CharFilter(field_name='appointment_date',label='Date' , lookup_expr='contains')
 
 class LabStaffViewFilter(django_filters.FilterSet):
     class Meta:
         model = Lab_Test
         fields = ['patient_id', 'action_taken_date']
-    patient_id = django_filters.CharFilter(field_name='patient__user_id__user__first_name',label='Patient Name' , lookup_expr='exact')
-    action_taken_date = django_filters.CharFilter(field_name='action_taken_date',label='Date' , lookup_expr='exact')
+    patient_id = django_filters.CharFilter(field_name='patient__user_id__user__first_name',label='Patient Name' , lookup_expr='contains')
+    action_taken_date = django_filters.DateFilter(field_name='action_taken_date',label='Date' , lookup_expr='contains')

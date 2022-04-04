@@ -428,16 +428,18 @@ left:2px;
                                   
                                 </select> -->
                         
-                            <input type="hidden" name="doctor_id" value='{{doctor_id}}'>
-                            <label for="appointmentDate" class="form-label">Appointment Date (Blurred Based on Availability)</label>
-                            <input type="date" name = "appointmentDate" class="form-control" id="appointmentDate" required>
-                            <label for="AvailableSlots" class="form-label">Available Slots</label>
-                              <select id="AvailableSlots" class="form-control" name="AvailableSlots" multiple>
-                                <option>8-9 AM</option>
-                                <option>9-10 AM</option>
-                                <option>1-2 PM</option>
-                                <option>4-5 PM</option>
-                              </select> 
+                                <label for="appointmentDate" class="form-label">Appointment Date (Blurred Based on Availability)</label>
+                                <input type="date" name = "appointmentDate" class="form-control" id="appointmentDate" required onchange="getAvailableSlots()">
+                             
+                              
+                                <label for="AvailableSlots" class="form-label">Available Slots</label>
+                                <select id="AvailableSlots" class="form-control" name="AvailableSlots" multiple>
+                                  <option style="display:none"></option>
+                                  <!-- <option>8-9 AM</option>
+                                  <option>9-10 AM</option>
+                                  <option>1-2 PM</option>
+                                  <option>4-5 PM</option> -->
+                                </select> 
                               &nbsp;
                               &nbsp;
                     </div>
@@ -451,16 +453,73 @@ left:2px;
           </div>            
       </div>
     </div>
-<script>
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth() + 1; 
-  var yyyy = today.getFullYear();
-  if (dd < 10) {dd = '0' + dd;}
-  if (mm < 10) {mm = '0' + mm;}  
-  today = yyyy + '-' + mm + '-' + dd;
-  document.getElementById('appointmentDate').setAttribute('min',today);
-  document.getElementById('DOB').setAttribute('max',today);
-</script>
+    <script>
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1; 
+      var yyyy = today.getFullYear();
+      if (dd < 10) {dd = '0' + dd;}
+      if (mm < 10) {mm = '0' + mm;}  
+      today = yyyy + '-' + mm + '-' + dd;
+      document.getElementById('appointmentDate').setAttribute('min',today);
+      document.getElementById('DOB').setAttribute('min','1900-01-01');
+      document.getElementById('DOB').setAttribute('max',today);
+      function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+              const cookies = document.cookie.split(';');
+              for (let i = 0; i < cookies.length; i++) {
+                  const cookie = cookies[i].trim();
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
+          }
+          return cookieValue;
+      }
+      const csrftoken = getCookie('csrftoken');
+      function getAvailableSlots() {
+        date = document.getElementById('appointmentDate').value
+        if(date != ""){
+          console.log(date)
+          $.ajax({
+            url: '{% url "getAvailableSlots" %}',
+            method: 'POST',
+            headers:{
+              'Accept': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+              'X-CSRFToken': csrftoken,
+            },
+            data: {
+              'appointmentDate': date,
+              'doctor_id': '{{ doctor_id }}', 
+            },
+            dataType: 'json',
+            success: function (data) {
+              slots = data.slots
+              console.log(data)
+              select = document.getElementById('AvailableSlots')
+              var i, L = select.options.length - 1;
+              for(i = L; i >= 0; i--) {
+                  select.remove(i);
+              }
+              for(let i = 0; i < slots.length; i++) {
+              option = document.createElement('option');
+              option.value = option.text = slots[i];
+              select.add(option);
+          }
+            }
+          });
+        } else {
+          select = document.getElementById('AvailableSlots')
+          var i, L = select.options.length - 1;
+          for(i = L; i >= 0; i--) {
+              select.remove(i);
+          }
+        }
+      }
+    </script>
 </body>
 </html>
