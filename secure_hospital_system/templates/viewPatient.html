@@ -4,7 +4,7 @@
 
     <div class="main py-3">
 
-        <form action="" method="POST">
+      <form action="updatePatient" method="post">
             {% csrf_token %}
             <div class="container border border-secondary divPatientInfo">
                 <p class="font-weight-bold">Patient Information</p>
@@ -30,23 +30,13 @@
                             <input type="radio" name="gender" value="other"> other
                         </div>
                     </div>
-                </div>
+                  </div>
 
                 <div class="form-row">
-                    <div class="col-md-2 mb-3">
-                        <label for="maritalStatus">Marital Status</label><br>
-                        <select class="custom-select" id="maritalStatus" name="maritalStatus">
-                          <option value="single">Single</option>
-                          <option value="married">Married</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-3 mb-3" style="padding-left: 50px">
+                    <div class="col-md-3 mb-3">
                         <label for="dateOfBirth">Date of Birth</label>
-                        <div>
                           <input type="Date" name="dateOfBirth" id="dateOfBirth" placeholder="Enter date"
                           value = {{patient.patient_dob}}>
-                        </div>
                     </div>
 
                     <div class="col-md-3 mb-3">
@@ -120,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="form-row" style="padding-bottom: 10px">
+                <div class="form-row">
                     <div class="col-md-8 mb-3">
                         <label for="address">Address</label>
                         <input type="text" class="form-control" id="address" name="address" placeholder="Address"
@@ -142,28 +132,6 @@
                       </select>
                     </div>
 
-                </div>
-
-                <div class="form-row">
-                    <div class="col-md-3 mb-3">
-                        <label for="identificationType">Insurance Provider</label>
-                        <div>
-                            <input type="text" pattern="[a-zA-Z\s]+" class="form-control" id="insurancecomapny" name="insurancecomapny" placeholder="Identification Provider">
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label for="identificationNumber"> Insurance Member ID</label>
-                        <div>
-                            <input type="text" class="form-control" id="Insurance Member Id" name="Insurance Member Id" placeholder="Insurance Member ID">
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label for="identificationNumber"> Insurance Group ID</label>
-                        <div>
-                            <input type="text" class="form-control" id="Insurance Group Id" name="Insurance Group Id" placeholder="Insurance Member ID">
-                        </div>
-                    </div>
                 </div>
 
                 <div class="form-row">
@@ -211,7 +179,8 @@
                             <input formControlName="ggender" type="radio" name="ggender" value="other"> Other
                         </div>
                     </div>
-                </div>
+                  </div>
+
 
                 <div class="form-row">
                     <div class="col-md-3 mb-3">
@@ -253,16 +222,15 @@
                 <div class="form-row">
                     <div class="col-md-4 mb-3">
                         <label for="llergies">Allergies</label>
-                        <input type="text" class="form-control" id="llergies" name="llergies" placeholder="Allergies">
+                        <input type="text" class="form-control" id="allergies" name="llergies" placeholder="Allergies">
                     </div>
                 </div>
             </div>
-    </div>
+          </div>
+          <button class="btn btn-success" type="submit" style="margin-left: 560px">Update data</button>
     </form>
 
     <br>
-    <button class="btn btn-success" type="submit" style="margin-left: 560px">Update data</button>
-    <button class="btn btn-primary" style="margin-left: 50px">Clear Fields</button>
     <br>
     <br>
     </div>
