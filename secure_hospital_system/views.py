@@ -451,7 +451,7 @@ def appointmentApprovedMail(request,booking_id):
 	print(record.appointment_date)
 	print(record.doctor_id.user_id.user.first_name)
 	subject = 'Appointment Confirmation'
-	body ="Dear "+record.doctor_id.user_id.user.first_name + ",\n"+"\nYour appointment has been confirmed! Below are your appointment details for your reference"+"\n\nAppointment Date:\t"+str(record.appointment_date)+"\nAppointment Timings:\t"+str(record.appointment_start_time)+" - "+str(record.appointment_end_time)+"\nDoctor Name\t:"+record.doctor_id.user_id.user.first_name+"\nTemporary login Password\t:"+record.patient_id.user_id.user.password+"\n\nThank you,\nSHS Healthcare"
+	body ="Dear "+record.patient_id.user_id.user.first_name + ",\n"+"\nYour appointment has been confirmed! Below are your appointment details for your reference"+"\n\nAppointment Date:\t"+str(record.appointment_date)+"\nAppointment Timings:\t"+str(record.appointment_start_time)+" - "+str(record.appointment_end_time)+"\nDoctor Name\t:"+record.doctor_id.user_id.user.first_name+"\n\nThank you,\nSHS Healthcare"
 	patient_email = record.patient_id.user_id.user.email
 	send_mail(
 		subject,
@@ -472,7 +472,7 @@ def appointmentDeniedMail(request,booking_id):
 	record.status ="denied"
 	record.save()
 	subject ='Appointment Denied'
-	body = "Your appointment has been denied due to doctor unavailability. Please book your appointment again. We apologize for the inconvenience.\n\nThank you,\nSHS Healthcare"
+	body = "Dear "+record.patient_id.user_id.user.first_name + ",\n"+"\nYour appointment has been denied due to doctor unavailability. Please book your appointment again. We apologize for the inconvenience.\n\nThank you,\nSHS Healthcare"
 	patient_email = record.patient_id.user_id.user.email
 	send_mail(
 		subject,
@@ -799,10 +799,31 @@ def labtestRequests(request):
 def labtestAction(request):
 	lab_test_id = request.POST['lab_test_id']
 	action_taken = request.POST['action_taken']
+	record = Lab_Test.objects.get(lab_test_id = lab_test_id)
 	if(action_taken == 'Approve'):
 		Lab_Test.objects.filter(lab_test_id=lab_test_id).update(status='Approved', action_taken_date=timezone.now())
+		subject ='Lab Test Approved '
+		body = "Dear "+record.patient.user_id.user.first_name + ",\n"+"\nYour "+record.recommended_test+" test that was recommended by"+record.doctor.user_id.user.first_name+" has been approved. Please visit our lab to get your test done.\n\nThank you,\nSHS Healthcare"
+		patient_email = record.patient.user_id.user.email
+		send_mail(
+		subject,
+		body,
+		'shsgrp1@gmail.com',
+		[patient_email],
+		fail_silently=False
+	    )
 	elif(action_taken == 'Deny'):
 		Lab_Test.objects.filter(lab_test_id=lab_test_id).update(status='Denied', action_taken_date=timezone.now())
+		subject ='Lab Test Denied '
+		body = "Dear "+record.patient.user_id.user.first_name + ",\n"+"\nYour "+record.recommended_test+" test that was recommended by"+record.doctor.user_id.user.first_name+" has been denied.\n\nThank you,\nSHS Healthcare"
+		patient_email = record.patient.user_id.user.email
+		send_mail(
+		subject,
+		body,
+		'shsgrp1@gmail.com',
+		[patient_email],
+		fail_silently=False
+	    )
 	return labtestRequests(request)
 
 @login_required
