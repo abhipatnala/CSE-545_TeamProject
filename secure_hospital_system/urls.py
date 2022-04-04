@@ -60,6 +60,7 @@ urlpatterns = [
     path('viewRecord', views.viewRecord, name='viewRecord'),
     path('editRecord', views.editRecord, name='editRecord'),
     path('saveRecord', views.saveRecord, name='saveRecord'),
+    path('downloadRecord', views.downloadRecord, name='downloadRecord'),
     path('viewAppointmentDoctor', views.viewAppointmentDoctor, name='viewAppointmentDoctor'),
     path('appointments', views.appointments,name='appointments'),
     path('createDiagnosis', views.createDiagnosis, name='createDiagnosis'),

@@ -1,5 +1,8 @@
 # from asyncio.windows_events import NULL
 # from asyncio.windows_events import NULL
+from io import BytesIO
+from multiprocessing import context
+from re import template
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.core.mail import send_mail
@@ -34,6 +37,7 @@ import requests
 import json
 from django.conf import settings
 from django.utils.dateparse import parse_date
+from xhtml2pdf import pisa
 
 def home(request):
     if request.user.is_authenticated:
@@ -617,10 +621,12 @@ def medicalRecords(request):
 def viewRecord(request):
 	userId = request.user
 	role = getCurrentUserRole(userId)
+	isDoctor = False
+	isPatient = False
 	if(role == 'doctor' or role == 'labstaff'):
 		isDoctor = True
-	else:
-		isDoctor = False
+	elif(role == 'patient'):
+		isPatient = True
 	recordId = request.POST['record_id']
 	record = Records.objects.filter(records_id=recordId).values('records_id', 'document', 'document_type')
 	recordString = record[0]['document']
@@ -629,6 +635,7 @@ def viewRecord(request):
 	context = {
 		'record_id' : recordId,
 		'isDoctor': isDoctor,
+		'isPatient' : isPatient,
 		'document_type' : record[0]['document_type'],
 		'document' : recordString,
 		'patient_id' : request.POST['patient_id'],
@@ -689,6 +696,32 @@ def editRecord(request):
 			record_id = request.POST['record_id']
 			Records.objects.filter(records_id=record_id).delete()
 			return labstaffWorklist(request)
+
+@login_required
+@twoFARequired()
+@is_patient('home', "Oops, can't go there.")
+def downloadRecord(request):
+	userId = request.user
+	template = loader.get_template('downloadRecord.html')
+	recordId = request.POST['record_id']
+	record = Records.objects.filter(records_id=recordId).values('records_id', 'document', 'document_type')
+	recordString = record[0]['document']
+	userContext = getRoleBasedMenus(userId)
+	context = {
+		'record_id' : recordId,
+		'document_type' : record[0]['document_type'],
+		'document' : recordString,
+		'patient_id' : request.POST['patient_id'],
+	}
+	context.update(userContext)
+	document = template.render(context)
+	result = BytesIO()
+	downloadFile = pisa.pisaDocument(BytesIO(document.encode("ISO-8859-1")), result)
+	if not downloadFile.err:
+		downloadDocument =  HttpResponse(result.getvalue(), content_type='application/pdf')
+		return HttpResponse(downloadDocument, content_type='application/pdf')
+
+
 
 @login_required
 @twoFARequired()
