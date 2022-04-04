@@ -401,7 +401,7 @@ margin:-100px 10px auto 300px;
     	<div class="col-lg-3">
     				<div class="cuadro_intro_hover " style="background-color:#cccccc;">
 						<p style="text-align:center;">
-							<img id="test" src="pics/d.jpg" class="img-responsive" alt="">
+							<img id="test" src="{%static 'pics/d.jpg'%}" class="img-responsive" alt="">
 						</p>
 						<div class="caption">
 							<div class="blur"></div>
@@ -413,11 +413,13 @@ margin:-100px 10px auto 300px;
 							</div>
 						</div>
 					</div>
-				{%endfor%}
+			
 	   
 				
 	    </div>
+      {%endfor%}
 	    </div>
+     
     </div>
 </div>
 
