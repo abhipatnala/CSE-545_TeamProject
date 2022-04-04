@@ -456,6 +456,32 @@ section#contact {
       top:-20px;
       width: 100%;
     }
+    #AvailableSlots{
+      height: 60px;
+      border: none;
+      overflow: hidden;
+    }
+    #AvailableSlots::-moz-focus-inner {
+      border: 0;
+    }
+    #AvailableSlots:focus {
+      outline: none;
+    }
+    #AvailableSlots option{
+      width: 80px;
+      font-size: 1.2em;
+      padding: 10px 0;
+      text-align: center;
+      margin-right: 20px;
+      display: inline-block;
+      cursor: pointer;
+      border:rgb(20, 103, 136) solid 1px;
+      border-radius: 5px;
+      color: rgb(20, 103, 136);
+    }
+h4
+{
+color:#E60000; }
 
     
   </style>
@@ -504,7 +530,7 @@ section#contact {
 
     <ul class="nav navbar-nav navbar-right">
       {%ifequal role_name "patient"%}
-	<li><a href="bookAppointment"> Book An Appointment
+	<li><a href="bookingAppointmentsByExistingPatients"> Book An Appointment
 	</a></li>
   {%endifequal%}
   <li><a href="{% url 'logout' %}" font-size= 20px><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
