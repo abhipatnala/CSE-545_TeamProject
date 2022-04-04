@@ -1,4 +1,6 @@
-
-<a class="btn btn-info btn-sm" href="{% url 'insuranceApprovedMail' record.claim_id %}">Approve</a>
-<a class="btn btn-info btn-sm" href="{% url 'insuranceDeniedMail' record.claim_id %}">Deny</a>
-
+<form action="insuranceApprovalOrDenial" method="POST">
+    {% csrf_token %}
+    <button type="submit" formaction="insuranceApprovedMail">Approve</button>
+    <button type="submit" formaction="insuranceDeniedMail">Deny</button>
+    <input type = "hidden" name = "claim_id" value = "{{record.claim_id}}">
+  </form>

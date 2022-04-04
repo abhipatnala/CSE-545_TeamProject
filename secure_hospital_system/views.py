@@ -451,7 +451,8 @@ def onSubmitOfNewPatientsAppointmentDetails(request):
 @login_required
 @twoFARequired()
 @is_hospital_staff('home', "Oops, can't go there.")
-def appointmentApprovedMail(request,booking_id):
+def appointmentApprovedMail(request):
+	booking_id = request.POST['booking_id']
 	updateContext = getRoleBasedMenus(request.user.id)
 	record = Doctor_availability_booked.objects.get(booking_id=booking_id)
 	record.status = "approved"
@@ -476,7 +477,8 @@ def appointmentApprovedMail(request,booking_id):
 @login_required
 @twoFARequired()
 @is_hospital_staff('home', "Oops, can't go there.")
-def appointmentDeniedMail(request,booking_id):
+def appointmentDeniedMail(request):
+	booking_id = request.POST['booking_id']
 	updateContext = getRoleBasedMenus(request.user.id)
 	record = Doctor_availability_booked.objects.get(booking_id=booking_id)
 	record.status ="denied"
@@ -901,8 +903,9 @@ def createLabtestReport(request):
 @login_required
 @twoFARequired()
 @is_insurance_staff('home', "Oops, can't go there.")
-def insuranceApprovedMail(request,claim_id):
+def insuranceApprovedMail(request):
 	#how to fetch the claim_id
+	claim_id = request.POST['claim_id']
 	updateContext = getRoleBasedMenus(request.user.id)
 	record = Claim_Request.objects.get(claim_id=claim_id)
 	record.claim_status = "approved"
@@ -921,7 +924,7 @@ def insuranceApprovedMail(request,claim_id):
     #print(record.appointment_date)
     #print(record.doctor_id.user_id.user.first_name)
 	subject = 'Insurance Claim Confirmation'
-	body ="Dear ,\n"+"\nYour insurance claim#"+record.claim_id+" has been approved! \n\nThank you,\nSHS Healthcare"
+	body ="Dear ,\n"+"\nYour insurance claim#"+str(record.claim_id)+" has been approved! \n\nThank you,\nSHS Healthcare"
 	patient_email = record.patient_id.user_id.user.email
 	send_mail(
 		subject,
@@ -960,13 +963,15 @@ class InsuranceLoginRecords(tables.SingleTableView):
 @login_required
 @twoFARequired()
 @is_insurance_staff('home', "Oops, can't go there.")
-def insuranceDeniedMail(request,claim_id):
+def insuranceDeniedMail(request):
+	claim_id = request.POST['claim_id']
+	print("claim_id ",claim_id)
 	updateContext = getRoleBasedMenus(request.user.id)
 	record = Claim_Request.objects.get(claim_id=claim_id)
 	record.claim_status = "denied"
 	record.save()
 	subject ='Claim Denied'
-	body = "Your insurance claim#"+record.claim_id+" has been denied.\n\nThank you,\nSHS Healthcare"
+	body = "Your insurance claim#"+str(record.claim_id)+" has been denied.\n\nThank you,\nSHS Healthcare"
 	patient_email = record.patient_id.user_id.user.email
 	send_mail(
 		subject,
