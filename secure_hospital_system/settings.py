@@ -187,4 +187,4 @@ MESSAGE_TAGS = {
         messages.ERROR: 'alert-danger',
 }
 
-BLOCKCHAINURL = "shsblockchain.pagekite.me"
+BLOCKCHAINURL = "https://shsblockchain.pagekite.me"

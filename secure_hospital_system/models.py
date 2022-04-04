@@ -124,6 +124,7 @@ class Payments(models.Model):
     patient_id = models.ForeignKey(Patient, on_delete=models.CASCADE)
     payment_status = models.CharField(max_length=200, choices=PAYMENT_STATUS, default='unpaid')
     payment_update_date = models.DateTimeField()
+    is_claimed = models.BooleanField(default=False)
 
 #claims for bills
 class Claim_Request(models.Model):
