@@ -197,8 +197,6 @@ def appointmentsRetrieval(request):
 	else:
 		return('/')
 
-@login_required
-@twoFARequired()
 def getAvailableSlots(request):
 	appointmentDate = request.POST['appointmentDate']
 	doctorId = request.POST['doctor_id']
@@ -208,12 +206,12 @@ def getAvailableSlots(request):
 	startTimee = startTime.hour
 	endTime = shift_timings.end_time
 	endTimee = endTime.hour
-	shiftName = shift_timings.shift_type
+	shiftName = shift_timings.shift_type 
 	slots = []
 	for i in range (startTimee,endTimee-1):
-		slot = str(i)+" - "+str(i+1)
+		slot = str(i)+"-"+str(i+1)
 		slots.append(slot)
-	
+
 	data = {
 		'slots' : slots,
 		'doctor_id' : doctorId,
@@ -443,7 +441,7 @@ def onSubmitOfNewPatientsAppointmentDetails(request):
         saveAppointmentDetails(request, patient)
         current_site = get_current_site(request)
         sendActivationEmail(user, current_site, email)
-        messages.add("Appointment request sent")
+        messages.success(request,"Appointment request sent")
 
         return redirect(to=reverse('home'))
 
@@ -710,16 +708,40 @@ def editRecord(request):
 @is_patient('home', "Oops, can't go there.")
 def downloadRecord(request):
 	userId = request.user
+	patientId = request.POST['patient_id']
 	template = loader.get_template('downloadRecord.html')
 	recordId = request.POST['record_id']
 	record = Records.objects.filter(records_id=recordId).values('records_id', 'document', 'document_type')
 	recordString = record[0]['document']
+	patient = Patient.objects.get(patient_id=patientId)
+	patient_name = patient.user_id.user.first_name
+	patient_address = patient.address
+	patient_zipcode = patient.zipCode
+	patient_DOB = patient.patient_dob
+	patientBloodGroup = patient.blood_type
+	patientPhoneNumber = patient.phone_number
+	patientEmail = patient.user_id.user.email
+	patientAllergies = patient.allergies
+	patientMedicationFollowed = patient.medicationFollowed
+	patientPreExistingMedicalConditions = patient.preExistingMedicalConditions
+	patientAnyOtherMedicalDetails = patient.anyOtherMedicalDetails
 	userContext = getRoleBasedMenus(userId)
 	context = {
 		'record_id' : recordId,
 		'document_type' : record[0]['document_type'],
 		'document' : recordString,
 		'patient_id' : request.POST['patient_id'],
+		'patient_name' : patient_name,
+		'patient_address': patient_address+" "+patient_zipcode,
+		'patient_zipcode': patient_zipcode,
+		'patient_DOB': patient_DOB,
+		'patientBloodGroup' : patientBloodGroup,
+		'patientPhoneNumber' : patientPhoneNumber,
+		'patientEmail' : patientEmail,
+		'patientAllergies' : patientAllergies,
+		'patientMedicationFollowed' : patientMedicationFollowed,
+		'patientPreExistingMedicalConditions' : patientPreExistingMedicalConditions,
+		'patientAnyOtherMedicalDetails' : patientAnyOtherMedicalDetails,
 	}
 	context.update(userContext)
 	document = template.render(context)
@@ -764,15 +786,29 @@ def viewAppointmentDoctor(request):
 	patient_address = patient.address
 	patient_zipcode = patient.zipCode
 	patient_DOB = patient.patient_dob
+	patientBloodGroup = patient.blood_type
+	patientPhoneNumber = patient.phone_number
+	patientEmail = patient.user_id.user.email
+	patientAllergies = patient.allergies
+	patientMedicationFollowed = patient.medicationFollowed
+	patientPreExistingMedicalConditions = patient.preExistingMedicalConditions
+	patientAnyOtherMedicalDetails = patient.anyOtherMedicalDetails
 	template = loader.get_template('appointmentViewDoctor.html')
 	context={
 		'patient_id' : patientId,
 		'appointment_id' : appointment_id,
 		'patient_name' : patient_name,
-		'patient_address': patient_address,
+		'patient_address': patient_address+" "+patient_zipcode,
 		'patient_zipcode': patient_zipcode,
 		'patient_DOB': patient_DOB,
-		'user_id' : userId
+		'patientBloodGroup' : patientBloodGroup,
+		'patientPhoneNumber' : patientPhoneNumber,
+		'patientEmail' : patientEmail,
+		'patientAllergies' : patientAllergies,
+		'patientMedicationFollowed' : patientMedicationFollowed,
+		'patientPreExistingMedicalConditions' : patientPreExistingMedicalConditions,
+		'patientAnyOtherMedicalDetails' : patientAnyOtherMedicalDetails,
+		'user_id' : userId,
 	}
 	userContext = getRoleBasedMenus(userId)
 	context.update(userContext)

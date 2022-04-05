@@ -1,13 +1,22 @@
 {% extends 'Portal.html' %}
 {% block content %}
 <div class="container">
-    <div class="PatientDetails">
+    <div class="row">
         <h1>PATIENT DETAILS</h1>
-        <p>Patient Name : {{patient_name}}</p>
-        <p>Patient Address : {{patient_address}}</p>
-        <p>Patient Zipcode : {{patient_zipcode}}</p>
-        <p>Patient DOB : {{patient_DOB}}</p>
-        <p>Patient BloodGroup : {{patient_blood}}</p>
+        <div class="column">
+            <p>Patient Name : {{patient_name}}</p>
+            <p>Patient DOB : {{patient_DOB}}</p>
+            <p>Patient BloodGroup : {{patientBloodGroup}}</p>
+            <p>Patient Phone : {{ patientPhoneNumber }}</p>
+            <p>patient Email : {{ patientEmail }}</p>   
+            <p>Patient Address : {{patient_address}}</p>
+        </div>
+        <div class="column">
+            <p>Allergies : {{ patientAllergies }}</p>
+            <p>Medication Followed : {{ patientMedicationFollowed }}</p>
+            <p>Pre-existing Medical Records : {{ patientPreExistingMedicalConditions }}</p>
+            <p>Any Other Medical Details : {{ patientAnyOtherMedicalDetails }}</p>
+        </div>
     </div>
         <!--<button onclick="CloneForm('formNameHere');" class="button button1">Create Diagnoses </button>-->
     <button class="btn btn-info" data-toggle="modal" data-target="#diagnosis-modal">Create Diagnoses</button>

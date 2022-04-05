@@ -34,8 +34,8 @@ def saveAppointmentDetails(request, patient):
 	print("appointment details")
 	appointmentStartNdEndTime = opted_slot.split("-")
 	appointmentEndTimeNdAMPM = appointmentStartNdEndTime[1].split(" ")
-	appointment_start_time = appointmentStartNdEndTime[0]+":00 "+(appointmentEndTimeNdAMPM)[1]
-	appointment_end_time = appointmentEndTimeNdAMPM[0]+":00 "+appointmentEndTimeNdAMPM[1]
+	appointment_start_time = appointmentStartNdEndTime[0]+":00"
+	appointment_end_time = appointmentEndTimeNdAMPM[0]+":00"
 		#if opted_slot == "8-9 AM":
 		#	appointment_start_time = "8:00 AM"
 		#	appointment_end_time = "9:00 AM" 

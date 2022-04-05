@@ -6,9 +6,37 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+      .column {
+        float: left;
+        width: 50%;
+        }
+        .row:after {
+        content: "";
+        display: table;
+        clear: both;
+        }
+  </style>
 </head>
 <body>
     <div class="container" style="margin-left:25%; margin-right:25%; margin-top:5%; background-color: lightgray; width: 40%; height: 250px;">
+        <div class="row">
+            <h1>PATIENT DETAILS</h1>
+            <div class="column">
+                <p>Patient Name : {{patient_name}}</p>
+                <p>Patient DOB : {{patient_DOB}}</p>
+                <p>Patient BloodGroup : {{patientBloodGroup}}</p>
+                <p>Patient Phone : {{ patientPhoneNumber }}</p>
+                <p>patient Email : {{ patientEmail }}</p>   
+                <p>Patient Address : {{patient_address}}</p>
+            </div>
+            <div class="column">
+                <p>Allergies : {{ patientAllergies }}</p>
+                <p>Medication Followed : {{ patientMedicationFollowed }}</p>
+                <p>Pre-existing Medical Records : {{ patientPreExistingMedicalConditions }}</p>
+                <p>Any Other Medical Details : {{ patientAnyOtherMedicalDetails }}</p>
+            </div>
+        </div>
         {% csrf_token %}
         <h1>
             {% if document_type == 'D' %}
