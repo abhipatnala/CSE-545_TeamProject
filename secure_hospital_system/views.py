@@ -770,7 +770,8 @@ def saveRecord(request):
 	document = request.POST['editeddocument']
 	patient_id = request.POST['patient_id']
 	Records.objects.filter(records_id=record_id).update(document=document, last_modified_date=timezone.now())
-	return render(request, 'home.html')
+	context = getRoleBasedMenus(request.user.id)
+	return render(request, "Portal.html", context)
 
 @login_required
 @twoFARequired()
