@@ -1169,6 +1169,16 @@ def viewBlockChainClaims(claim_id):
 	return str(data)
 
 def viewBlockChainClaimStatus(claim_id):
+	# print("Inside block chain status")
+	# data=''
+	# try:
+	# 	url = settings.BLOCKCHAINURL + "/api/getClaim/"+claim_id
+	# 	headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+	# 	data = requests.get(url).json
+	# 	print(data)
+	# except Exception:
+	# 	print("An exception occurred")
+	# return data 
 	print("Inside block chain status")
 	data = ''
 	conn = http.client.HTTPSConnection("shsblockchain.pagekite.me")
