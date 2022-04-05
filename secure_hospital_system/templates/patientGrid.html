@@ -1,0 +1,33 @@
+
+{% extends 'Portal.html' %}
+{% load django_tables2 %}
+{% load bootstrap3 %}
+
+{% if filter %}
+    <form action="patientsViewWithFilter" method="get" class="form form-inline">
+        {% csrf_token %}
+        {% bootstrap_form filter.form layout='inline' %}
+        {% bootstrap_button 'filter' %}
+    </form>
+{% endif %}
+{% render_table table 'django_tables2/bootstrap.html' %}
+{% block content %}
+    <div class="container">
+        <h1>Patients's Worklist</h1>
+        <div class="row">
+            <div class="col">
+                <div class="card card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{filter.form}}
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% render_table patientsTable %}
+    </div>
+{% endblock content %}
+
+
+ 

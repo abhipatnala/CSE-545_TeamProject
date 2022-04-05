@@ -1,0 +1,7 @@
+<form action="viewRecord" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-light" href="{% url 'viewRecord' %}" >View Document</button>
+    <input type="hidden" name="record_id" value="{{ record.records_id }}">
+    <input type="hidden" name="user_id" value="{{ user_id }}">
+    <input type="hidden" name="patient_id" value="{{ record.patient_id }}">
+  </form>

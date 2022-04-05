@@ -1,0 +1,574 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Profile</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    .logo {
+      font-size: 100px;
+  }
+  .navbar {
+    margin-bottom: 0;
+    background-color: #31b2cf;
+    z-index: 9999;
+    border: 0;
+    font-size: 16px !important;
+    line-height: 1.42857143 !important;
+    letter-spacing: 2px;
+    border-radius: 0;
+    font-family:Centaur;
+}
+.dropdown-menu 
+{
+    border-color:white !important;
+    background-color: #31B2CF;
+ }
+.navbar li a, .navbar .navbar-brand {
+    color: #fff !important;
+}
+
+.navbar-nav li a:hover{
+  color: black !important;
+    background-color: #d6d6c2 !important;
+ }
+ .navbar-nav li.active a {
+    color: white !important;
+    background-color: #b30000 !important;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+    color: #3333ff !important;
+}
+.navbar.navbar-default {
+     position:fixed; top:50; left:0; z-index:1030;
+   }
+ .blogShort{ border-bottom:1px solid #ddd;}
+.add{background: #333; padding: 10%; height: 300px;}
+.modal{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.nav-sidebar { 
+    width: 100%;
+    padding: 50px 0; 
+    border-right: 1px solid #ddd;
+}
+.nav-sidebar a {
+    color: #333;
+    -webkit-transition: all 0.08s linear;
+    -moz-transition: all 0.08s linear;
+    -o-transition: all 0.08s linear;
+    transition: all 0.08s linear;
+}
+.nav-sidebar .active a { 
+    cursor: default;
+    background-color: #31b2cf; 
+    color: black; 
+}
+.nav-sidebar .active a:hover {
+    background-color: #31b2cf;   
+}
+.nav-sidebar .text-overflow a,
+.nav-sidebar .text-overflow .media-body {
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis; 
+}
+
+.btn-blog {
+    color: #ffffff;
+    background-color: #E50000;
+    border-color: #E50000;
+    border-radius:0;
+    margin-bottom:10px
+}
+.btn-blog:hover,
+.btn-blog:focus,
+.btn-blog:active,
+.btn-blog.active,
+.open .dropdown-toggle.btn-blog {
+    color: white;
+    background-color:#0b56a8;
+    border-color: #0b56a8;
+}
+article h2{color:#333333;}
+h2{color:#0b56a8;}
+ .margin10{margin-bottom:10px; margin-right:10px;}
+ 
+ .container .text-style
+{
+  text-align: justify;
+  line-height: 23px;
+  margin: 0 13px 0 0;
+  font-size: 19px;
+}
+.divPatientInfo {
+  padding-top: 10px;
+  padding-right: 50px;
+  padding-bottom: 15px;
+  padding-left: 25px;
+  margin-left: 150px;
+  margin-bottom: 10px;
+  border-right: 100px
+}
+
+.divGuardianInfo {
+  padding-top: 10px;
+  padding-right: 50px;
+  padding-bottom: 15px;
+  padding-left: 25px;
+  margin-left: 150px;
+  margin-bottom: 10px;
+  border-right: 100px
+}
+section#contact {
+  background-color:#d6d6c2;
+  background-image:url("pics/bg5.jpg");
+  background-position:center;
+  background-repeat:no-repeat;
+       }
+  section {
+      padding: 30px 0PX;
+  }
+  section#contact .section-heading {
+      color: black;
+  }
+  section#contact .form-group {
+      margin-bottom: 25px;
+  }
+  section#contact .form-group input,
+  section#contact .form-group textarea {
+      padding: 20px;
+  }
+  section#contact .form-group input.form-control {
+      height: auto;
+  }
+  section#contact .form-group textarea.form-control {
+      height: 236px;
+  }
+  section#contact .form-control:focus {
+      border-color: #fed136;
+      box-shadow: none;
+  }
+  section#contact ::-webkit-input-placeholder {
+      font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #eeeeee;
+  }
+  .gellary_bg_none img{
+      width: 100%;
+      height: 250px;
+  }
+  section#contact :-moz-placeholder {
+      /* Firefox 18- */
+      font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #d9d9d9;
+  }
+  section#contact ::-moz-placeholder {
+      /* Firefox 19+ */
+      font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #d9d9d9;
+  }
+  section#contact :-ms-input-placeholder {
+      font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #d9d9d9;
+  }
+  section#contact .text-danger {
+      color: #e74c3c;
+  }
+  
+  .about_our_company{
+      text-align: center;
+  }
+  .about_our_company h1{
+      font-size: 25px;
+  }
+  .titleline-icon {
+      position: relative;
+      max-width: 100px;
+      border-top: 4px double #F99700;
+      margin: 20px auto 20px;
+  }
+  .titleline-icon:after {
+      position: absolute;
+      top: -11px;
+      left: 0;
+      right: 0;
+      margin: auto;
+      font-family: 'FontAwesome';
+      content: "\f141";
+      font-size: 20px;
+      line-height: 1;
+      color: #F99700;
+      text-align: center;
+      vertical-align: middle;
+      width: 40px;
+      height: 20px;
+      background: #ffffff;
+  }
+
+  .container .text-style
+  {
+    text-align: justify;
+    line-height: 23px;
+    margin: 0 13px 0 0;
+    font-size: 19px;
+  }
+  /* Icon set - http://ionicons.com */
+  @import url(http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
+  @import url(https://fonts.googleapis.com/css?family=Raleway:400,500);
+  figure.snip1237 {
+    font-family: 'Raleway', Arial, sans-serif;
+    position: relative;
+    float: left;
+    overflow: hidden;
+    margin: 20px 20px; 
+    min-width: 250px;
+    max-width: 250px;
+    width: 100%;
+    background: #1a1a1a;
+    color: #ffffff;
+    text-align: left;
+   
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+    -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+  
+  }
+  
+  figure.snip1237 * {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+  
+  figure.snip1237 .image {
+      height: 250px; 
+      overflow: hidden;
+      position: relative; 
+  }
+  
+  
+  figure.snip1237 h3 {
+    margin: 0 0 3px;
+    font-weight: 900;
+    font-size:15px;
+  }
+  figure.snip1237 p {
+    margin: 0;
+  }
+  
+  /* ----------------------------------------------------WHITESPACE START */
+  
+  figure.snip1237 figcaption {
+    /* padding order: top right bottom left */
+    padding: 5px 20px 15px 20px;
+    background-color: #ffffff;
+    color: #000000;
+    position: relative;
+    font-size: 0.9em;
+  }
+  
+  figure.snip1237 figcaption p {
+    margin-bottom: 15px;
+  }
+  
+  figure.snip1237 figcaption:before {
+    position: absolute;
+    content: '';
+    z-index: 2;
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background-image: -webkit-linear-gradient(top, transparent 0%, #ffffff 100%);
+    background-image: linear-gradient(to bottom, transparent 0%, #ffffff 100%);
+  }
+  
+  
+  
+  /* ----------------------------------------------------WHITESPACE END */
+  
+  
+  /* ----------------------------------------------------READ MORE START */
+  
+  figure.snip1237 .read-more {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    border: 2px solid #20638f;
+    padding: 0.4em 0.6em;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    background-color: #20638f;
+  }
+  
+  figure.snip1237 .read-more:hover {
+    background-color: #ba2f00;
+    color: #ffffff;
+  }
+  /* ----------------------------------------------------READ MORE END */
+  
+  
+  
+  /* ----------------------------------------------------HOVER START */
+  
+  figure.snip1237:hover:before,
+  figure.snip1237.hover:before {
+    -webkit-transition-delay: 0s;
+    transition-delay: 0s;
+    -webkit-transform: skew(-45deg) translateX(-50%);
+    transform: skew(-45deg) translateX(-50%);
+  }
+  figure.snip1237:hover:after,
+  figure.snip1237.hover:after {
+    -webkit-transition-delay: 0.1s;
+    transition-delay: 0.1s;
+    -webkit-transform: skew(-45deg) translateX(-75%);
+    transform: skew(-45deg) translateX(-75%);
+  }
+  
+  /* ----------------------------------------------------HOVER END */
+  
+  
+  /* Image Resizer */
+  figure.snip1237:hover img,
+  figure.snip1237.hover img {
+    -webkit-transform: scale(25);
+    transform: scale(1.25);
+  }
+  /* Demo purposes only */
+  body {
+    background-color: #ffffff;
+  }
+  @import url(https://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,900,800,700,600);
+  body{font-family: 'Raleway', sans-serif;}
+    h2 {
+    border-bottom: 10px solid red;
+    font-family: 'Raleway', sans-serif;
+    font-size: 65px;
+    font-weight: 900;
+    margin: 0 auto;
+    padding: 20px 0 3px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 40.2%;
+  }
+  img {
+    height: 100px !important;
+  }
+  
+  .row.text-center p {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 3px 0 30px;
+    text-transform: uppercase;
+  }
+  
+  .h3, h3 {
+    font-family: 'Raleway', sans-serif;
+    font-size: 24px;
+    text-transform: uppercase;
+  }
+  .btn-default {
+    background: transparent none repeat scroll 0 0;
+    border: 2px solid #fff;
+    border-radius: 50px;
+    text-shadow: 0 1px 0 #fff;
+    font-family: 'Raleway', sans-serif;
+  }
+  .glyphicon {
+      color: white;}
+      .caption-text p {
+    margin: 18px auto 13px;
+    text-align: center;
+    width: 91%;
+  }
+  .btn-default:focus, .btn-default:hover {
+    background-color: red;
+    background-position: 0 -15px;
+  }
+    
+    .cuadro_intro_hover{
+        padding: 0px;
+      position: relative;
+      overflow: hidden;
+      height: 200px;
+    }
+    .cuadro_intro_hover:hover .caption{
+      opacity: 1;
+      transform: translateY(-150px);
+      -webkit-transform:translateY(-150px);
+      -moz-transform:translateY(-150px);
+      -ms-transform:translateY(-150px);
+      -o-transform:translateY(-150px);
+    }
+    .cuadro_intro_hover img{
+      z-index: 4;
+    }
+    .cuadro_intro_hover .caption{
+      position: absolute;
+      top:150px;
+      -webkit-transition:all 0.3s ease-in-out;
+      -moz-transition:all 0.3s ease-in-out;
+      -o-transition:all 0.3s ease-in-out;
+      -ms-transition:all 0.3s ease-in-out;
+      transition:all 0.3s ease-in-out;
+      width: 100%;
+    }
+    .cuadro_intro_hover .blur{
+      background-color: rgba(0,0,0,0.7);
+      height: 300px;
+      z-index: 5;
+      position: absolute;
+      width: 100%;
+    }
+    .cuadro_intro_hover .caption-text{
+      z-index: 10;
+      color: #fff;
+      position: absolute;
+      height: 300px;
+      text-align: center;
+      top:-20px;
+      width: 100%;
+    }
+    #AvailableSlots{
+      height: 60px;
+      border: none;
+      overflow: hidden;
+    }
+    #AvailableSlots::-moz-focus-inner {
+      border: 0;
+    }
+    #AvailableSlots:focus {
+      outline: none;
+    }
+    #AvailableSlots option{
+      width: 80px;
+      font-size: 1.2em;
+      padding: 10px 0;
+      text-align: center;
+      margin-right: 20px;
+      display: inline-block;
+      cursor: pointer;
+      border:rgb(20, 103, 136) solid 1px;
+      border-radius: 5px;
+      color: rgb(20, 103, 136);
+    }
+h4
+{
+color:#E60000; }
+.column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#test {
+  height: 200px !important;
+  width: 320px;
+}
+  </style>
+  </head>
+  <body>
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %} style="line-height: 75px; font-size: xx-large; font-weight: bolder;"> {{ message }} </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+   <div class="container-fluid">
+ <img id="a"  class="img-responsive" src="{%static 'pics/hlogo.jpg'%}" alt="" title="" width="400" > 
+ <!-- <h4 class="text-capitalize"><b><i>
+ Welcome to the {{role_name}} Portal!</i><b>
+</h4>
+</div> -->
+
+<nav class="navbar navbar-inverse ">
+  <div class="container-fluid">
+  <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+	  </div>
+	   <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        {%for m in menuList%}
+        <li
+        {% with "/"|add:m.menu_id.menu_url as template %}
+        {% ifequal template request.path %}
+          class="active"
+        {% endifequal %}
+        {% endwith %}
+      ><a href={{m.menu_id.menu_url}}>{{m.menu_id.menu_name}}</a></li>
+        <!-- {%ifequal m.is_default True%}
+        <li class='active'><a href={{m.menu_id.menu_url}}>{{m.menu_id.menu_name}}</a></li>
+        {% else %}
+        <li><a href={{m.menu_id.menu_url}}>{{m.menu_id.menu_name}}</a></li>
+        {%endifequal%} -->
+        {%endfor%}
+	  </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+      {%ifequal role_name "patient"%}
+	<li><a href="bookingAppointmentsByExistingPatients"> Book An Appointment
+	</a></li>
+  {%endifequal%}
+  <li><a href="{% url 'logout' %}" font-size= 20px><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+    </ul>
+	
+	</div>
+	</nav>
+<br>
+</div>
+ <h4 class="text-capitalize text-center"><b><i>
+ Welcome to the {{role_name}} Portal!</i><b>
+</h4>
+<br>
+{% block content %}
+{% endblock  %}  
+<script type="text/javascript">
+  (function(d, m){
+      var kommunicateSettings = 
+          {"appId":"fd42e99e86467e6860d2cba6dbae85a6","popupWidget":true,"automaticChatOpenOnNavigation":true};
+      var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+      s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+      var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+      window.kommunicate = m; m._globals = kommunicateSettings;
+  })(document, window.kommunicate || {});
+/* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+</script>
+	 </body>
+  </html>

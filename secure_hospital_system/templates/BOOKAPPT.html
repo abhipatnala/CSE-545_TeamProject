@@ -1,0 +1,521 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>BOOK AN APPOINTMENT</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    .logo {
+      font-size: 100px;
+  }
+   .navbar {
+    margin-bottom: 0;
+    background-color: #31b2cf;
+    z-index: 9999;
+    border: 0;
+    font-size: 19px !important;
+    line-height: 1.42857143 !important;
+    letter-spacing: 2px;
+    border-radius: 0;
+    font-family:Centaur;
+}
+.dropdown-menu 
+{
+    border-color:white !important;
+    background-color: #31B2CF;
+ }
+.navbar li a, .navbar .navbar-brand {
+    color: #fff !important;
+}
+
+.navbar-nav li a:hover{
+  color: black !important;
+    background-color: #d6d6c2 !important;
+ }
+ .navbar-nav li.active a {
+    color: white !important;
+    background-color: #b30000 !important;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+    color: #3333ff !important;
+}
+.navbar.navbar-default {
+     position:fixed; top:50; left:0; z-index:1030;
+   }
+ .blogShort{ border-bottom:1px solid #ddd;}
+.add{background: #333; padding: 10%; height: 300px;}
+
+.nav-sidebar { 
+    width: 100%;
+    padding: 50px 0; 
+    border-right: 1px solid #ddd;
+}
+.nav-sidebar a {
+    color: #333;
+    -webkit-transition: all 0.08s linear;
+    -moz-transition: all 0.08s linear;
+    -o-transition: all 0.08s linear;
+    transition: all 0.08s linear;
+}
+.nav-sidebar .active a { 
+    cursor: default;
+    background-color: #31b2cf; 
+    color: black; 
+}
+.nav-sidebar .active a:hover {
+    background-color: #31b2cf;   
+}
+.nav-sidebar .text-overflow a,
+.nav-sidebar .text-overflow .media-body {
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis; 
+}
+  #wrap{
+background-image: -ms-linear-gradient(top, #FFFFFF 0%, #D3D8E8 100%);
+/* Mozilla Firefox */ 
+background-image: -moz-linear-gradient(top, #FFFFFF 0%, #D3D8E8 100%);
+/* Opera */ 
+background-image: -o-linear-gradient(top, #FFFFFF 0%, #D3D8E8 100%);
+/* Webkit (Safari/Chrome 10) */ 
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #D3D8E8));
+/* Webkit (Chrome 11+) */ 
+background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #D3D8E8 100%);
+/* W3C Markup, IE10 Release Preview */ 
+background-image: linear-gradient(to bottom, #FFFFFF 0%, #D3D8E8 100%);
+background-repeat: no-repeat;
+background-attachment: fixed;
+}
+legend{
+	color:#141823;
+	font-size:25px;
+	font-weight:bold;
+}
+.signup-btn {
+  background: #79bc64;
+  background-image: -webkit-linear-gradient(top, #79bc64, #578843);
+  background-image: -moz-linear-gradient(top, #79bc64, #578843);
+  background-image: -ms-linear-gradient(top, #79bc64, #578843);
+  background-image: -o-linear-gradient(top, #79bc64, #578843);
+  background-image: linear-gradient(to bottom, #79bc64, #578843);
+  -webkit-border-radius: 4;
+  -moz-border-radius: 4;
+  border-radius: 4px;
+  text-shadow: 0px 1px 0px #898a88;
+  -webkit-box-shadow: 0px 0px 0px #a4e388;
+  -moz-box-shadow: 0px 0px 0px #a4e388;
+  box-shadow: 0px 0px 0px #a4e388;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  border: solid #3b6e22  1px;
+  text-decoration: none;
+}
+
+.signup-btn:hover {
+  background: #79bc64;
+  background-image: -webkit-linear-gradient(top, #79bc64, #5e7056);
+  background-image: -moz-linear-gradient(top, #79bc64, #5e7056);
+  background-image: -ms-linear-gradient(top, #79bc64, #5e7056);
+  background-image: -o-linear-gradient(top, #79bc64, #5e7056);
+  background-image: linear-gradient(to bottom, #79bc64, #5e7056);
+  text-decoration: none;
+}
+.navbar-default .navbar-brand{
+		color:#fff;
+		font-size:30px;
+		font-weight:bold;
+	}
+.form .form-control { margin-bottom: 10px; }
+@media (min-width:768px) {
+	#home{
+		margin-top:50px;
+	}
+	#home .slogan{
+		color: #0e385f;
+		line-height: 29px;
+		font-weight:bold;
+	}
+}
+ #AvailableSlots{
+      height: 60px;
+      border: none;
+      overflow: hidden;
+    }
+    #AvailableSlots::-moz-focus-inner {
+      border: 0;
+    }
+    #AvailableSlots:focus {
+      outline: none;
+    }
+    #AvailableSlots option{
+      width: 80px;
+      font-size: 1.2em;
+      padding: 10px 0;
+      text-align: center;
+      margin-right: 20px;
+      display: inline-block;
+      cursor: pointer;
+      border:rgb(20, 103, 136) solid 1px;
+      border-radius: 5px;
+      color: rgb(20, 103, 136);
+    }
+h4
+{
+color:#E60000; }
+#a
+{
+position:absolute;
+top:2px;
+left:2px;
+}
+  </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <img id="a"  class="img-responsive" src="{%static 'pics/hlogo.jpg' %}" alt="" title="" width="400" > 
+     </div>
+     <br>
+     <br>
+     <br>
+     <br>
+     
+<nav class="navbar navbar-inverse ">
+  <div class="container-fluid">
+  <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+	  </div>
+	   <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+<li ><a href="home">Home</a></li>
+    <li ><a href="aboutUs">About Us</a></li>
+<li ><a href="findDoc">Find A Doctor</a></li>
+	  <li><a href="contactUs">Contact Us</a></li>
+	  </ul>
+    <ul class="nav navbar-nav navbar-right">
+	<li class='active'><a href="bookAppointment"> Book An Appointment
+	</a></li>
+      <li><a href="{% url 'login' %}" font-size= 20px><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul>
+	
+	</div>
+	</nav>
+<div class="container" id="wrap">
+	  <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form action="/onSubmitOfNewPatientsAppointmentDetails/" method="post" accept-charset="utf-8" class="form" role="form" enctype="multipart/form-data">  
+              {% csrf_token %}
+			        <br/> 
+			        <legend><u>Book An Appointment With Us!</u></legend>
+			        <br/>
+			        <!--<div class="row">
+			        <label>Is the Appointment for a New or Existing Patient?</label> 
+					   
+              <select name="patienttype" class = "form-control input-lg" />
+              <option value="new">New</option>
+              <option value="existing">Existing</option>
+              </select>                     
+			        </div>-->
+			        <br/>
+			        <br/>
+			        <br/>
+              <h4>Patient Information</h4>
+              <br/>
+					    <div class="row">
+                <div class="col-xs-6 col-md-6">
+						      <label for="firstname" class="form-label">First Name</label>
+                  <input type="text" name="firstname" value="" pattern="[a-zA-Z\s]+" class="form-control input-lg"/>   
+                </div>                   
+                <div class="col-xs-6 col-md-6">
+						      <label for="lastname" class="form-label">Last Name</label>
+                  <input type="text" name="lastname" value="" pattern="[a-zA-Z\s]+" class="form-control input-lg"/>                       
+                </div>
+              </div>
+					    <div class="row">
+                <div class="col-xs-6 col-md-6">
+						      <label for="emailInfo" class="form-label">E-mail</label>
+                  <input type="email"  class="form-control input-lg" id="emailInfo" name = "emailInfo" required>
+                </div>
+                <div class="col-xs-6 col-md-6">
+						      <label for="phoneNumber" class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control input-lg" id="phoneNumber" pattern="[0-9]{10}" name = "phoneNumber" >                        
+                </div>
+              </div>
+	            <label for="DOB" class="form-label">Date of Birth</label>
+	            <input type="date" id ="DOB" name="Age" value="" class="form-control input-lg" placeholder="Your DOB"  />
+ 
+              <label for="Address" class="form-label">Address</label>
+				      <input type="text" name="Address" value="" class="form-control input-lg" id="Address" required placeholder="Address Line 1"  />
+				
+				 	    <div class="row">
+                <div class="col-xs-4 col-md-4">
+                  <input type="text" name="city" value="" class="form-control input-lg" id="city" required placeholder="City"  />                       
+                </div>
+                <div class="col-xs-4 col-md-4">
+                  <select name="state" id="state" class="form-control input-lg">
+                    <option hidden disabled selected value> State </option>
+				            <option value="AL">Alabama</option>
+				            <option value="AK">Alaska</option>
+				            <option value="AZ">Arizona</option>
+				            <option value="AR">Arkansas</option>
+				            <option value="CA">California</option>
+				            <option value="CO">Colorado</option>
+				            <option value="CT">Connecticut</option>
+				            <option value="DE">Delaware</option>
+				            <option value="DC">District Of Columbia</option>
+				            <option value="FL">Florida</option>
+				            <option value="GA">Georgia</option>
+				            <option value="HI">Hawaii</option>
+				            <option value="ID">Idaho</option>
+				            <option value="IL">Illinois</option>
+				            <option value="IN">Indiana</option>
+				            <option value="IA">Iowa</option>
+				            <option value="KS">Kansas</option>
+				            <option value="KY">Kentucky</option>
+				            <option value="LA">Louisiana</option>
+				            <option value="ME">Maine</option>
+				            <option value="MD">Maryland</option>
+				            <option value="MA">Massachusetts</option>
+				            <option value="MI">Michigan</option>
+				            <option value="MN">Minnesota</option>
+				            <option value="MS">Mississippi</option>
+				            <option value="MO">Missouri</option>
+				            <option value="MT">Montana</option>
+				            <option value="NE">Nebraska</option>
+				            <option value="NV">Nevada</option>
+				            <option value="NH">New Hampshire</option>
+				            <option value="NJ">New Jersey</option>
+				            <option value="NM">New Mexico</option>
+				            <option value="NY">New York</option>
+				            <option value="NC">North Carolina</option>
+				            <option value="ND">North Dakota</option>
+				            <option value="OH">Ohio</option>
+				            <option value="OK">Oklahoma</option>
+				            <option value="OR">Oregon</option>
+				            <option value="PA">Pennsylvania</option>
+				            <option value="RI">Rhode Island</option>
+				            <option value="SC">South Carolina</option>
+				            <option value="SD">South Dakota</option>
+				            <option value="TN">Tennessee</option>
+				            <option value="TX">Texas</option>
+				            <option value="UT">Utah</option>
+				            <option value="VT">Vermont</option>
+				            <option value="VA">Virginia</option>
+				            <option value="WA">Washington</option>
+				            <option value="WV">West Virginia</option>
+				            <option value="WI">Wisconsin</option>
+				            <option value="WY">Wyoming</option>
+				          </select>	
+                </div>
+				        <div class="col-xs-4 col-md-4">
+                   <input type="text"  name="zip" value=""class="form-control input-lg" pattern="[0-9]{5}" id="ZipCode" placeholder="Zip code"  required>
+							 </div>                       
+						  </div>
+							  
+						
+					
+              <label>Blood group</label> 
+                <div class="row">
+                  <div class="col-xs-6 col-md-6">
+                    <select name="blood group" class = "form-control input-lg" required>
+                      <option value="unknown">Unknown</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                    </select>
+                  </div>
+                  <div class="col-xs-6 col-md-6">
+                    <label>  Gender :</label>
+
+                    <label class="radio-inline">
+                      <input type="radio" name="gender" value="M" id=male required>                        Male
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="gender" value="F" id=female required>                        Female
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="gender" value="O" id=other required>                        Other
+                    </label>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-xs-6 col-md-6">
+                    <label>Insurance Provider</label> 
+                    <select name="insuranceprovider" class = "form-control input-lg" >
+                      <option style="display:none"></option>
+                      {% for insurance_provider in insurance_providers %}
+                        <option value="{{ insurance_provider}}">{{ insurance_provider }}</option>
+                      {% endfor %}
+                    </select> 
+                  </div>
+                  <div class="col-xs-6 col-md-6">
+                    <label for="memberid" class="form-label">Insurance Id</label>
+                    <input type="text" name="insuranceid" value="" class="form-control input-lg" required >
+                  </div>
+                </div>
+              <br/>
+              <br/>
+              <h4>Emergency Contact Information</h4>
+                <div class="row">
+                  <div class="col-xs-6 col-md-6">
+                    <label for="firstname" class="form-label">First Name</label>
+                    <input type="text" name="ecFirstname" value="" pattern="[a-zA-Z\s]+" class="form-control input-lg"/>                        
+                  </div>
+                  <div class="col-xs-6 col-md-6">
+                    <label for="lastname" class="form-label">Last Name</label>
+                    <input type="text" name="ecLastname" value="" pattern="[a-zA-Z\s]+" class="form-control input-lg"/>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 col-md-6">
+                    <label for="emailInfo" class="form-label">E-mail</label>
+                    <input type="email"  class="form-control input-lg" id="eccEmailInfo" name = "ecEmailInfo" required>
+                  </div>
+                  <div class="col-xs-6 col-md-6">
+                    <label for="phoneNumber" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control input-lg" id="ecPhoneNumber" pattern="[0-9]{10}" name ="ecPhoneNumber" >                        
+                  </div>
+                </div>
+                <br/>
+                  <h4>Medical History</h4>
+                  
+                  <div class="row">
+                    <label for="allergies" class="form-label">Do you have any known Allergies? If none enter None.</label>
+                    <textarea class="form-control" id="allergies" name = "allergies" rows="3" ></textarea>
+                    <label for="medications" class="form-label">Are you on any Medication? Please provide the details below. If none enter None.</label>
+                    <textarea class="form-control" id="medications" name = "medications" rows="3" ></textarea>
+                    <label for="medicalConditions" class="form-label">Do you have any pre existing medical conditions? If yes please provide the details. If none enter None.</label>
+                    <textarea class="form-control" id="medicalConditions" name="medicalConditions" rows="3" ></textarea>
+                    <label for="medicalInfo" class="form-label">Any other medical information we need to know about, please provide details below. If none enter None.</label>
+                    <textarea class="form-control" id="medicalInfo" name="medicalInfo" rows="3" ></textarea>
+                    &nbsp;
+                    &nbsp;
+                  </div>
+                
+                  <h4 align=leftwards>Appointment Details</h4>
+                  <div class="row">
+                    <label for="purposeOfvisit" class="form-label">What is the purpose of your visit? If applicable, the type of doctor you are requesting </label>
+                    <textarea class="form-control" id="purposeOfvisit" name = "purposeOfvisit" rows="3" ></textarea>
+                          <!-- <label for="DocPref" class="form-label">Do you have a doctor preference?</label>
+                                <select id="DocPref" name = "DocPref" class="form-control" onclick="checkDoctorPreference()">
+                          <option>No</option>
+                                  <option>Yes</option>
+                                  
+                              </select> 
+                        
+                        
+                                <label for="Doc" class="form-label">Select your preferred doctor</label>
+                                <select id="Doc" name = "Doc" class="form-control" disabled>
+                          <option>Dr A</option>
+                                  <option>Dr B</option>
+                                  
+                                </select> -->
+                        
+                                <input type="hidden" name="doctor_id" value='{{doctor_id}}'>
+                                <label for="appointmentDate" class="form-label">Appointment Date</label>
+                                <input type="date" name = "appointmentDate" class="form-control" id="appointmentDate" required onchange="getAvailableSlots()">
+                             
+                              
+                                <label for="AvailableSlots" class="form-label">Available Slots</label>
+                                <select id="AvailableSlots" class="form-control" name="AvailableSlots" multiple>
+                                  <option style="display:none"></option>
+                                </select> 
+                              &nbsp;
+                              &nbsp;
+                    </div>
+                  <br />
+                  <span class="help-block">By clicking submit, you agree to our Terms and that you have read our Data Use Policy, including our Cookie Use.</span>
+                  <button class="btn btn-lg btn-primary btn-block signup-btn" type="submit">
+                    Submit
+                  </button>
+              </form>          
+          
+          </div>            
+      </div>
+    </div>
+    <script>
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1; 
+      var yyyy = today.getFullYear();
+      if (dd < 10) {dd = '0' + dd;}
+      if (mm < 10) {mm = '0' + mm;}  
+      today = yyyy + '-' + mm + '-' + dd;
+      document.getElementById('appointmentDate').setAttribute('min',today);
+      document.getElementById('DOB').setAttribute('min','1900-01-01');
+      document.getElementById('DOB').setAttribute('max',today);
+      function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+              const cookies = document.cookie.split(';');
+              for (let i = 0; i < cookies.length; i++) {
+                  const cookie = cookies[i].trim();
+                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
+          }
+          return cookieValue;
+      }
+      const csrftoken = getCookie('csrftoken');
+      function getAvailableSlots() {
+        date = document.getElementById('appointmentDate').value
+        if(date != ""){
+          $.ajax({
+            url: '{% url "getAvailableSlots" %}',
+            method: 'POST',
+            headers:{
+              'Accept': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+              'X-CSRFToken': csrftoken,
+            },
+            data: {
+              'appointmentDate': date,
+              'doctor_id': '{{ doctor_id }}', 
+            },
+            dataType: 'json',
+            success: function (data) {
+              slots = data.slots
+              select = document.getElementById('AvailableSlots')
+              var i, L = select.options.length - 1;
+              for(i = L; i >= 0; i--) {
+                  select.remove(i);
+              }
+              for(let i = 0; i < slots.length; i++) {
+              option = document.createElement('option');
+              option.value = option.text = slots[i];
+              select.add(option);
+          }
+            }
+          });
+        } else {
+          select = document.getElementById('AvailableSlots')
+          var i, L = select.options.length - 1;
+          for(i = L; i >= 0; i--) {
+              select.remove(i);
+          }
+        }
+      }
+    </script>
+</body>
+</html>

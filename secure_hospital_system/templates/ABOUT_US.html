@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ABOUT_US</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type = "text/css" href="{%static 'css/styles.css' %}" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+   <div class="container-fluid">
+ <img id="a"  class="img-responsive" src="{%static 'pics/hlogo.jpg' %}" alt="" title="" width="400" > 
+</div>
+<br>
+<br>
+<nav class="navbar navbar-inverse ">
+  <div class="container-fluid">
+  <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+	  </div>
+	   <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+<li ><a href="home">Home</a></li>
+    <li class='active'><a href="aboutUs">About Us</a></li>
+<li ><a href="findDoc">Find A Doctor</a></li>
+	  <li><a href="contactUs">Contact Us</a></li>
+	  </ul>
+    <ul class="nav navbar-nav navbar-right">
+	<li><a href="bookAppointment"> Book An Appointment
+	</a></li>
+      <li><a href="{% url 'login' %}" font-size= 20px><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul>
+	
+	</div>
+	</nav>
+	<div class="container">
+	<div class="col-sm-2">
+    <nav class="nav-sidebar">
+		<ul class="nav tabs">
+          <li class="active"><a href="#tab1" data-toggle="tab"><h3>About</h3></a></li>
+          <li class=""><a href="#tab2" data-toggle="tab"><h3>Our Mission</h3></a></li>
+          <li class=""><a href="#tab3" data-toggle="tab"><h3>Our Vision</h3></a></li>                               
+		</ul>
+	</nav>
+		
+</div>
+<!-- tab content -->
+<div class="tab-content">
+<div class="tab-pane active text-style" id="tab1">
+  <h2><u>ABOUT</u></h2>
+       <p>
+         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's 
+         standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make 
+         a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining 
+         essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, 
+         and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.  
+       </p>
+       <hr>  
+</div>
+<div class="tab-pane text-style" id="tab2">
+  <h2>OUR MISSION</h2>
+   <p>Dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt 
+    ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo 
+    dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore 
+    et dolore magna aliquyam erat, sed diam voluptua
+	Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum 
+    iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla 
+    facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit 
+    augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet.</p>
+    <hr>
+</div>
+<div class="tab-pane text-style" id="tab3">
+  <h2>OUR VISION</h2>
+  <p>Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum 
+    iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla 
+    facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit 
+    augue duis dolore te feugait nulla facilisi.</p>
+	<p> Lorem ipsum dolor sit amet.Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum 
+    iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla 
+    facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit 
+    augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet</p>
+    <hr>
+    <div class="col-xs-6 col-md-3">
+  </div>
+</div>
+</div>
+    
+    
+</div>
+<script type="text/javascript">
+  (function(d, m){
+      var kommunicateSettings = 
+          {"appId":"fd42e99e86467e6860d2cba6dbae85a6","popupWidget":true,"automaticChatOpenOnNavigation":true};
+      var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+      s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+      var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+      window.kommunicate = m; m._globals = kommunicateSettings;
+  })(document, window.kommunicate || {});
+/* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+</script>
+	 </body>
+  </html>

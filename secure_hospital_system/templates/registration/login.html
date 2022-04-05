@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+ <title>Real Heroes Login</title>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css">
+ <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<style>
+    .logo {
+        font-size: 100px;
+    }
+    body{padding-top:200px;}
+    #a
+{
+position:absolute;
+top:2px;
+left:20%;
+}
+</style>
+</head>
+<body>
+    <center>
+    <div class="container-fluid">
+        <img id="a"  class="img-responsive" src="{%static 'pics/hlogo.jpg' %}" alt="" title="" height: 100> 
+       </div>
+     </center>
+     {% if form.errors %}
+     <p>Your username and password didn't match. Please try again.</p>
+     {% endif %}
+    <div class="container">
+        <div class="row">
+          <div class="row align-items-center justify-content-center">
+                <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Please sign in</h3>
+                     </div>
+                     <div class="panel-body">
+                       <form method="post" action="{% url 'login' %}" accept-charset="UTF-8" role="form">
+                         {% csrf_token %}
+                         <fieldset>
+                           <table>
+                             <tr>
+                               <td> {{ form.username.label_tag }}</td>
+                               <td> {{ form.username }} </td>
+                             </tr>
+                             <tr>
+                               <td> {{ form.password.label_tag }} </td>
+                               <td> {{ form.password }}</td>
+                             </tr>
+                           </table>
+                           <div class="simple-keyboard"></div>
+                           <input  class="btn btn-lg btn-success btn-block" type="submit" value="login">
+                           <input type="hidden" name="next" value="{{ next }}" />
+                        </fieldset>
+                          </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.js"></script>
+      <script src="../../static/js/simpleKeyboard.js"></script>
+    </body>
+</html>

@@ -1,0 +1,26 @@
+{% extends 'Portal.html' %}
+{% block content %}
+
+<div class="container" style="margin-left:25%; margin-right:25%; margin-top:5%; background-color: lightgray; width: 40%; height: 300px;">
+    <!-- {{ record_id }}<br>{{ document }} -->
+    <form action="saveRecord" method="post">
+        {% csrf_token %}
+        <h1><br>
+            {% if document_type == 'D' %}
+                Diagnosis 
+            {% elif document_type == 'P' %}
+                Prescription
+            {% elif document_type == 'L' %}
+                Lab Test Report
+            {% endif %}
+        </h1><br>
+        <textarea id="editeddocument" name="editeddocument" rows="4" cols="50" required>{{ document }}</textarea><br><br>
+        <button href="#" class="btn btn-info" style="position: inherit; right: 5%; bottom: 5%;">
+            <span class="glyphicon glyphicon-save"></span> Save
+        </button>
+        <input type="hidden" name="record_id" value="{{ record_id }}">
+        <input type="hidden" name="patient_id" value="{{ patient_id }}">
+    </form>
+</div>
+{% endblock %}
+

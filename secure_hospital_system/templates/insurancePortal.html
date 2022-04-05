@@ -1,0 +1,54 @@
+{% extends 'Portal.html' %}
+  {% load render_table from django_tables2 %}
+  {% block content %}
+  <div class="container">
+    <h1>Insurance Information</h1>
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#bills">Bills</a></li>
+      <li><a data-toggle="tab" href="#claims">Claims</a></li>
+      <li><a data-toggle="tab" href="#insuranceinfo">Insurance Info</a></li>
+    </ul>
+    
+    <div class="tab-content">
+      <style>
+            table, th, td {
+            border:1px solid black;
+            }
+        </style>
+      <div id="bills" class="tab-pane fade in active">
+        <h3>Bill History</h3>
+        {% render_table paymentsTable %}
+      </div>
+      <div id="claims" class="tab-pane fade">
+        <h3>Claims History</h3>
+        {% render_table claimsTable %}
+      </div>
+      <div id="insuranceinfo" class="tab-pane fade">
+
+        <h3>Enter Insurance Info</h3>
+
+        <p>Please Select Insurance Name:</p>
+        
+        <form action="saveInsurInfo" method="POST">
+          {% csrf_token %}
+          <select name="insurName" id="insurName">
+            {% for insurance_provider in insurance_providers %}
+            <option value="{{ insurance_provider}}">{{ insurance_provider }}</option>
+            {% endfor %}
+          </select>
+
+          <p>Please enter Insurance Member ID:</p>
+          <input name ="patientInsurID" type="text" id = "patientInsurID" required value="{{ patient_insurance_member_id }}">
+           
+          <button type="submit" formaction="saveInsurInfo" >Save</button>
+
+        </form>   
+      </div>
+    </div>
+  </div>
+  <script>
+    window.addEventListener("load",function(){
+      document.getElementById("insurName").value="{{ patient_insurance_provider_name }}"
+    })
+  </script>
+  {% endblock %}

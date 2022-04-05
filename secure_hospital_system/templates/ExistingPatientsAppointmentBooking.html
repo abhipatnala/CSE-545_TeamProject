@@ -1,0 +1,106 @@
+{% extends 'Portal.html' %}
+{% block content %}
+
+<div class="container" id="wrap">
+	  <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form action="/onSubmitOfExistingPatientsAppointmentBooking/" method="post" accept-charset="utf-8" class="form" role="form" >
+              {% csrf_token %}  
+			        <br/> 
+			        <legend><u>Book An Appointment With Us!</u></legend>
+			        <br/>			
+			        <h4 align=leftwards>Appointment Details</h4>
+              <div class="row">
+                <label for="purposeOfvisit" class="form-label">What is the purpose of your visit? If applicable, the type of doctor you are requesting </label>
+                <textarea class="form-control" id="purposeOfvisit" name = "purposeOfvisit" rows="3" ></textarea>
+              
+                
+                <input type="hidden" name="doctor_id" value='{{doctor_id}}'>
+                
+                <label for="appointmentDate" class="form-label">Appointment Date</label>
+                <input type="date" name = "appointmentDate" class="form-control" id="appointmentDate" required onchange="getAvailableSlots()">
+              
+                
+                <label for="AvailableSlots" class="form-label">Available Slots</label>
+                <select id="AvailableSlots" class="form-control" name="AvailableSlots" multiple>
+                  <option style="display:none"></option>
+                </select> 
+                
+                &nbsp;
+                &nbsp;
+              </div>
+        
+              <br />
+              <span class="help-block">By clicking submit, you agree to our Terms and that you have read our Data Use Policy, including our Cookie Use.</span>
+              <button class="btn btn-lg btn-primary btn-block signup-btn" type="submit">
+                  Submit
+              </button>
+            </form>          
+          
+        </div>            
+      </div>
+  </div>
+  <script>
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; 
+    var yyyy = today.getFullYear();
+    if (dd < 10) {dd = '0' + dd;}
+    if (mm < 10) {mm = '0' + mm;}  
+    today = yyyy + '-' + mm + '-' + dd;
+    document.getElementById('appointmentDate').setAttribute('min',today);
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+    function getAvailableSlots() {
+      date = document.getElementById('appointmentDate').value
+      if(date != ""){
+        $.ajax({
+          url: '{% url "getAvailableSlots" %}',
+          method: 'POST',
+          headers:{
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+            'X-CSRFToken': csrftoken,
+          },
+          data: {
+            'appointmentDate': date,
+            'doctor_id': '{{ doctor_id }}', 
+          },
+          dataType: 'json',
+          success: function (data) {
+            slots = data.slots
+            select = document.getElementById('AvailableSlots')
+            var i, L = select.options.length - 1;
+            for(i = L; i >= 0; i--) {
+                select.remove(i);
+            }
+            for(let i = 0; i < slots.length; i++) {
+            option = document.createElement('option');
+            option.value = option.text = slots[i];
+            select.add(option);
+        }
+          }
+        });
+      } else {
+        select = document.getElementById('AvailableSlots')
+        var i, L = select.options.length - 1;
+        for(i = L; i >= 0; i--) {
+            select.remove(i);
+        }
+      }
+    }
+  </script>
+  {% endblock content %}

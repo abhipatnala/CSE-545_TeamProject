@@ -1,0 +1,7 @@
+<form action="labtestAction" method="post">
+  {% csrf_token %}
+  <input type="submit" value="Approve" name="action_taken">
+  <input type="submit" value="Deny" name="action_taken">
+  <input type="hidden" name="lab_test_id" value="{{ record.lab_test_id }}">
+  <input type="hidden" name="patient_id" value="{{ record.patient_id }}">
+</form>

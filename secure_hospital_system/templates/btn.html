@@ -1,0 +1,6 @@
+<form action="appointmentApprovalOrDenial" method="POST">
+    {% csrf_token %}
+    <button type="submit" formaction="appointmentApprovedMail">Approve</button>
+    <button type="submit" formaction="appointmentDeniedMail">Deny</button>
+    <input type = "hidden" name = "booking_id" value = "{{record.booking_id}}">
+  </form>

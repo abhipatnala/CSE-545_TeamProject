@@ -1,0 +1,33 @@
+{% if record.status == 'Approved' %}
+<button data-toggle="modal" data-target="#create_report-modal" class="btn btn-info">Create Report</button>    
+<div class="modal fade" id="create_report-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header" id="modal-header">
+                <h4 class="modal-title" id="modal-title">
+                Lab Test Report
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" style="margin-right: 15%; margin-top: -2%;">×</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- form here -->
+                <form action="createLabtestReport" method="post">
+                    {% csrf_token %}
+                    <textarea id="labtest_report_string" name="labtest_report_string" rows="4" cols="50" placeholder="Enter the Lab Test Report" required></textarea><br><br>
+                    <button class="btn btn-info" href="{% url 'createLabtestReport' %}" ><span class="glyphicon glyphicon-save"></span> Save </button>
+                    <input type="hidden" name="lab_test_id" value="{{ record.lab_test_id }}">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% elif record.status == 'Completed' %}
+<form action="viewRecord" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-info" href="{% url 'viewRecord' %}" > View Report </button>
+    <input type="hidden" name="record_id" value="{{record.record.records_id}}">
+    <input type="hidden" name="user_id" value="{{ user_id }}">
+    <input type="hidden" name="patient_id" value="{{ record.patient_id }}">
+  </form>
+{% endif %}

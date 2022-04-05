@@ -1,0 +1,23 @@
+{% extends 'Portal.html' %}
+{% load render_table from django_tables2 %}
+{% block content %}
+
+<div class="container">
+  <h1>Your Appointments</h1>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#upcomingAppointments">Upcoming Appointments</a></li>
+    <li><a data-toggle="tab" href="#pastAppointments">Past Appointments</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="upcomingAppointments" class="tab-pane fade in active">
+      <h3>Upcoming Appointments</h3>
+      {% render_table upcomingAppointment %}
+    </div>
+    <div id="pastAppointments" class="tab-pane fade">
+      <h3>Past Appointments</h3>
+      {% render_table pastAppointment %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,6 @@
+<form action="insuranceApprovalOrDenial" method="POST">
+    {% csrf_token %}
+    <button type="submit" formaction="insuranceApprovedMail">Approve</button>
+    <button type="submit" formaction="insuranceDeniedMail">Deny</button>
+    <input type = "hidden" name = "claim_id" value = "{{record.claim_id}}">
+  </form>

@@ -1,0 +1,86 @@
+[
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 1,
+            "role_id": 6
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 2,
+            "role_id": 6
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 3,
+            "role_id": 6
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 4,
+            "role_id": 6
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 5,
+            "role_id": 6
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 6,
+            "role_id": 6
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 7,
+            "role_id": 2
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 8,
+            "role_id": 3
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 9,
+            "role_id": 3
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 10,
+            "role_id": 5
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 11,
+            "role_id": 5
+        }
+    },
+    {
+        "model":"secure_hospital_system.Menu_Mapping",
+        "fields":{
+            "menu_id": 12,
+            "role_id": 4
+        }
+    }
+]

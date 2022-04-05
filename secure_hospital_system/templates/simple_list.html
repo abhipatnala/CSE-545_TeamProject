@@ -1,0 +1,11 @@
+
+{% extends "Portal.html" %}
+{% load django_tables2 %}
+
+
+{% block content %}
+    <div class="container">
+        <h1>Appointment Requests</h1>
+        {% render_table appointmentsTable %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,58 @@
+
+{% extends 'Portal.html' %}
+{% load render_table from django_tables2 %}
+{% block content %}
+
+<div class="container">
+  <h1>Medical Records</h1>
+  <ul class="nav nav-tabs">
+    {% if not isPatient %}
+      <li class="active"><a data-toggle="tab" href="#appointments">Appointments</a></li>
+      <li><a data-toggle="tab" href="#diagnoses">Diagnoses</a></li>
+    {% else %}
+      <li class="active"><a data-toggle="tab" href="#diagnoses">Diagnoses</a></li>
+    {% endif %}
+    <li><a data-toggle="tab" href="#labtestreports">Lab Tests Reports</a></li>
+    <li><a data-toggle="tab" href="#prescriptions">Prescriptions</a></li>
+    <li><a data-toggle="tab" href="#paymentsandtransactions">Payments</a></li>
+  </ul>
+  {% csrf_token %}
+  <div class="tab-content">
+  {% if not isPatient %}
+    <div id="appointments" class="tab-pane fade in active">
+      <h3>Appointments</h3>
+      {% render_table appointmentsTable %}
+    </div>
+    <div id="diagnoses" class="tab-pane fade">
+      <h3>Diagnosis</h3>
+      {% render_table diagnosesTable %}
+    </div>
+    {% else %}
+    <div id="diagnoses" class="tab-pane fade in active">
+      <h3>Diagnosis</h3>
+      {% render_table diagnosesTable %}
+    </div>
+    {% endif %}
+    <div id="labtestreports" class="tab-pane fade">
+      <h3>Lab Test Reports</h3>
+      {% render_table labTestReportsTable %}
+    </div>
+    <div id="prescriptions" class="tab-pane fade">
+      <h3>Prescriptions</h3>
+      {% render_table prescriptionsTable %}
+    </div>  
+    <div id="paymentsandtransactions" class="tab-pane fade">
+      <h3>Payments & Transactions</h3>
+      <form action = '/generateBills' method="post">
+        {% csrf_token %}
+        <input type="hidden" name="patient_id" value="{{ patient_id }}">
+        {% if isHospitalStaff %}
+        <button class="btn btn-primary" type="submit">Generate Bills</button>
+        {% endif %}
+    </form>
+      {% render_table paymentsTable %}
+      <p></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

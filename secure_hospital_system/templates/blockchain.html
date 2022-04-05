@@ -1,0 +1,6 @@
+
+<form action="viewBlockChainInfo" method="post">
+    {% csrf_token %}
+    <input type="submit" value="BlockchainRecord" name="action_taken">
+    <input type="hidden" name="claim_id" value="{{ record.claim_id }}">
+  </form>

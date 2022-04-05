@@ -1,0 +1,7 @@
+<form action="viewAppointmentDoctor" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-light" href="{% url 'viewAppointmentDoctor' %}" >View Appointment</button>
+    <input type="hidden" name="appointment_id" value="{{record.booking_id}}">
+    <input type="hidden" name="patient_id" value="{{ record.patient_id.patient_id }}">
+    <input type="hidden" name="user_id" value="{{ 1 }}">
+  </form>

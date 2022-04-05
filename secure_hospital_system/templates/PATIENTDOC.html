@@ -1,0 +1,58 @@
+{% extends 'Portal.html' %}
+{% load static %}
+{% block content %}
+
+     
+</div>
+<div class="tab-pane text-style" id="tab2">
+ <div class="container-fluid">
+    <div class="row text-center">
+		<h2><b>OUR DOCTORS</b></h2>
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	 <div id="a">
+    <div class="row">
+     
+      {%for doc in docList%}
+    	<div class="col-lg-3">
+    				<div class="cuadro_intro_hover " style="background-color:#cccccc;">
+						<p style="text-align:center;">
+							<img id = "test" src="{%static 'pics/d.jpg'%}" class="img-responsive" alt="">
+						</p>
+						<div class="caption">
+							<div class="blur"></div>
+							<div class="caption-text">
+								<h3 style="border-top:2px solid white; border-bottom:2px solid white; padding:10px;">{{doc.specialization}}</h3>
+								<p>{{doc.specialization}}</p>
+								<form action="bookingAppointmentsForSelectedDocByExistingPatients" method="post">
+									{% csrf_token %}
+									<input type="hidden" name="docId" value="{{doc.doctor_id}}">
+									<button class="btn btn-default" href="{% url 'bookingAppointmentsForSelectedDocByExistingPatients' %}" ><span class="glyphicon glyphicon-plus"></span> Book an Appointment </button>
+								</form>
+							</div>
+						</div>
+					</div>
+			
+	   
+				
+	    </div>
+		{%endfor%}
+	    </div>
+    </div>
+</div>
+
+    <hr>
+</div>
+  </div>
+</div>
+</div>
+    </div>
+    
+</div>
+{% endblock %}

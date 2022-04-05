@@ -1,0 +1,43 @@
+{% extends 'Portal.html' %}
+{% block content %}
+
+<div class="container" style="margin-left:25%; margin-right:25%; margin-top:5%; background-color: lightgray; width: 40%; height: 250px;">
+    <h1><br>
+        {% if document_type == 'D' %}
+            Diagnosis 
+        {% elif document_type == 'P' %}
+            Prescription
+        {% elif document_type == 'L' %}
+            Lab Test Report
+        {% endif %}
+    </h1><br>
+    <p>{{ document }}</p>
+    {% if isDoctor %}
+        <form action="editRecord" method="post">
+            {% csrf_token %}
+            <button type="submit" href="{% url 'editRecord' %}" class="btn btn-info" value="edit" name="action_taken">
+                <span class="glyphicon glyphicon-edit"></span> Edit
+            </button>
+            <button type="submit" href="{% url 'editRecord' %}" class="btn btn-info" value="delete" name="action_taken">
+                <span class="glyphicon glyphicon-trash"></span> Delete
+            </button>
+            <input type="hidden" name="record_id" value="{{ record_id }}">
+            <input type="hidden" name="document_type" value="{{ document_type }}">
+            <input type="hidden" name="document" value="{{ document }}">
+            <input type="hidden" name="patient_id" value="{{ patient_id }}">
+        </form>
+    {% elif isPatient %}
+    <form action="downloadRecord" method="post">
+        {% csrf_token %}
+        <button type="submit" href="{% url 'downloadRecord' %}" class="btn btn-info" value="download" name="downloadRecord">
+            <span class="glyphicon glyphicon-cloud-download"></span> Download
+        </button>
+        <input type="hidden" name="record_id" value="{{ record_id }}">
+        <input type="hidden" name="patient_id" value="{{ patient_id }}">
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
+
+
+

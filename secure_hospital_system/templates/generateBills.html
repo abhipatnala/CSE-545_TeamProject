@@ -1,0 +1,90 @@
+<!doctype html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <title>Generate Bills</title>
+    <style>
+      #div2{
+        border: 1px solid black;
+        margin-left: 10px;
+        margin-right: 25px;
+        margin-bottom: 40px;
+        margin-top: 40px;
+      }
+      #div3{
+        border: 1px solid black;
+        margin-left: 10px;
+        margin-right: 25px;
+        margin-bottom: 40px;
+        margin-top: 40px;
+      }
+      #div4{
+        border: 1px solid black;
+        margin-left: 10px;
+        margin-right: 25px;
+        margin-bottom: 40px;
+        margin-top: 40px;
+      }
+      #wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .topnav {
+      overflow: hidden;
+      background-color: rgb(7, 14, 48);
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+ 
+    </style>
+  </head>
+  <body>
+    <div class="topnav">
+      <h1 align=center style="color:white;"> Generate a Bill</h1>
+    </div>
+
+    <!-- Unnamed (Text Field) -->
+    <div class="container mt-5">
+      <form action="/newBillGenerated" class="row g-3" method = "post">
+        {% csrf_token %}
+        <div class="container mt-5_1" id="div2">
+          <input type="hidden" name="patient_id" value='{{patient_id}}'>
+            <div class="col-md-6">
+              <label for="admitFee" class="form-label">Admit Fee</label>
+              <input name="admitFee" type="text" class="form-control" id="admitFee" required>
+            </div>
+            <div class="col-md-6">
+              <label for="dischargeFee" class="form-label">Discharge Fee</label>
+              <input name="dischargeFee" type="text" class="form-control" id="dischargeFee" required>
+            </div>
+            <div class="col-md-6">
+              <label for="suppliesFee" class="form-label">Supplies Fee</label>
+              <input name="suppliesFee" type="text" class="form-control" id="suppliesFee" required>
+            </div>
+            <div class="col-md-6">
+              <label for="consultationFee" class="form-label">Consultation Fee</label>
+              <input name="consultationFee" type="text" class="form-control" id="consultationFee" required>
+            </div>         
+            <div id="wrapper">
+              <button type="submit" class="btn btn-primary" style="float: centre;">Submit</button>
+            </div>
+        </div>
+      </form>
+    </div>
+
+    
+
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+
+  </body>
+</html>
