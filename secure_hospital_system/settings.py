@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 import django_on_heroku
 
@@ -34,8 +35,8 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 DEBUG = True
 
 # DEBUG = False
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'secure-hospital-v1.herokuapp.com']
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # Application definition
 
@@ -146,7 +147,8 @@ STATICFILES_DIRS = [
 ]
 
 
-
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -159,12 +161,12 @@ LOGOUT_REDIRECT_URL = 'home'
 django_on_heroku.settings(locals())
 
 #Email Settings
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'shsgrp1@gmail.com'
-# EMAIL_HOST_PASSWORD = 'security12345'
-# EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = False
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL')
 
 DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
 
