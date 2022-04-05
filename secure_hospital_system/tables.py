@@ -131,7 +131,7 @@ class LabStaffView(tables.Table):
         fields = ['Patient_Name', 'Doctor_Name', 'Test_name', 'Date', 'Approve/Deny','create_labtest_report', 'record', 'status']
     patient_Name = tables.Column(accessor='patient.user_id.user.first_name', verbose_name="Patient Name")
     doctor_name = tables.Column(accessor='doctor.user_id.user.first_name', verbose_name="Doctor Name")
-    test_name = tables.Column(accessor='Recommended_tests',verbose_name='Recommended Tests')
+    test_name = tables.Column(accessor='recommended_test',verbose_name='Recommended Tests')
     date = tables.Column(accessor='action_taken_date', verbose_name='Date')
     status = tables.Column(accessor='status', visible=False)
     record = tables.Column(accessor='record.records_id', visible=False)
