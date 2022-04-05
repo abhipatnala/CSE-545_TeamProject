@@ -104,7 +104,11 @@ def sendContactUsEmail(request):
 		fail_silently=False
 	)
 	messages.success(request,"Email sent successfully")
-	return contactUs(request)
+	if request.user is None:
+		return contactUs(request)
+	else:
+		return patientContactUs(request)
+	#return contactUs(request)
 	#return render(request,'sentmail.html')
 
 @login_required
