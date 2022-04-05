@@ -91,25 +91,21 @@ def patientContactUs(request):
     return render(request, "patientContactUs.html", context)
 
 def sendContactUsEmail(request):
-	if request.method == 'POST':
-		name = request.POST.get('cname')
-		email = request.POST.get('cemail')
-		phone = request.POST.get('cphone')
-		msg = request.POST.get('cmsg')
-	send_mail(
-		'Contact Us Message from : '+name,
-		msg + "\n\n\n email:\t"+ email + "\n phone:\t"+ phone,
-		'shsgrp1@gmail.com',
-		['shsgrp1@gmail.com'],
-		fail_silently=False
-	)
-	messages.success(request,"Email sent successfully")
-	if request.user is None:
-		return contactUs(request)
-	else:
-		return patientContactUs(request)
-	#return contactUs(request)
-	#return render(request,'sentmail.html')
+    if request.method == 'POST':
+        name = request.POST.get('cname')
+        email = request.POST.get('cemail')
+        phone = request.POST.get('cphone')
+        msg = request.POST.get('cmsg')
+        send_mail(
+            'Contact Us Message from : '+name,
+            msg + "\n\n\n email:\t"+ email + "\n phone:\t"+ phone,
+            'shsgrp1@gmail.com',
+            ['shsgrp1@gmail.com'],
+            fail_silently=False
+        )
+        messages.success(request,"Email sent successfully")
+
+    return render(request, 'home.html')
 
 @login_required
 @twoFARequired()
