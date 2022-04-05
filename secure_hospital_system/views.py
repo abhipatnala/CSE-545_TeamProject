@@ -1087,12 +1087,6 @@ def fileClaim(request):
         Claim_Request.objects.create(patient_id_id = patient_id, payment_id_id = payment_ID, claim_status = 'pending', claim_raised_date = claim_raised_date, claim_update_date=claim_update_date)
         Payments.objects.filter(payment_id=payment_ID).update(is_claimed = True)
         claim_created = Claim_Request.objects.get(payment_id = payment_ID)
-        # print(claim_created.claim_id)
-        # print(claim_created.patient_id.patient_id)
-        # print(claim_created.patient_id.patient_insurance_provider_id.provider_id)
-        # print(claim_created.payment_id.payment_id)
-        # print(claim_created.payment_id.overall_payment)
-        # print(claim_created.claim_status)
         try:
             url = settings.BLOCKCHAINURL + "/api/addClaim"
             data = {'claim_id': claim_created.claim_id, 'patient_id': claim_created.patient_id.patient_id, 'insurance_id': claim_created.patient_id.patient_insurance_provider_id.provider_id, 'amount': claim_created.payment_id.overall_payment, 'bill_id': claim_created.payment_id.payment_id, 'status':claim_created.claim_status}
@@ -1189,23 +1183,12 @@ def viewBlockChainInfo(request):
     print(action_taken)
     if(action_taken == "Claim"):
         resp=viewBlockChainClaims(claim_id)
-    elif(action_taken == "Status"):
+    elif(action_taken == "BlockchainRecord"):
         resp=viewBlockChainClaimStatus(claim_id)
     return HttpResponse("<html> <body><h1>Blockchain Information</h1>"+resp+"</body></html>")
 
 
 def viewBlockChainClaims(claim_id):
-	# print("Inside block chain claims")
-	# data=''
-	# try:
-	# 	url = settings.BLOCKCHAINURL + "/api/getClaimHistory/"+claim_id
-	# 	print(url)
-	# 	headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-	# 	data = requests.get(url).Response()
-	# 	print(data)
-	# except Exception:
-	# 	print("An exception occurred")
-		#print("Inside block chain status")
 	data = ''
 	conn = http.client.HTTPSConnection("shsblockchain.pagekite.me")
 	headers = {
