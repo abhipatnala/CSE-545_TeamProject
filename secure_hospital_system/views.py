@@ -69,7 +69,7 @@ def findPatientDoc(request):
 		'docList':docList
 	}
     context.update(context1)
-    return render(request, "patientDoc.html", context)
+    return render(request, "PATIENTDOC.html", context)
 
 def contactUs(request):
 	# if request.method == "POST":
