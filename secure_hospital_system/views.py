@@ -103,7 +103,9 @@ def sendContactUsEmail(request):
 		['shsgrp1@gmail.com'],
 		fail_silently=False
 	)
-	return render(request,'sentmail.html')
+	messages.success(request,"Email sent successfully")
+	return contactUs(request)
+	#return render(request,'sentmail.html')
 
 @login_required
 @twoFARequired()
