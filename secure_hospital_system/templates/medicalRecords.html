@@ -4,15 +4,20 @@
 {% block content %}
 
 <div class="container">
-  <h1>Medical Records</h1>
+  <h1>Medical Records {{ isPatient }}</h1>
   <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#appointments">Appointments</a></li>
-    <li><a data-toggle="tab" href="#diagnoses">Diagnoses</a></li>
+    {% if not isPatient %}
+      <li class="active"><a data-toggle="tab" href="#appointments">Appointments</a></li>
+      <li><a data-toggle="tab" href="#diagnoses">Diagnoses</a></li>
+    {% else %}
+      <li class="active"><a data-toggle="tab" href="#diagnoses">Diagnoses</a></li>
+    {% endif %}
     <li><a data-toggle="tab" href="#labtestreports">Lab Tests Reports</a></li>
     <li><a data-toggle="tab" href="#prescriptions">Prescriptions</a></li>
     <li><a data-toggle="tab" href="#paymentsandtransactions">Payments</a></li>
   </ul>
   {% csrf_token %}
+  {% if not isPatient %}
   <div class="tab-content">
     <div id="appointments" class="tab-pane fade in active">
       <h3>Appointments</h3>
@@ -22,6 +27,12 @@
       <h3>Diagnosis</h3>
       {% render_table diagnosesTable %}
     </div>
+    {% else %}
+    <div id="diagnoses" class="tab-pane fade in active">
+      <h3>Diagnosis</h3>
+      {% render_table diagnosesTable %}
+    </div>
+    {% endif %}
     <div id="labtestreports" class="tab-pane fade">
       <h3>Lab Test Reports</h3>
       {% render_table labTestReportsTable %}

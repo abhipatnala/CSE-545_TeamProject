@@ -593,10 +593,12 @@ def medicalRecords(request):
 	role = getCurrentUserRole(userId)
 	shsUser = SHSUser.objects.get(user = userId)
 	patientId = ''
+	isPatient = False
 	isHospitalStaff = False
 	if role == 'patient':
 		patient = Patient.objects.get(user_id=shsUser)
 		patientId = patient.patient_id
+		isPatient = True
 	elif role == 'doctor':
 		patientId = request.POST['patient_id']
 	elif role == 'hospitalstaff':
@@ -621,6 +623,7 @@ def medicalRecords(request):
 		'prescriptionsTable' : prescriptionsTable,
 		'paymentsTable': paymentsTable,
 		'isHospitalStaff' : isHospitalStaff,
+		'isPatient' : isPatient,
 	}
 	context.update(userContext)
 	return HttpResponse(template.render(context, request))

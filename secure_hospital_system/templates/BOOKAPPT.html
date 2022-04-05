@@ -236,11 +236,11 @@ left:2px;
 					    <div class="row">
                 <div class="col-xs-6 col-md-6">
 						      <label for="firstname" class="form-label">First Name</label>
-                  <input type="text" name="firstname" value="" class="form-control input-lg"/>   
+                  <input type="text" name="firstname" value="" pattern="[a-zA-Z\s]+" class="form-control input-lg"/>   
                 </div>                   
                 <div class="col-xs-6 col-md-6">
 						      <label for="lastname" class="form-label">Last Name</label>
-                  <input type="text" name="lastname" value="" class="form-control input-lg"/>                       
+                  <input type="text" name="lastname" value="" pattern="[a-zA-Z\s]+" class="form-control input-lg"/>                       
                 </div>
               </div>
 					    <div class="row">
@@ -250,7 +250,7 @@ left:2px;
                 </div>
                 <div class="col-xs-6 col-md-6">
 						      <label for="phoneNumber" class="form-label">Phone Number</label>
-                  <input type="text" class="form-control input-lg" id="phoneNumber" name = "phoneNumber" >                        
+                  <input type="tel" class="form-control input-lg" id="phoneNumber" pattern="[0-9]{10}" name = "phoneNumber" >                        
                 </div>
               </div>
 	            <label for="DOB" class="form-label">Date of Birth</label>
@@ -329,7 +329,7 @@ left:2px;
               <label>Blood group</label> 
                 <div class="row">
                   <div class="col-xs-6 col-md-6">
-                    <select name="blood group" class = "form-control input-lg" >
+                    <select name="blood group" class = "form-control input-lg" required>
                       <option value="unknown">Unknown</option>
                       <option value="A+">A+</option>
                       <option value="A-">A-</option>
@@ -345,13 +345,13 @@ left:2px;
                     <label>  Gender :</label>
 
                     <label class="radio-inline">
-                      <input type="radio" name="gender" value="M" id=male />                        Male
+                      <input type="radio" name="gender" value="M" id=male required>                        Male
                     </label>
                     <label class="radio-inline">
-                      <input type="radio" name="gender" value="F" id=female />                        Female
+                      <input type="radio" name="gender" value="F" id=female required>                        Female
                     </label>
                     <label class="radio-inline">
-                      <input type="radio" name="gender" value="O" id=other />                        Other
+                      <input type="radio" name="gender" value="O" id=other required>                        Other
                     </label>
                   </div>
                 </div>
@@ -369,7 +369,7 @@ left:2px;
                   </div>
                   <div class="col-xs-6 col-md-6">
                     <label for="memberid" class="form-label">Insurance Id</label>
-                    <input type="text" name="insuranceid" value="" class="form-control input-lg"/>
+                    <input type="text" name="insuranceid" value="" class="form-control input-lg" required >
                   </div>
                 </div>
               <br/>
@@ -378,11 +378,11 @@ left:2px;
                 <div class="row">
                   <div class="col-xs-6 col-md-6">
                     <label for="firstname" class="form-label">First Name</label>
-                    <input type="text" name="ecFirstname" value="" class="form-control input-lg"/>                        
+                    <input type="text" name="ecFirstname" value="" pattern="[a-zA-Z\s]+" class="form-control input-lg"/>                        
                   </div>
                   <div class="col-xs-6 col-md-6">
                     <label for="lastname" class="form-label">Last Name</label>
-                    <input type="text" name="ecLastname" value="" class="form-control input-lg"/>
+                    <input type="text" name="ecLastname" value="" pattern="[a-zA-Z\s]+" class="form-control input-lg"/>
                   </div>
                 </div>
                 <div class="row">
@@ -392,7 +392,7 @@ left:2px;
                   </div>
                   <div class="col-xs-6 col-md-6">
                     <label for="phoneNumber" class="form-label">Phone Number</label>
-                    <input type="text" class="form-control input-lg" id="ecPhoneNumber" name ="ecPhoneNumber" >                        
+                    <input type="text" class="form-control input-lg" id="ecPhoneNumber" pattern="[0-9]{10}" name ="ecPhoneNumber" >                        
                   </div>
                 </div>
                 <br/>

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +20,8 @@
   </style>
 </head>
 <body>
-    <div class="container" style="margin-left:25%; margin-right:25%; margin-top:5%; background-color: lightgray; width: 40%; height: 250px;">
+    <img id="a"  class="img-responsive" src="{%static 'pics/hlogo.jpg'%}" alt="" title="" width="400" > 
+    <div class="container" style="margin-left:25%; margin-right:25%; margin-top:5%; width: 40%; height: 250px;">
         <div class="row">
             <h1>PATIENT DETAILS</h1>
             <div class="column">
