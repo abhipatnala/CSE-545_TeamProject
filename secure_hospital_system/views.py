@@ -38,6 +38,7 @@ import json
 from django.conf import settings
 from django.utils.dateparse import parse_date
 from xhtml2pdf import pisa
+import http.client
 
 def home(request):
     if request.user.is_authenticated:
@@ -1184,30 +1185,53 @@ def viewBlockChainInfo(request):
         resp=viewBlockChainClaims(claim_id)
     elif(action_taken == "Status"):
         resp=viewBlockChainClaimStatus(claim_id)
-    return HttpResponse(resp)
+    return HttpResponse("<html> <body><h1>Blockchain Information</h1>"+resp+"</body></html>")
 
 
 def viewBlockChainClaims(claim_id):
-	print("Inside block chain claims")
-	data=''
-	try:
-		url = settings.BLOCKCHAINURL + "/api/getClaimHistory/"+claim_id
-		print(url)
-		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-		data = requests.get(url).json
-		print(data)
-	except Exception:
-		print("An exception occurred")
-	return data
+	# print("Inside block chain claims")
+	# data=''
+	# try:
+	# 	url = settings.BLOCKCHAINURL + "/api/getClaimHistory/"+claim_id
+	# 	print(url)
+	# 	headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+	# 	data = requests.get(url).Response()
+	# 	print(data)
+	# except Exception:
+	# 	print("An exception occurred")
+		#print("Inside block chain status")
+	data = ''
+	conn = http.client.HTTPSConnection("shsblockchain.pagekite.me")
+	headers = {
+    'cache-control': "no-cache",
+    #'postman-token': "1a7651c4-8fd2-ec56-c84d-26eee9007d7f"
+    }
+	conn.request("GET", "/api/getClaimHistory/"+claim_id, headers=headers)
+	res = conn.getresponse()
+	data = res.read()
+	print(data.decode("utf-8"))
+	return str(data)
 
 def viewBlockChainClaimStatus(claim_id):
+	# print("Inside block chain status")
+	# data=''
+	# try:
+	# 	url = settings.BLOCKCHAINURL + "/api/getClaim/"+claim_id
+	# 	headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+	# 	data = requests.get(url).json
+	# 	print(data)
+	# except Exception:
+	# 	print("An exception occurred")
+	# return data 
 	print("Inside block chain status")
-	data=''
-	try:
-		url = settings.BLOCKCHAINURL + "/api/getClaim/"+claim_id
-		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-		data = requests.get(url).json
-		print(data)
-	except Exception:
-		print("An exception occurred")
-	return data
+	data = ''
+	conn = http.client.HTTPSConnection("shsblockchain.pagekite.me")
+	headers = {
+    'cache-control': "no-cache",
+    #'postman-token': "1a7651c4-8fd2-ec56-c84d-26eee9007d7f"
+    }
+	conn.request("GET", "/api/getClaim/"+claim_id, headers=headers)
+	res = conn.getresponse()
+	data = res.read()
+	print(data.decode("utf-8"))
+	return str(data)
