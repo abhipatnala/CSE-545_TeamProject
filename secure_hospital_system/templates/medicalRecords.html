@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="container">
-  <h1>Medical Records {{ isPatient }}</h1>
+  <h1>Medical Records</h1>
   <ul class="nav nav-tabs">
     {% if not isPatient %}
       <li class="active"><a data-toggle="tab" href="#appointments">Appointments</a></li>
@@ -17,8 +17,8 @@
     <li><a data-toggle="tab" href="#paymentsandtransactions">Payments</a></li>
   </ul>
   {% csrf_token %}
-  {% if not isPatient %}
   <div class="tab-content">
+  {% if not isPatient %}
     <div id="appointments" class="tab-pane fade in active">
       <h3>Appointments</h3>
       {% render_table appointmentsTable %}
