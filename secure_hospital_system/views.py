@@ -770,10 +770,7 @@ def saveRecord(request):
 	document = request.POST['editeddocument']
 	patient_id = request.POST['patient_id']
 	Records.objects.filter(records_id=record_id).update(document=document, last_modified_date=timezone.now())
-	if role == 'doctor':
-		return medicalRecords(request)
-	else:
-		return labstaffWorklist(request)
+	return render(request, 'home.html')
 
 @login_required
 @twoFARequired()
